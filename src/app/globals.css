@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background-color: #e9f1f3;
+  --button-color: #f6f7e7;
+  --shadow: rgba(0, 0, 0, 0.4) -4px 4px 4px;
+}
+
+body {
+  background-color: var(--background-color);
+  font-family: var(--font-quicksand);
+  font-weight: 600;
+}
+
+button, .button {
+  background-color: var(--button-color);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  font-weight: 600;
+}
+
+.element {
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}

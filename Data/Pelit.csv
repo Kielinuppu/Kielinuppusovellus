@@ -1,0 +1,90 @@
+ ID,Name,Laulut,Pelin osoite,mikä pelilaji,Tekeminen,Created,Updated
+128,Vessalaulu sanapeli,VESSALAULU,https://kielinuppu.github.io/vessalaulusanapeli/,4,,2024-11-19T16:23:51.109Z,2024-11-19T16:24:55.350Z
+127,Talvilaulu laulupeli,TALVILAULU,https://kielinuppu.github.io/talvilaulupeli/,3,,2024-11-15T11:59:29.143Z,2024-11-15T12:00:21.384Z
+126,"Eilen, tänään, huomenna laulupeli","EILEN, TÄNÄÄN, HUOMENNA",https://kielinuppu.github.io/eilentanaanhuomennalaulupeli/,3,,2024-11-12T16:14:19.373Z,2024-11-12T16:16:40.746Z
+125,Taivaalla on kuu sanapeli,TAIVAALLA ON KUU,https://kielinuppu.github.io/taivaallaonkuusanapeli/,4,,2024-11-12T10:29:28.826Z,2024-11-12T10:30:28.426Z
+124,Taivaalla on kuu laulupeli,TAIVAALLA ON KUU,https://kielinuppu.github.io/taivaallaonkuulaulupeli/,3,,2024-11-12T10:06:59.769Z,2024-11-12T10:08:01.731Z
+123,Rentoutuslaulu laulupeli,RENTOUTUSLAULU,https://kielinuppu.github.io/rentoutuslaulupeli/,3,,2024-11-12T09:49:18.824Z,2024-11-12T09:50:14.815Z
+122,Hyönteiset laulupeli,HYÖNTEISET,https://kielinuppu.github.io/hyonteisetlaulupeli/,3,,2024-11-12T09:04:54.508Z,2024-11-12T09:05:56.978Z
+121,Molemmat laulupeli,MOLEMMAT,https://kielinuppu.github.io/molemmatlaulupeli/,3,,2024-11-11T11:59:27.493Z,2024-11-11T12:00:47.166Z
+120,Vertailulaulu laulupeli,VERTAILULAULU,https://kielinuppu.github.io/vertailulaulupeli/,3,,2024-11-11T08:37:16.855Z,2024-11-11T08:38:19.956Z
+119,Vertailulaulu valintapeli,VERTAILULAULU,https://kielinuppu.github.io/vertailulauluvalintapeli/,2,,2024-11-06T13:43:46.540Z,2024-11-06T13:44:56.607Z
+118,Mitä tämä on valintapeli,MITÄ TÄMÄ ON?,https://kielinuppu.github.io/mitatamaonvalintapeli/,2,,2024-11-06T12:21:21.439Z,2024-11-06T12:22:31.495Z
+117,Kehonosia laulupeli,KEHONOSIA,https://kielinuppu.github.io/kehonosialaulupeli/,3,,2024-11-05T17:02:58.009Z,2024-11-05T17:04:07.717Z
+116,Mitä tämä on laulupeli,MITÄ TÄMÄ ON?,https://kielinuppu.github.io/mitatamaonlaulupeli/,3,,2024-11-05T16:44:05.792Z,2024-11-05T16:45:21.034Z
+115,Liikunta on kivaa sanapeli,LIIKUNTA ON KIVAA,https://kielinuppu.github.io/liikuntaonkivaasanapeli/,4,,2024-11-05T12:37:08.626Z,2024-11-05T12:38:07.548Z
+114,Liikunta on kivaa muistipeli,LIIKUNTA ON KIVAA,https://kielinuppu.github.io/liikuntaonkivaamuistipeli/,1,,2024-11-05T11:55:36.924Z,2024-11-05T11:57:05.554Z
+113,Viisi aistia laulupeli,VIISI AISTIA,https://kielinuppu.github.io/viisiaistialaulupeli/,3,,2024-10-31T17:17:49.139Z,2024-10-31T17:19:05.012Z
+112,Uutiset laulupeli,UUTISET,https://kielinuppu.github.io/uutisetlaulupeli/,3,,2024-10-30T09:11:29.541Z,2024-10-30T09:12:21.845Z
+111,Missä kasvaa punainen kukka valintapeli,MISSÄ KASVAA PUNAINEN KUKKA?,https://kielinuppu.github.io/missakasvaapunainenkukkavalintapeli/,2,,2024-10-25T14:27:33.163Z,2024-10-25T14:29:02.269Z
+110,Missä kasvaa punainen kukka muistipeli,MISSÄ KASVAA PUNAINEN KUKKA?,https://kielinuppu.github.io/missakasvaapunainenkukkamuistipeli/,1,,2024-10-25T13:35:47.999Z,2024-10-25T13:38:28.806Z
+109,Lähdetään yhdessä valintapeli,LÄHDETÄÄN YHDESSÄ,https://kielinuppu.github.io/lahdetaanyhdessavalintapeli/,2,,2024-10-25T13:10:38.937Z,2024-10-25T13:13:14.638Z
+108,Lähdetään yhdessä laulupeli,LÄHDETÄÄN YHDESSÄ,https://kielinuppu.github.io/lahdetaanyhdessalaulupeli/,3,,2024-10-25T11:40:52.637Z,2024-10-25T11:41:56.633Z
+107,Lähdetään yhdessä sanapeli,LÄHDETÄÄN YHDESSÄ,https://kielinuppu.github.io/lahdetaanyhdessasanapeli/,4,,2024-10-25T11:29:49.590Z,2024-10-25T11:30:57.183Z
+106,Lähdetään yhdessä muistipeli,LÄHDETÄÄN YHDESSÄ,https://kielinuppu.github.io/lahdetaanyhdessamuistipeli/,1,,2024-10-24T14:29:03.853Z,2024-10-24T14:30:31.779Z
+105,Ruokailu alkaa sanapeli,RUOKAILU ALKAA,https://kielinuppu.github.io/ruokailualkaasanapeli/,4,,2024-10-21T16:38:42.402Z,2024-10-21T16:39:38.353Z
+104,Suomalainen metsä sanapeli,SUOMALAINEN METSÄ,https://kielinuppu.github.io/suomalainenmetsasanapeli/,4,,2024-10-21T15:24:48.520Z,2024-10-21T15:25:53.159Z
+103,Miltä tuntuu nallesta valintapeli,MILTÄ TUNTUU NALLESTA?,https://kielinuppu.github.io/miltatuntuunallestavalintapeli/,2,,2024-10-21T14:17:43.149Z,2024-10-21T14:18:42.354Z
+102,Missä on sun silmät muistipeli,MISSÄ ON SUN SILMÄT?,https://kielinuppu.github.io/missaonsunsilmatmuistipeli/,1,,2024-10-21T08:46:40.061Z,2024-10-21T08:47:48.370Z
+101,Kello on yksi laulupeli,KELLO ON YKSI,https://kielinuppu.github.io/kelloonyksilaulupeli/,3,,2024-10-19T15:53:54.169Z,2024-10-19T15:55:09.490Z
+100,Kiukun kesytys laulupeli,KIUKUN KESYTYS,https://kielinuppu.github.io/kiukunkesytyslaulupeli/,3,,2024-10-19T10:22:14.633Z,2024-10-19T10:23:20.577Z
+99,Kuukausiloru sanapeli,KUUKAUSILORU,https://kielinuppu.github.io/kuukausilorusanapeli/,4,,2024-10-19T10:10:16.679Z,2024-10-19T10:11:06.321Z
+98,Juhlia juhlitaan muistipeli,JUHLIA JUHLITAAN,https://kielinuppu.github.io/juhliajuhlitaanmuistipeli/,1,,2024-10-18T14:27:50.051Z,2024-10-18T14:28:47.049Z
+97,Ammatit muistipeli,AMMATIT,https://kielinuppu.github.io/ammatitmuistipeli/,1,,2024-10-18T13:24:13.600Z,2024-10-18T13:25:07.592Z
+96,Juhlia juhlitaan laulupeli,JUHLIA JUHLITAAN,https://kielinuppu.github.io/juhliajuhlitaanlaulupeli/,3,,2024-10-18T11:11:56.924Z,2024-10-18T11:13:08.484Z
+95,Missä kasvaa punainen kukka sanapeli,MISSÄ KASVAA PUNAINEN KUKKA?,https://kielinuppu.github.io/missakasvaapunainensanapeli/,4,,2024-10-15T14:02:21.732Z,2024-10-15T14:03:40.890Z
+94,Opitaan numeroita sanapeli,OPITAAN NUMEROITA,https://kielinuppu.github.io/opitaannumeroitasanapeli/,4,,2024-10-13T08:55:20.594Z,2024-10-13T08:56:16.658Z
+93,Viikonpäiväsoppa sanapeli,VIIKONPÄIVÄSOPPA,https://kielinuppu.github.io/viikonpaivasoppasanapeli/,4,,2024-10-12T12:58:18.727Z,2024-10-12T12:59:46.129Z
+92,Mitä kissa sanoo sanapeli,MITÄ KISSA SANOO?,https://kielinuppu.github.io/mitakissasanoosanapeli/,4,,2024-10-03T10:03:33.682Z,2024-10-03T10:04:35.788Z
+91,Vessalaulu valintapeli,VESSALAULU,https://kielinuppu.github.io/vessalauluvalintapeli/,2,,2024-09-24T19:47:18.511Z,2024-09-24T19:47:18.511Z
+90,Puetaan sanapeli,PUETAAN,https://kielinuppu.github.io/puetaansanapeli/,4,,2024-09-23T18:01:27.089Z,2024-09-23T18:01:27.089Z
+89,Puetaan muistipeli,PUETAAN,https://kielinuppu.github.io/Puetaanmuistipeli/,1,,2024-09-23T17:51:48.561Z,2024-09-23T17:51:48.561Z
+88,Liikutaan muistipeli,LIIKUTAAN,https://kielinuppu.github.io/liikutaanmuistipeli/,1,,2024-09-18T13:03:55.906Z,2024-09-18T13:05:01.330Z
+87,Liikutaan laulupeli,LIIKUTAAN,https://kielinuppu.github.io/liikutaanlaulupeli/,3,,2024-09-17T12:40:00.818Z,2024-09-17T12:41:23.137Z
+86,Missä on sun silmät valintapeli,MISSÄ ON SUN SILMÄT?,https://kielinuppu.github.io/missaonsunsilmatvalintapeli/,2,,2024-09-17T08:48:26.066Z,2024-09-17T08:49:28.323Z
+85,Missä on sun silmät laulupeli,MISSÄ ON SUN SILMÄT?,https://kielinuppu.github.io/missaonsunsilmatlaulupeli/,3,,2024-09-13T14:11:18.481Z,2024-09-13T14:13:09.194Z
+84,Ihminen on keksinyt koneita muistipeli,IHMINEN ON KEKSINYT KONEITA,https://kielinuppu.github.io/ihminenonkeksinytkoneitamuistipeli/,1,,2024-09-04T12:47:26.350Z,2024-09-04T12:48:27.238Z
+83,Puetaan valintapeli,PUETAAN,https://kielinuppu.github.io/puetaanvalintapeli/,2,,2024-09-04T07:42:31.802Z,2024-09-04T07:43:35.347Z
+82,Missä nalle on valintapeli,MISSÄ NALLE ON?,https://kielinuppu.github.io/missanalleonvalintapeli/,2,,2024-09-01T14:27:54.078Z,2024-09-01T14:29:01.341Z
+81,Millainen sää on tänään valintapeli,MILLAINEN SÄÄ ON TÄNÄÄN?,https://kielinuppu.github.io/millainensaaontanaanvalintapeli/,2,,2024-09-01T13:41:59.306Z,2024-09-01T13:43:15.237Z
+80,Mitä kissa sanoo? valintapeli,MITÄ KISSA SANOO?,https://kielinuppu.github.io/mitakissasanoovalintapeli/,2,,2024-09-01T10:25:56.668Z,2024-09-01T10:27:13.100Z
+79,Harjoitellaan muotoja valintapeli,HARJOITELLAAN MUOTOJA,https://kielinuppu.github.io/harjoitellaanmuotojavalintapeli/,2,,2024-09-01T09:31:40.759Z,2024-09-01T09:32:45.353Z
+78,Minä autan sinua laulupeli,MINÄ AUTAN SINUA,https://kielinuppu.github.io/minaautansinualaulupeli/,3,,2024-08-27T12:59:59.083Z,2024-08-27T13:00:48.115Z
+76,Hienoja sanoja on paljon laulupeli,HIENOJA SANOJA ON PALJON,https://kielinuppu.github.io/hienojasanojalaulupeli/,3,,2024-08-27T12:06:00.874Z,2024-08-27T12:07:06.067Z
+75,Neljä vuodenaikaa laulupeli,NELJÄ VUODENAIKAA,https://kielinuppu.github.io/neljavuodenaikaalaulupeli/,3,,2024-08-26T15:34:57.142Z,2024-08-26T15:35:59.256Z
+74,Vuorotellen laulupeli,VUOROTELLEN,https://kielinuppu.github.io/Vuorotellenlaulupeli/,3,,2024-08-26T14:42:25.257Z,2024-08-26T14:50:13.289Z
+73,Riimejä laulupeli,RIIMEJÄ,https://kielinuppu.github.io/riimejalaulupeli/,3,,2024-08-26T14:26:50.190Z,2024-08-26T14:28:00.106Z
+72,Harjoitellaan muotoja laulupeli,HARJOITELLAAN MUOTOJA,https://kielinuppu.github.io/harjoitellaanmuotojalaulupeli/,3,,2024-08-25T15:19:06.617Z,2024-08-25T15:19:06.617Z
+70,Opitaan numeroita muistipeli,OPITAAN NUMEROITA,https://kielinuppu.github.io/opitaannumeroitamuistipeli/,1,,2024-08-24T17:08:00.067Z,2024-08-24T17:08:00.067Z
+69,Minä osaan aamutoimet laulupeli,MINÄ OSAAN AAMUTOIMET,https://kielinuppu.github.io/minaosaanaamutoimetlaulupeli/,3,,2024-08-24T16:56:20.481Z,2024-08-24T16:56:20.481Z
+68,Kuukausilaulu laulupeli,KUUKAUSILAULU,https://kielinuppu.github.io/kuukausilaulupeli/,3,,2024-08-24T07:39:42.214Z,2024-08-24T07:39:42.214Z
+67,Marjat laulupeli,MARJAT,https://kielinuppu.github.io/Marjatlaulupeli/,3,,2024-08-24T07:05:18.779Z,2024-08-24T07:05:18.779Z
+66,Ruokailu alkaa laulupeli,RUOKAILU ALKAA,https://kielinuppu.github.io/Ruokailualkaalaulupeli/,3,,2024-08-23T14:38:02.579Z,2024-08-23T14:38:02.579Z
+65,Suomalainen metsä laulupeli,SUOMALAINEN METSÄ,https://kielinuppu.github.io/suomalainenmetsalaulupeli/,3,,2024-08-23T13:57:40.821Z,2024-08-23T13:57:40.821Z
+64,Pestään puhtaaksi laulupeli,PESTÄÄN PUHTAAKSI,https://kielinuppu.github.io/Pestaanpuhtaaksilaulupeli/,3,,2024-08-23T13:25:34.931Z,2024-08-23T13:25:34.931Z
+63,Nallen talo laulupeli,NALLEN TALO,https://kielinuppu.github.io/Nallentalolaulupeli/,3,,2024-08-22T17:57:06.897Z,2024-08-22T17:57:06.897Z
+62,Rakennetaan sampoa laulupeli,RAKENNETAAN SAMPOA,https://kielinuppu.github.io/Rakennetaansampoalaulupeli/,3,,2024-08-22T17:41:35.969Z,2024-08-22T17:41:35.969Z
+61,Kierrätämme laulupeli,KIERRÄTÄMME,https://kielinuppu.github.io/kierratammelaulupeli/,3,,2024-08-21T17:41:53.443Z,2024-08-21T17:41:53.443Z
+60,Askartelulaulu laulupeli,ASKARTELULAULU,https://kielinuppu.github.io/askartelulaulupeli/,3,,2024-08-19T15:24:45.613Z,2024-08-19T15:27:22.283Z
+59,Mikä maa laulupeli,MIKÄ MAA?,https://kielinuppu.github.io/mikamaalaulupeli/,3,,2024-08-19T12:58:47.995Z,2024-08-19T12:59:02.949Z
+58,Kulkuneuvoja laulupeli,KULKUNEUVOJA,https://kielinuppu.github.io/kulkuneuvojalaulupeli/,3,,2024-08-19T09:08:21.083Z,2024-08-19T09:08:21.083Z
+55,Pestään puhtaaksi muistipeli,PESTÄÄN PUHTAAKSI,https://kielinuppu.github.io/pestaanpuhtaaksimuistipeli/,1,,2024-08-10T07:30:19.432Z,2024-08-19T13:00:58.669Z
+54,Siivotaan muistipeli,SIIVOTAAN,https://kielinuppu.github.io/siivotaanmuistipeli/,1,,2024-08-10T07:27:27.976Z,2024-08-19T13:01:05.244Z
+53,Kulkuneuvoja muistipeli,KULKUNEUVOJA,https://kielinuppu.github.io/kulkuneuvojamuistipeli/,1,,2024-08-09T13:57:10.740Z,2024-08-12T18:22:32.793Z
+52,Miltä tuntuu nallesta laulupeli,MILTÄ TUNTUU NALLESTA?,https://kielinuppu.github.io/miltatuntuunallestalaulupeli/,3,,2024-08-09T13:26:57.731Z,2024-08-12T18:22:27.655Z
+50,Neljä vuodenaikaa valintapeli,NELJÄ VUODENAIKAA,https://kielinuppu.github.io/neljavuodenaikaavalintapeli/,2,,2024-08-09T09:40:31.540Z,2024-08-14T09:35:38.048Z
+49,Riimejä valintapeli,RIIMEJÄ,https://kielinuppu.github.io/riimejavalintapeli/,2,,2024-08-09T09:39:17.760Z,2024-08-12T18:22:16.520Z
+48,Perhe on hieno juttu laulupeli,PERHE ON HIENO JUTTU,https://kielinuppu.github.io/perheonhienojuttulaulu/,3,,2024-08-09T08:45:16.797Z,2024-08-12T18:22:10.811Z
+47,Missä kasvaa punainen laulupeli,MISSÄ KASVAA PUNAINEN KUKKA?,https://kielinuppu.github.io/missakasvaakukkalaulu/,3,,2024-08-09T08:44:01.880Z,2024-08-12T18:22:05.611Z
+46,Missä nalle on laulupeli,MISSÄ NALLE ON?,https://kielinuppu.github.io/missanalleonlaulu/,3,,2024-08-09T08:43:11.016Z,2024-08-12T18:21:59.119Z
+45,Minä haluan laulupeli,MINÄ HALUAN,https://kielinuppu.github.io/minahaluanlaulu/,3,,2024-08-09T08:42:21.199Z,2024-08-12T18:21:50.303Z
+44,Mitä kissa sanoo laulupeli,MITÄ KISSA SANOO?,https://kielinuppu.github.io/mitakissasanoolaulu/,3,,2024-08-09T08:41:19.540Z,2024-08-12T18:21:45.032Z
+43,Leikit laulupeli,LEIKIT,https://kielinuppu.github.io/leikit/,3,,2024-08-09T08:40:32.806Z,2024-08-12T18:21:39.915Z
+42,Mennään ulos laulupeli,MENNÄÄN ULOS,https://kielinuppu.github.io/mennaanuloslaulu/,3,,2024-08-09T08:38:53.064Z,2024-08-12T18:21:33.530Z
+41,Puetaan laulupeli,PUETAAN,https://kielinuppu.github.io/puetaanlaulu/,3,,2024-08-09T08:35:41.113Z,2024-08-25T12:41:07.555Z
+40,Millainen sää laulupeli,MILLAINEN SÄÄ ON TÄNÄÄN?,https://kielinuppu.github.io/millainensaalaulu/,3,,2024-08-09T08:34:51.397Z,2024-08-12T18:20:13.339Z
+39,Tehdään ruokaa muistipeli,TEHDÄÄN RUOKAA,https://kielinuppu.github.io/tehdaanruokaamuisti/,1,,2024-08-09T08:33:23.474Z,2024-08-25T12:28:05.011Z
+37,Vessalaulupeli,VESSALAULU,https://kielinuppu.github.io/vessalaulupeli/,3,,2024-08-08T17:36:51.293Z,2024-08-13T14:07:51.709Z
+36,Vessalaulumuistipeli,VESSALAULU,https://kielinuppu.github.io/vessalaulumuisti/,1,,2024-08-08T17:29:53.937Z,2024-08-13T14:07:42.223Z
+35,hedelmäkorilaulupeli,HEDELMÄKORI,https://kielinuppu.github.io/hedelmakorilaulupeli/,3,,2024-08-08T15:09:59.125Z,2024-11-09T17:35:10.075Z
+34,hedelmäkorimuistipeli,HEDELMÄKORI,https://kielinuppu.github.io/hedelmakorimuistipeli/,1,,2024-08-08T15:08:16.308Z,2024-08-13T14:08:08.952Z

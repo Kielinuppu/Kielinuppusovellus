@@ -1,0 +1,52 @@
+[
+  {
+    "ID": 6,
+    "Name": "VERBINOPPIA",
+    "kuva": "{'url':'6da8292695c844cbc37b0de81b3ee2fe9a474580918add6036472fa546fb905c.png','size':38420,'width':676,'height':676,'filename':'Verbinoppa.png','metadata':{'width':676,'height':676,'blurHash':'eFS?AM?b.9_3rq?Hj[o#flV?%hofMxV@Si_NkCVroJo~ozj[Rjaeoz','blurHashWidth':32}}",
+    "peliosoite": "",
+    "pelialustat": "{'url':'d61c0e44b16fb91488daaebaa8b1dff6f0cd5c23772292ed4ae9812631b0c9de.pdf','size':2931090,'filename':'Verbinoppia.pdf'}",
+    "osoite vai ei": 2,
+    "Created": "2024-11-04T13:02:34.645Z",
+    "Updated": "2024-11-04T13:32:21.322Z"
+  },
+  {
+    "ID": 5,
+    "Name": "VAATTEET & VÄRIT",
+    "kuva": "{'url':'6b8063c730fe3f8100b381dfd714c3e53d66ed2c5cffab50b83e6e0e71deae78.png','size':305596,'width':2048,'height':2048,'filename':'Violetti_mekko.png','metadata':{'width':2048,'height':2048,'blurHash':'eqQSuot8_Jx[tPxufRkBj[fj?roeIDafWCt8j[ayazoe%ej[RRfQV[','blurHashWidth':32}}",
+    "peliosoite": "",
+    "pelialustat": "{'url':'9cac035f773ed1dd67d6ecfa5857150b0e896d89be73038ed20dec243b2a2b53.pdf','size':993485,'filename':'Värit & vaatteet.pdf'}",
+    "osoite vai ei": 2,
+    "Created": "2024-10-30T14:05:40.263Z",
+    "Updated": "2024-10-31T12:22:36.087Z"
+  },
+  {
+    "ID": 4,
+    "Name": "LIIKKUMINEN BINGO",
+    "kuva": "{'url':'655d127754dc01ae80e88e96e2d4c7346d9d77b8e8a756555da803869346b740.png','size':47974,'width':676,'height':676,'filename':'Bingo_liikkuminen_kuvake.png','metadata':{'width':676,'height':676,'blurHash':'eQSr}$%N?d-:IT-pofWradod-?oeISV]s=-;aebEo#WCR%WBoNoyj=','blurHashWidth':32}}",
+    "peliosoite": "https://kielinuppu.github.io/bingoliikkuminen/",
+    "pelialustat": "{'url':'329b578655b49a76ff3a91960e9824223e3223749eac429750555991a2d6053c.pdf','size':15336185,'filename':'BINGO Liikkuminen.pdf'}",
+    "osoite vai ei": 1,
+    "Created": "2024-10-25T12:28:22.328Z",
+    "Updated": "2024-10-30T14:09:42.908Z"
+  },
+  {
+    "ID": 3,
+    "Name": "KEITTIÖ BINGO",
+    "kuva": "{'url':'1aabc5e965456c896b9845e063c11243ae9680dbf5aab3a3ea0d9279558f6b22.png','size':91709,'width':676,'height':676,'filename':'Bingo_keittiö_kuvake_UUSI.png','metadata':{'width':676,'height':676,'blurHash':'eQRp2p%M_4-;xu-;ofazWBj@_NofD%WBM{-=WBWAoga}xuWBRjofj[','blurHashWidth':32}}",
+    "peliosoite": "https://kielinuppu.github.io/bingokeittio/",
+    "pelialustat": "{'url':'e7fc26a465b5795f2d1f404e64fd9befaa8bb210f77008b10651c1c652e5d4d5.pdf','size':10391855,'filename':'BINGO keittiö.pdf'}",
+    "osoite vai ei": 1,
+    "Created": "2024-10-22T13:20:52.796Z",
+    "Updated": "2024-10-30T14:09:45.726Z"
+  },
+  {
+    "ID": 2,
+    "Name": "TEKEMINEN BINGO",
+    "kuva": "{'url':'940eb417da17788dcf5e0020c7b2a41f92c30a6d64ac9860df985b9467420cfc.png','size':44704,'width':676,'height':676,'filename':'Bingo_kuvake_TEKEMINEN.png','metadata':{'width':676,'height':676,'blurHash':'etSi1~xa*0x]R4xZj[kDj[aytmkCR5adozxuf6fjkCjuo}j[V?aykD','blurHashWidth':32}}",
+    "peliosoite": "https://kielinuppu.github.io/tekeminenbingo/",
+    "pelialustat": "{'url':'70bdff7892f2e250835075c84e73ecd35fccc1d0e39aab81696635b218fd6ca5.pdf','size':16533787,'filename':'BINGO Tekeminen.pdf'}",
+    "osoite vai ei": 1,
+    "Created": "2024-09-18T11:11:44.575Z",
+    "Updated": "2024-10-30T14:09:48.360Z"
+  }
+]

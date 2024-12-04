@@ -1,0 +1,6 @@
+0000000000000000000000000000000000000000 5cc3cad5d27100106f97342338e144a2742475cb Kielinuppu <info@kielinuppu.fi> 1733220488 +0200	commit (initial): Initial commit: Project setup with environment variables and file structure
+5cc3cad5d27100106f97342338e144a2742475cb 89a7f0889601b0c9be7e2f986a48798c15207c1d Kielinuppu <info@kielinuppu.fi> 1733233830 +0200	commit: Update Firebase configuration and fix TypeScript settings
+89a7f0889601b0c9be7e2f986a48798c15207c1d cd2dcacc2201ad922e384cd5aa5ec2a1dbe87cf4 Kielinuppu <info@kielinuppu.fi> 1733301444 +0200	commit: Fix viewer page and Firebase configuration
+cd2dcacc2201ad922e384cd5aa5ec2a1dbe87cf4 360563c3cdc264b3e6ea470e54f7320014db5612 Kielinuppu <info@kielinuppu.fi> 1733301513 +0200	pull: Merge made by the 'ort' strategy.
+360563c3cdc264b3e6ea470e54f7320014db5612 7fb2c8607dc8cc6f55fdd0cefc5edd694f27362d Kielinuppu <info@kielinuppu.fi> 1733302642 +0200	commit: Update next.config.ts image patterns
+7fb2c8607dc8cc6f55fdd0cefc5edd694f27362d 88764eb7fad3c208810da0df6be1a7e6f9a98557 Kielinuppu <info@kielinuppu.fi> 1733303152 +0200	commit: Update Image component styles in welcome page
