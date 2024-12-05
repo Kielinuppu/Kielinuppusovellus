@@ -4,7 +4,7 @@ const withPWA = require('next-pwa')({
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
   buildExcludes: [
-    /app-build-manifest\.json$/,  // Lisätty tämä
+    /app-build-manifest\.json$/,
     /middleware-manifest\.json$/
   ],
   runtimeCaching: [
@@ -74,6 +74,23 @@ const nextConfig = {
   },
   async headers() {
     return [
+      {
+        source: '/manifest.json',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*'
+          },
+          {
+            key: 'Content-Type',
+            value: 'application/manifest+json'
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      },
       {
         source: '/:path*',
         headers: [
