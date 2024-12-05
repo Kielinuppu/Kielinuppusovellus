@@ -10,17 +10,28 @@
   "orientation": "portrait-primary",
   "categories": ["education"],
   "prefer_related_applications": false,
+  "form_factor": "wide",
+  "form_factors": [
+    {
+      "platform": "desktop",
+      "form_factor": "wide"
+    },
+    {
+      "platform": "mobile",
+      "form_factor": "wide"
+    }
+  ],
   "icons": [
     {
       "src": "/icon-192x192.png",
-      "sizes": "192x192",
+      "sizes": "192x192", 
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
       "src": "/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/png", 
       "purpose": "any maskable"
     }
   ]
