@@ -11,7 +11,7 @@ const withPWA = require('next-pwa')({
         cacheName: 'firebase-storage',
         expiration: {
           maxEntries: 50,
-          maxAgeSeconds: 30 * 24 * 60 * 60 // 30 päivää
+          maxAgeSeconds: 30 * 24 * 60 * 60 
         }
       }
     }
