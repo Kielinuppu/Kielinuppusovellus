@@ -13,7 +13,6 @@
   "lang": "fi",
   "categories": ["education"],
   "prefer_related_applications": false,
-  "form_factor": "wide",
   "form_factors": [
     {
       "platform": "desktop",
@@ -21,7 +20,7 @@
     },
     {
       "platform": "mobile",
-      "form_factor": "wide"
+      "form_factor": "narrow"
     }
   ],
   "icons": [
@@ -40,11 +39,18 @@
   ],
   "screenshots": [
     {
-      "src": "/icon-512x512.png",
-      "sizes": "512x512",
+      "src": "/screenshot-desktop.png",
+      "sizes": "1920x1080",
       "type": "image/png",
       "form_factor": "wide",
       "label": "Kielinuppu aloitusnäyttö"
+    },
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Kielinuppu mobiilinäkymä"
     }
   ]
 }
