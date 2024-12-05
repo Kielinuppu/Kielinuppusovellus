@@ -84,16 +84,18 @@ export default function HomePage() {
         />
       </div>
 
-      {logoUrl && (
-        <Image
-          src={logoUrl}
-          alt="Kielinuppu logo"
-          width={900}
-          height={0}
-          className="mt-[0px] mb-[0px] w-auto h-auto"
-          priority
-        />
-      )}
+    {logoUrl && (
+ <div className="max-w-[900px] w-full m-0"> {/* Isompi maxWidth ja m-0 */}
+   <Image
+     src={logoUrl}
+     alt="Kielinuppu logo"
+     width={900}      // Isompi width 
+     height={225}     // Suhteutettu height
+     className="w-auto h-auto object-contain m-0 p-0" // Lisätty m-0 p-0
+     priority
+   />
+ </div>
+)}
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-6xl mt-0">
         {categories.map((category) => (
