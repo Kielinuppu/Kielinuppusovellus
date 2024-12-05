@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Quicksand, Overpass } from 'next/font/google';
 import "./globals.css";
 import AuthGuard from './components/AuthGuard';
-import './sw'
 
 const quicksand = Quicksand({
  subsets: ['latin'],
