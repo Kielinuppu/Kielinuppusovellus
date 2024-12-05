@@ -1,6 +1,6 @@
 const withPWA = require('next-pwa')({
   dest: 'public',
-  register: true,
+  register: true, 
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
   buildExcludes: [
@@ -55,10 +55,10 @@ const withPWA = require('next-pwa')({
     }
   ],
   customWorkerDir: 'public'
-})
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+ })
+ 
+ /** @type {import('next').NextConfig} */
+ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ['firebasestorage.googleapis.com'],
@@ -75,15 +75,11 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/manifest.json',
+        source: '/(manifest.json|icon-.*\\.png)',
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
             value: '*'
-          },
-          {
-            key: 'Content-Type',
-            value: 'application/manifest+json'
           },
           {
             key: 'Cache-Control',
@@ -102,6 +98,6 @@ const nextConfig = {
       }
     ]
   }
-}
-
-module.exports = withPWA(nextConfig)
+ }
+ 
+ module.exports = withPWA(nextConfig)
