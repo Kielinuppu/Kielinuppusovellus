@@ -32,6 +32,24 @@ const nextConfig = {
       }
     ],
     unoptimized: true
+  },
+  // Lisätään headers
+  async headers() {
+    return [
+      {
+        source: '/manifest.json',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*'
+          },
+          {
+            key: 'Content-Type',
+            value: 'application/manifest+json'
+          }
+        ]
+      }
+    ]
   }
 }
 
