@@ -13,6 +13,17 @@
   "lang": "fi",
   "categories": ["education"],
   "prefer_related_applications": false,
+  "form_factor": "wide",
+  "form_factors": [
+    {
+      "platform": "desktop",
+      "form_factor": "wide"
+    },
+    {
+      "platform": "mobile",
+      "form_factor": "wide"
+    }
+  ],
   "icons": [
     {
       "src": "/icon-192x192.png",
@@ -25,6 +36,15 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Kielinuppu aloitusnäyttö"
     }
   ]
 }
