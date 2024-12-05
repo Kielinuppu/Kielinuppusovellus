@@ -1,6 +1,6 @@
 const withPWA = require('next-pwa')({
   dest: 'public',
-  register: true, 
+  register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
   buildExcludes: [
@@ -78,26 +78,8 @@ const withPWA = require('next-pwa')({
         source: '/:path*',
         headers: [
           {
-            key: 'Access-Control-Allow-Origin',
+            key: 'Access-Control-Allow-Origin', 
             value: '*'
-          }
-        ]
-      },
-      {
-        source: '/manifest.json',
-        headers: [
-          {
-            key: 'Content-Type',
-            value: 'application/manifest+json'
-          }
-        ]
-      },
-      {
-        source: '/icon-:size*',
-        headers: [
-          {
-            key: 'Content-Type',
-            value: 'image/png'
           }
         ]
       }
