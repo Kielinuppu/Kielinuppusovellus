@@ -4,10 +4,13 @@
   "description": "Varhaiskasvatuksen sovellus",
   "scope": "/",
   "start_url": "/",
-  "display": "standalone",
+  "id": "/",
+  "display": "standalone", 
   "background_color": "#e9f1f3",
   "theme_color": "#e9f1f3",
   "orientation": "portrait-primary",
+  "dir": "ltr",
+  "lang": "fi",
   "categories": ["education"],
   "prefer_related_applications": false,
   
@@ -19,7 +22,7 @@
     },
     {
       "platform": "mobile",
-      "form_factor": "wide"
+      "form_factor": "wide" 
     }
   ],
   "icons": [
@@ -30,10 +33,19 @@
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512x512.png",
+      "src": "/icon-512x512.png", 
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
+  ],
+  "screenshots": [
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Kielinupun aloitusnäyttö"
+    }
   ]
-}
+ }
