@@ -75,24 +75,29 @@ const withPWA = require('next-pwa')({
   async headers() {
     return [
       {
-        source: '/(manifest.json|icon-.*\\.png)',
-        headers: [
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: '*'
-          },
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
-          }
-        ]
-      },
-      {
         source: '/:path*',
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
             value: '*'
+          }
+        ]
+      },
+      {
+        source: '/manifest.json',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/manifest+json'
+          }
+        ]
+      },
+      {
+        source: '/icon-:size*',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'image/png'
           }
         ]
       }
