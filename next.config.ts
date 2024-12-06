@@ -54,12 +54,15 @@ const withPWA = require('next-pwa')({
       }
     }
   ],
-  customWorkerDir: 'public'
- })
- 
- /** @type {import('next').NextConfig} */
- const nextConfig = {
+  customWorkerDir: 'public',
+  outputPathnamePrefix: '/_next/'
+})
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
+  distDir: '.next',
+  output: 'standalone',
   images: {
     domains: ['firebasestorage.googleapis.com'],
     remotePatterns: [
@@ -78,13 +81,13 @@ const withPWA = require('next-pwa')({
         source: '/:path*',
         headers: [
           {
-            key: 'Access-Control-Allow-Origin', 
+            key: 'Access-Control-Allow-Origin',
             value: '*'
           }
         ]
       }
     ]
   }
- }
- 
- module.exports = withPWA(nextConfig)
+}
+
+module.exports = withPWA(nextConfig)
