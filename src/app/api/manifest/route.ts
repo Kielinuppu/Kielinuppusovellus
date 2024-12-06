@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+export const runtime = 'edge'
+
 export async function GET() {
     const manifest = {
         name: "Kielinuppu",
@@ -41,11 +44,10 @@ export async function GET() {
     }
 
     return new NextResponse(JSON.stringify(manifest), {
+        status: 200,
         headers: {
             'content-type': 'application/manifest+json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET',
-            'Access-Control-Allow-Headers': 'Content-Type'
+            'cache-control': 'public, max-age=0, must-revalidate'
         },
     })
 }
