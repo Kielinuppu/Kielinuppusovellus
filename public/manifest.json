@@ -2,6 +2,7 @@
   "name": "Kielinuppu",
   "short_name": "Kielinuppu",
   "description": "Varhaiskasvatuksen sovellus",
+  "id": "/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -9,6 +10,17 @@
   "theme_color": "#e9f1f3",
   "orientation": "portrait-primary",
   "lang": "fi",
+  "form_factor": "wide",
+  "form_factors": [
+    {
+      "platform": "desktop",
+      "form_factor": "wide"
+    },
+    {
+      "platform": "mobile",
+      "form_factor": "wide"
+    }
+  ],
   "icons": [
     {
       "src": "/icon-192x192.png",
@@ -21,14 +33,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "label": "Kielinuppu aloitusnäyttö"
     }
   ]
 }
