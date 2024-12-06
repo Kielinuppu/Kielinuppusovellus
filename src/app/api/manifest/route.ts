@@ -43,6 +43,9 @@ export async function GET() {
     return new NextResponse(JSON.stringify(manifest), {
         headers: {
             'content-type': 'application/manifest+json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Headers': 'Content-Type'
         },
     })
 }
