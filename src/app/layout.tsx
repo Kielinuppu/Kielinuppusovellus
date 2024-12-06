@@ -19,19 +19,7 @@ const overpass = Overpass({
 export const metadata: Metadata = {
   title: "Kielinuppu",
   description: "Sovellus ammattilaisille",
-  manifest: '/api/manifest',  // Muutettu tämä
-};
-
-export const viewport = {
-  themeColor: '#e9f1f3',
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'default',
-    title: 'Kielinuppu',
-  },
+  manifest: '/api/manifest', // Muutettu tämä
 };
 
 export default function RootLayout({
@@ -42,9 +30,9 @@ export default function RootLayout({
   return (
     <html lang="fi">
       <head>
-        <link rel="manifest" href="/api/manifest" />  {/* Muutettu tämä */}
+        <link rel="manifest" href="/api/manifest" />
         <meta name="theme-color" content="#e9f1f3" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Kielinuppu" />

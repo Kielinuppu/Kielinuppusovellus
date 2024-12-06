@@ -5,7 +5,7 @@ const withPWA = require('next-pwa')({
   disable: process.env.NODE_ENV === 'development',
   buildExcludes: [
     /app-build-manifest\.json$/,
-    /middleware-manifest\.json$/
+    /middleware-manifest\.json$/,
   ],
   runtimeCaching: [
     {
@@ -15,9 +15,9 @@ const withPWA = require('next-pwa')({
         cacheName: 'firebase-storage',
         expiration: {
           maxEntries: 50,
-          maxAgeSeconds: 30 * 24 * 60 * 60
-        }
-      }
+          maxAgeSeconds: 30 * 24 * 60 * 60,
+        },
+      },
     },
     {
       urlPattern: /_next\/.*/,
@@ -26,9 +26,9 @@ const withPWA = require('next-pwa')({
         cacheName: 'next-assets',
         expiration: {
           maxEntries: 50,
-          maxAgeSeconds: 24 * 60 * 60
-        }
-      }
+          maxAgeSeconds: 24 * 60 * 60,
+        },
+      },
     },
     {
       urlPattern: /\.(?:png|gif|jpg|jpeg|webp|svg)$/,
@@ -37,9 +37,9 @@ const withPWA = require('next-pwa')({
         cacheName: 'images',
         expiration: {
           maxEntries: 50,
-          maxAgeSeconds: 30 * 24 * 60 * 60
-        }
-      }
+          maxAgeSeconds: 30 * 24 * 60 * 60,
+        },
+      },
     },
     {
       urlPattern: /^https?.*/,
@@ -48,13 +48,13 @@ const withPWA = require('next-pwa')({
         cacheName: 'others',
         expiration: {
           maxEntries: 50,
-          maxAgeSeconds: 24 * 60 * 60
+          maxAgeSeconds: 24 * 60 * 60,
         },
-        networkTimeoutSeconds: 10
-      }
-    }
-  ]
-})
+        networkTimeoutSeconds: 10,
+      },
+    },
+  ],
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -67,10 +67,18 @@ const nextConfig = {
         hostname: 'firebasestorage.googleapis.com',
         port: '',
         pathname: '/**',
-      }
+      },
     ],
-    unoptimized: true
-  }
-}
+    unoptimized: true,
+  },
+  rewrites: async () => {
+    return [
+      {
+        source: '/manifest.json',
+        destination: '/api/manifest', // Ohjaa /manifest.json API-reittiin
+      },
+    ];
+  },
+};
 
-module.exports = withPWA(nextConfig)
+module.exports = withPWA(nextConfig);
