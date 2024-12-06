@@ -54,8 +54,7 @@ const withPWA = require('next-pwa')({
       }
     }
   ],
-  customWorkerDir: 'public',
-  outputPathnamePrefix: '/_next/'
+  customWorkerDir: 'public'
 })
 
 /** @type {import('next').NextConfig} */
