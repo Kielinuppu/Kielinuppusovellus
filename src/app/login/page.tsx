@@ -96,19 +96,20 @@ export default function Login() {
             className="bg-[#f6f7e7] px-6 py-3 rounded-lg shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:shadow-md w-80 mb-8"
           >
             KIRJAUDU
-          </button>
-        </form>
-        <div>
-          {uteliasUrl && (
-            <QuickImage
-              src={uteliasUrl}
-              alt="Utelias nalle"
-              width={350}
-              height={350}
-            />
-          )}
-        </div>
-      </div>
-    </div>
+            </button>
+</form>
+<div>
+  {uteliasUrl && (
+    <QuickImage
+      src={uteliasUrl}
+      alt="Utelias nalle"
+      width={350}
+      height={350}
+      className="w-[350px] h-[350px] object-contain"
+    />
+  )}
+</div>
+</div>
+</div>
   )
 }
