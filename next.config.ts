@@ -53,15 +53,12 @@ const withPWA = require('next-pwa')({
         networkTimeoutSeconds: 10
       }
     }
-  ],
-  customWorkerDir: 'public'
+  ]
 })
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  distDir: '.next',
-  output: 'standalone',
   images: {
     domains: ['firebasestorage.googleapis.com'],
     remotePatterns: [
@@ -73,19 +70,6 @@ const nextConfig = {
       }
     ],
     unoptimized: true
-  },
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: '*'
-          }
-        ]
-      }
-    ]
   }
 }
 

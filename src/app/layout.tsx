@@ -19,7 +19,7 @@ const overpass = Overpass({
 export const metadata: Metadata = {
   title: "Kielinuppu",
   description: "Sovellus ammattilaisille",
-  manifest: '/manifest.json',
+  manifest: '/api/manifest',  // Muutettu tämä
 };
 
 export const viewport = {
@@ -42,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="fi">
       <head>
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="manifest" href="/api/manifest" />  {/* Muutettu tämä */}
         <meta name="theme-color" content="#e9f1f3" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="mobile-web-app-capable" content="yes" />
