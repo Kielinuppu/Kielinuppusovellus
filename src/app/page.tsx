@@ -1,5 +1,5 @@
 'use client'
-import Image from 'next/image'
+import QuickImage from '@/components/QuickImage'
 import { useRouter } from 'next/navigation'
 import { storage } from '@/lib/firebase'
 import { ref, getDownloadURL } from 'firebase/storage'
@@ -23,13 +23,12 @@ export default function Home() {
  <div className="mb-20 mt-20">
    {logoUrl && (
      <div className="max-w-[900px] w-full m-0">
-       <Image
+       <QuickImage
          src={logoUrl}
          alt="Kielinuppu logo"
          width={900}
          height={225}
          className="w-auto h-auto object-contain m-0 p-0"
-         priority
        />
      </div>
    )}

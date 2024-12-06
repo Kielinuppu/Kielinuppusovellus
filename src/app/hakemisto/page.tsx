@@ -6,7 +6,7 @@ import { ArrowLeft } from 'lucide-react'
 import { db, storage } from '@/lib/firebase'
 import { collection, getDocs } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
-import Image from 'next/image'
+import QuickImage from '@/components/QuickImage'
 import Link from 'next/link'
 
 // Apufunktio kuvan datan jäsentämiseen
@@ -122,7 +122,7 @@ export default function HakemistoPage() {
             <div className="flex items-center bg-white rounded-lg p-2 h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
               <div className="w-[77px] h-[77px] relative rounded-lg overflow-hidden ml-2">
                 {imageUrls[laulu.id] ? (
-                  <Image
+                  <QuickImage
                     src={imageUrls[laulu.id]}
                     alt={laulu.Name}
                     fill

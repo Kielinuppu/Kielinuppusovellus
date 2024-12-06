@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import QuickImage from '@/components/QuickImage'
 import { useRouter } from 'next/navigation'
 import { storage, db } from '@/lib/firebase'
 import { ref, getDownloadURL } from 'firebase/storage'
@@ -100,12 +100,11 @@ export default function Login() {
         </form>
         <div>
           {uteliasUrl && (
-            <Image
+            <QuickImage
               src={uteliasUrl}
               alt="Utelias nalle"
               width={350}
               height={350}
-              priority
             />
           )}
         </div>

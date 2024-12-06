@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import QuickImage from '@/components/QuickImage'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, LogOut } from 'lucide-react'
@@ -86,13 +86,12 @@ export default function HomePage() {
 
     {logoUrl && (
  <div className="max-w-[900px] w-full m-0"> {/* Isompi maxWidth ja m-0 */}
-   <Image
+   <QuickImage
      src={logoUrl}
      alt="Kielinuppu logo"
      width={900}      // Isompi width 
      height={225}     // Suhteutettu height
      className="w-auto h-auto object-contain m-0 p-0" // Lisätty m-0 p-0
-     priority
    />
  </div>
 )}
@@ -102,7 +101,7 @@ export default function HomePage() {
           <Link href={category.path} key={category.title}>
             <div className="w-[190px] sm:w-[170px] md:w-[190px] h-[190px] sm:h-[170px] md:h-[190px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
               {categoryUrls[category.title] && (
-                <Image
+                <QuickImage
                   src={categoryUrls[category.title]}
                   alt={category.title}
                   fill

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
+import QuickImage from '@/components/QuickImage'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
@@ -97,7 +97,7 @@ export default function AiheListPage() {
           <Link href={`/aiheet/${aihe.id}/laulut`} key={aihe.id}>
             <div className="w-[180px] h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg hover:scale-105 transition-transform">
               {imageUrls[aihe.id] ? (
-                <Image
+                <QuickImage
                   src={imageUrls[aihe.id]}
                   alt={aihe.Name}
                   fill
