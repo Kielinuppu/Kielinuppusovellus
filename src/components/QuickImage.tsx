@@ -9,9 +9,22 @@ interface QuickImageProps {
   className?: string
   sizes?: string
   loading?: "lazy" | "eager" | undefined
+  fill?: boolean  // Lisätään tämä takaisin
 }
 
-const QuickImage = ({ src, alt, width, height, className, sizes }: QuickImageProps) => {
+const QuickImage = ({ src, alt, width, height, className, sizes, fill }: QuickImageProps) => {
+  if (fill) {
+    return <NextImage 
+      src={src}
+      alt={alt}
+      fill={true}
+      quality={75}
+      sizes={sizes || '(max-width: 768px) 100vw, 50vw'}
+      loading="eager"
+      className={className}
+    />;
+  }
+
   return <NextImage 
     src={src}
     alt={alt}
