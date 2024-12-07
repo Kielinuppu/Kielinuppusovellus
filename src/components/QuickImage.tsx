@@ -10,24 +10,28 @@ interface QuickImageProps {
   fill?: boolean
   priority?: boolean
   sizes?: string
+  loading?: "lazy" | "eager" | undefined
 }
 
 const QuickImage = ({ width, height, fill, priority, sizes, ...props }: QuickImageProps) => {
-  const imgProps = {
-    ...props,
-    priority: priority || false,
-    sizes: sizes || '100vw',
-  };
-
+  // Poistetaan erillinen imgProps objekti ja käytetään props suoraan
   if (fill) {
-    return <NextImage {...imgProps} fill={true} className={props.className} />;
+    return <NextImage 
+      {...props}
+      fill={true} 
+      priority={priority || false}
+      sizes={sizes || '100vw'}
+      loading="eager"
+    />;
   }
 
   return <NextImage 
-    {...imgProps} 
-    width={width || 0}  // Varmistetaan että width on määritelty
-    height={height || 0}  // Varmistetaan että height on määritelty
-    className={props.className}
+    {...props}
+    width={width}
+    height={height}
+    priority={priority || false}
+    sizes={sizes || '100vw'}
+    loading="eager"
   />;
 }
 
