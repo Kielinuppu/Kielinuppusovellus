@@ -1,5 +1,6 @@
 'use client'
 
+import { getFullImageUrl } from '@/utils/imageUtils'
 import { Aihe, parseImageData } from '@/types/aihe'
 import { useEffect, useState } from 'react'
 import QuickImage from '@/components/QuickImage'
@@ -60,8 +61,8 @@ export default function AiheListPage() {
             <div className="w-[180px] h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg hover:scale-105 transition-transform">
               {aihe.parsedAiheKuva ? (
                 <QuickImage
-                  src={aihe.parsedAiheKuva.url}
-                  alt={aihe.Name}
+                src={getFullImageUrl(aihe.parsedAiheKuva.url, 'aiheet')}
+                alt={aihe.Name}
                   fill
                   className="object-cover rounded-lg"
                   sizes="(max-width: 768px) 180px, 180px"
