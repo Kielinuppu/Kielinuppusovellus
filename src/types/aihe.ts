@@ -1,16 +1,4 @@
-export interface ImageData {
-  url: string;
-  size: number;
-  width: number;
-  height: number;
-  filename: string;
-  metadata: {
-    width: number;
-    height: number;
-    blurHash: string;
-    blurHashWidth: number;
-  }
-}
+import { ImageData, parseImageData } from './image'
 
 export interface Aihe {
   id: string;
@@ -24,11 +12,4 @@ export interface Aihe {
   parsedTutustuKuva?: ImageData;
 }
 
-export function parseImageData(jsonString: string): ImageData | null {
-  try {
-    const fixedString = jsonString.replace(/'/g, '"')
-    return JSON.parse(fixedString)
-  } catch {
-    return null
-  }
-}
+export { parseImageData }

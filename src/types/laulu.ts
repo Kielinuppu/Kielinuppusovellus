@@ -1,16 +1,4 @@
-export interface ImageData {
-  url: string;
-  size: number;
-  width: number;
-  height: number;
-  filename: string;
-  metadata: {
-    width: number;
-    height: number;
-    blurHash: string;
-    blurHashWidth: number;
-  }
-}
+import { ImageData, parseImageData } from './image'
 
 export interface Laulu {
   id: string;
@@ -20,11 +8,4 @@ export interface Laulu {
   parsedImage?: ImageData;
 }
 
-export function parseImageData(jsonString: string): ImageData | null {
-  try {
-    const fixedString = jsonString.replace(/'/g, '"')
-    return JSON.parse(fixedString)
-  } catch {
-    return null
-  }
-}
+export { parseImageData }
