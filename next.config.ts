@@ -10,7 +10,7 @@ const withPWA = require('next-pwa')({
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/firebasestorage\.googleapis\.com/,
-      handler: 'CacheFirst',
+      handler: 'CacheFirst', 
       options: {
         cacheName: 'firebase-storage',
         expiration: {
@@ -54,10 +54,10 @@ const withPWA = require('next-pwa')({
       },
     },
   ],
-});
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+ });
+ 
+ /** @type {import('next').NextConfig} */
+ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ['firebasestorage.googleapis.com'],
@@ -69,16 +69,16 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-    unoptimized: true,
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 päivää
   },
   rewrites: async () => {
     return [
       {
         source: '/manifest.json',
-        destination: '/api/manifest', // Ohjaa /manifest.json API-reittiin
+        destination: '/api/manifest',
       },
     ];
   },
-};
-
-module.exports = withPWA(nextConfig);
+ };
+ 
+ module.exports = withPWA(nextConfig);
