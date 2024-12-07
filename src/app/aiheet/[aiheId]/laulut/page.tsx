@@ -1,29 +1,22 @@
 'use client'
 
+import { ImageData } from '@/types/image'
 import { useEffect, useState } from 'react'
 import QuickImage from '@/components/QuickImage'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
-import { db, storage } from '@/lib/firebase'
+import { db } from '@/lib/firebase'  // storage voidaan poistaa
 import { collection, getDocs } from 'firebase/firestore'
-import { getDownloadURL, ref } from 'firebase/storage'
-
-// Siirretään parseImageData funktion määrittely komponentin ulkopuolelle
-function parseImageData(jsonString: string) {
-  try {
-    const fixedString = jsonString.replace(/'/g, '"')
-    return JSON.parse(fixedString)
-  } catch {
-    return null
-  }
-}
+import { getFullImageUrl } from '@/utils/imageUtils'  // Lisätään tämä
+import { parseImageData } from '@/types/image'  // Siirretään parseri yhteiseen paikkaan
 
 interface Laulu {
   id: string;
   Name: string;
   'Laulun kuvake': string;
   Aiheet: string;
+  parsedImage?: ImageData;  // Lisätään tämä parsattua kuvadataa varten
 }
 
 export default function LaulutPage({
@@ -34,8 +27,6 @@ export default function LaulutPage({
   const router = useRouter()
   const [aiheNimi, setAiheNimi] = useState("")
   const [laulut, setLaulut] = useState<Laulu[]>([])
-  const [imageUrls, setImageUrls] = useState<{[key: string]: string}>({})
-
   const [currentAiheId, setCurrentAiheId] = useState<string | null>(null)
 
   useEffect(() => {
@@ -61,7 +52,8 @@ export default function LaulutPage({
           const laulutSnapshot = await getDocs(collection(db, 'laulut'))
           const allLaulut = laulutSnapshot.docs.map(doc => ({
             id: doc.id,
-            ...doc.data()
+            ...doc.data(),
+            parsedImage: parseImageData(doc.data()['Laulun kuvake'])  // Parsitaan kuva data
           })) as Laulu[]
   
           const aiheenLaulut = allLaulut
@@ -69,19 +61,6 @@ export default function LaulutPage({
             .sort((a, b) => a.Name.localeCompare(b.Name))
   
           setLaulut(aiheenLaulut)
-  
-          for (const laulu of aiheenLaulut) {
-            try {
-              const imageData = parseImageData(laulu['Laulun kuvake'])
-              if (imageData?.filename) {
-                const imageRef = ref(storage, `images/laulut/${imageData.filename}`)
-                const url = await getDownloadURL(imageRef)
-                setImageUrls(prev => ({ ...prev, [laulu.id]: url }))
-              }
-            } catch (error) {
-              console.error('Image fetching error:', error)
-            }
-          }
         }
       } catch (error) {
         console.error('Fetching error:', error)
@@ -113,9 +92,9 @@ export default function LaulutPage({
           <Link href={`/aiheet/${currentAiheId}/laulut/${laulu.id}`} key={laulu.id} className="block mb-3">
             <div className="flex items-center bg-white rounded-lg p-2 h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
               <div className="w-[77px] h-[77px] relative rounded-lg overflow-hidden ml-2">
-                {imageUrls[laulu.id] ? (
+                {laulu.parsedImage ? (
                   <QuickImage
-                    src={imageUrls[laulu.id]}
+                    src={getFullImageUrl(laulu.parsedImage.filename, 'laulut')}
                     alt={laulu.Name}
                     fill
                     priority={index < 4}

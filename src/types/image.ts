@@ -34,8 +34,7 @@ export interface ImageData {
           blurHashWidth: data.metadata.blurHashWidth
         }
       }
-    } catch (error) {
-      console.error('Error parsing image data:', error, jsonString)
+    } catch {
       return null
     }
   }

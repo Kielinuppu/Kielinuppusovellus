@@ -29,7 +29,6 @@ export default function AiheListPage() {
           }
         }) as Aihe[];
         
-        // Järjestä ID:n mukaan
         aiheData.sort((a, b) => a.Name.localeCompare(b.Name))
         setAiheet(aiheData)
       } catch (error) {
