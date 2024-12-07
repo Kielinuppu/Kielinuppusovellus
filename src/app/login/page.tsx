@@ -2,27 +2,17 @@
 
 import QuickImage from '@/components/QuickImage'
 import { useRouter } from 'next/navigation'
-import { storage, db } from '@/lib/firebase'
-import { ref, getDownloadURL } from 'firebase/storage'
+import { db } from '@/lib/firebase'
 import { collection, query, where, getDocs } from 'firebase/firestore'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
+import { getFullImageUrl } from '@/utils/imageUtils'
 
 export default function Login() {
   const router = useRouter()
-  const [uteliasUrl, setUteliasUrl] = useState('')
   const [userCode, setUserCode] = useState('')
   const [error, setError] = useState('')
-
-  useEffect(() => {
-    const fetchUtelias = async () => {
-      const uteliasRef = ref(storage, 'images/common/utelias.PNG')
-      const url = await getDownloadURL(uteliasRef)
-      setUteliasUrl(url)
-    }
-
-    fetchUtelias()
-  }, [])
+  const uteliasUrl = getFullImageUrl('utelias.PNG', 'common')
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -49,11 +39,8 @@ export default function Login() {
         return
       }
 
-      // Tallennetaan localStorage:en
       localStorage.setItem('userCode', userCode)
       localStorage.setItem('userData', JSON.stringify(userData))
-      
-      // Tallennetaan myös cookie
       document.cookie = `userData=${JSON.stringify(userData)}; path=/`
       
       router.push('/home')
@@ -62,7 +49,7 @@ export default function Login() {
       console.error('Login error:', error)
       setError('Kirjautumisvirhe')
     }
-}
+  }
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center pt-2">
@@ -96,20 +83,21 @@ export default function Login() {
             className="bg-[#f6f7e7] px-6 py-3 rounded-lg shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:shadow-md w-80 mb-8"
           >
             KIRJAUDU
-            </button>
-</form>
-<div>
-  {uteliasUrl && (
-    <QuickImage
-      src={uteliasUrl}
-      alt="Utelias nalle"
-      width={350}
-      height={350}
-      className="w-[350px] h-[350px] object-contain"
-    />
-  )}
-</div>
-</div>
-</div>
+          </button>
+        </form>
+        <div>
+          {uteliasUrl && (
+            <QuickImage
+            src={uteliasUrl}
+            alt="Utelias nalle"
+            width={350}
+            height={350}
+            priority={true}  // Lisätään tämä
+            className="w-[350px] h-[350px] object-contain"
+          />
+          )}
+        </div>
+      </div>
+    </div>
   )
 }

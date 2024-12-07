@@ -4,69 +4,62 @@ import QuickImage from '@/components/QuickImage'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, LogOut } from 'lucide-react'
-import { storage } from '@/lib/firebase'
-import { ref, getDownloadURL } from 'firebase/storage'
 import { useEffect, useState, useMemo } from 'react'
 import LogoutModal from '../components/LogoutModal'
+import { getFullImageUrl } from '@/utils/imageUtils'
 
 export default function HomePage() {
- const router = useRouter()
- const [logoUrl, setLogoUrl] = useState('')
- const [categoryUrls, setCategoryUrls] = useState<{ [key: string]: string }>({})
- const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
- const [isAdmin, setIsAdmin] = useState(false)
+  const router = useRouter()
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
+  const logoUrl = getFullImageUrl('logo.png', 'common')
 
- const categories = useMemo(() => [
-   { title: 'LAULUT', image: 'images/home/laulut.png', path: '/aiheet' },
-   { title: 'HAKEMISTO', image: 'images/home/hakemisto.png', path: '/hakemisto' },
-   { title: 'SOITTOLISTAT', image: 'images/home/soitin.png', path: '/soittolistat' },
-   { title: 'MUSKARIT', image: 'images/home/muskarit.png', path: '/muskarit' },
-   { title: 'PELIT', image: 'images/home/pelit.png', path: '/pelit' },
-   { title: 'KOULUTUS', image: 'images/home/koulutus.png', path: '/koulutus' },
- ], [])
+  // Määritellään kategoriat ja niiden kuvat
+  const categories = useMemo(() => [
+    { 
+      title: 'LAULUT', 
+      imageUrl: getFullImageUrl('laulut.png', 'home'), 
+      path: '/aiheet' 
+    },
+    { 
+      title: 'HAKEMISTO', 
+      imageUrl: getFullImageUrl('hakemisto.png', 'home'), 
+      path: '/hakemisto' 
+    },
+    { 
+      title: 'SOITTOLISTAT', 
+      imageUrl: getFullImageUrl('soitin.png', 'home'), 
+      path: '/soittolistat' 
+    },
+    { 
+      title: 'MUSKARIT', 
+      imageUrl: getFullImageUrl('muskarit.png', 'home'), 
+      path: '/muskarit' 
+    },
+    { 
+      title: 'PELIT', 
+      imageUrl: getFullImageUrl('pelit.png', 'home'), 
+      path: '/pelit' 
+    },
+    { 
+      title: 'KOULUTUS', 
+      imageUrl: getFullImageUrl('koulutus.png', 'home'), 
+      path: '/koulutus' 
+    },
+  ], [])
 
- // Admin-tarkistus
- useEffect(() => {
-   const checkAdminStatus = () => {
-     const userData = localStorage.getItem('userData')
-     if (userData) {
-       const user = JSON.parse(userData)
-       setIsAdmin(user.Admin === 'TRUE')
-     }
-   }
+  // Admin-tarkistus
+  useEffect(() => {
+    const checkAdminStatus = () => {
+      const userData = localStorage.getItem('userData')
+      if (userData) {
+        const user = JSON.parse(userData)
+        setIsAdmin(user.Admin === 'TRUE')
+      }
+    }
 
-   checkAdminStatus()
- }, [])
-
- // Kuvien hakeminen
- useEffect(() => {
-   const fetchLogo = async () => {
-     try {
-       const logoRef = ref(storage, 'images/common/logo.png')
-       const url = await getDownloadURL(logoRef)
-       setLogoUrl(url)
-     } catch (error) {
-       console.error('Error fetching logo:', error)
-     }
-   }
-
-   const fetchCategoryImages = async () => {
-     try {
-       const urls: { [key: string]: string } = {}
-       for (const category of categories) {
-         const imageRef = ref(storage, category.image)
-         const url = await getDownloadURL(imageRef)
-         urls[category.title] = url
-       }
-       setCategoryUrls(urls)
-     } catch (error) {
-       console.error('Error fetching category images:', error)
-     }
-   }
-
-   fetchLogo()
-   fetchCategoryImages()
- }, [categories])
+    checkAdminStatus()
+  }, [])
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
@@ -84,31 +77,31 @@ export default function HomePage() {
         />
       </div>
 
-    {logoUrl && (
- <div className="max-w-[900px] w-full m-0"> {/* Isompi maxWidth ja m-0 */}
-   <QuickImage
-     src={logoUrl}
-     alt="Kielinuppu logo"
-     width={900}      // Isompi width 
-     height={225}     // Suhteutettu height
-     className="w-auto h-auto object-contain m-0 p-0" // Lisätty m-0 p-0
-   />
- </div>
+      {logoUrl && (
+  <div className="max-w-[900px] w-full m-0">
+    <QuickImage
+      src={logoUrl}
+      alt="Kielinuppu logo"
+      width={900}
+      height={225}
+      priority={true}
+      className="w-full h-auto object-contain"
+    />
+  </div>
 )}
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-6xl mt-0">
-        {categories.map((category) => (
+        {categories.map((category, index) => (
           <Link href={category.path} key={category.title}>
             <div className="w-[190px] sm:w-[170px] md:w-[190px] h-[190px] sm:h-[170px] md:h-[190px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
-              {categoryUrls[category.title] && (
-                <QuickImage
-                  src={categoryUrls[category.title]}
-                  alt={category.title}
-                  fill
-                  className="object-cover rounded-lg"
-                  sizes="(max-width: 768px) 170px, 190px"
-                />
-              )}
+              <QuickImage
+                src={category.imageUrl}
+                alt={category.title}
+                fill
+                priority={index < 4}
+                className="object-cover rounded-lg"
+                sizes="(max-width: 768px) 170px, 190px"
+              />
             </div>
           </Link>
         ))}
