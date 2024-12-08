@@ -81,7 +81,7 @@ export default function LaulutPage({
           strokeWidth={3}
           onClick={() => router.push('/aiheet')}
         />
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold flex-1 text-center">
+        <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center">
           {aiheNimi}
         </h1>
         <div className="w-[45px]"></div>
@@ -105,7 +105,7 @@ export default function LaulutPage({
                   <div className="w-full h-full bg-gray-200 animate-pulse" />
                 )}
               </div>
-              <span className="ml-3 sm:ml-4 text-base sm:text-lg md:text-xl truncate max-w-[calc(100%-90px)]">
+              <span className="ml-3 sm:ml-4 text-[15px] sm:text-lg md:text-xl truncate max-w-[calc(100%-90px)]">
                 {laulu.Name}
               </span>
             </div>
