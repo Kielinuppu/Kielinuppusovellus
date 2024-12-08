@@ -81,17 +81,17 @@ export default function LaulutPage({
           strokeWidth={3}
           onClick={() => router.push('/aiheet')}
         />
-        <h1 className="text-4xl font-semibold flex-1 text-center">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold flex-1 text-center">
           {aiheNimi}
         </h1>
         <div className="w-[45px]"></div>
       </div>
   
-      <div className="w-full max-w-[580px] mt-8">
+      <div className="w-full max-w-[580px] mt-4 sm:mt-8">
         {laulut.map((laulu, index) => (
-          <Link href={`/aiheet/${currentAiheId}/laulut/${laulu.id}`} key={laulu.id} className="block mb-3">
-            <div className="flex items-center bg-white rounded-lg p-2 h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
-              <div className="w-[77px] h-[77px] relative rounded-lg overflow-hidden ml-2">
+          <Link href={`/aiheet/${currentAiheId}/laulut/${laulu.id}`} key={laulu.id} className="block mb-2 sm:mb-3">
+            <div className="flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
+              <div className="w-[65px] h-[65px] sm:w-[77px] sm:h-[77px] relative rounded-lg overflow-hidden ml-2">
                 {laulu.parsedImage ? (
                   <QuickImage
                     src={getFullImageUrl(laulu.parsedImage.filename, 'laulut')}
@@ -99,13 +99,15 @@ export default function LaulutPage({
                     fill
                     priority={index < 4}
                     className="object-cover"
-                    sizes="77px"
+                    sizes="(max-width: 640px) 65px, 77px"
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-200 animate-pulse" />
                 )}
               </div>
-              <span className="ml-4 text-xl">{laulu.Name}</span>
+              <span className="ml-3 sm:ml-4 text-base sm:text-lg md:text-xl truncate max-w-[calc(100%-90px)]">
+                {laulu.Name}
+              </span>
             </div>
           </Link>
         ))}
