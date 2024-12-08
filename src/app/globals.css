@@ -25,3 +25,26 @@ button, .button {
   border-radius: 10px;
   box-shadow: var(--shadow);
 }
+
+/* Lisätään uudet mobiilioptimoidut tyylit */
+@layer components {
+  .mobile-title {
+    @apply text-[26px] sm:text-3xl md:text-4xl font-semibold text-center;
+  }
+
+  .mobile-list-container {
+    @apply w-full max-w-[580px] mt-4 sm:mt-8;
+  }
+
+  .mobile-list-item {
+    @apply flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px];
+  }
+
+  .mobile-list-image {
+    @apply w-[65px] h-[65px] sm:w-[77px] sm:h-[77px] relative rounded-lg overflow-hidden ml-2;
+  }
+
+  .mobile-list-text {
+    @apply ml-3 sm:ml-4 text-[15px] sm:text-lg md:text-xl truncate max-w-[calc(100%-90px)];
+  }
+}
