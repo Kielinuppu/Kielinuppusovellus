@@ -69,7 +69,7 @@ router.push(`/soittolistat/soittolista?id=${newId}`)
         </button>
 
         <div className="flex flex-col items-center space-y-8">
-          <h2 className="text-3xl font-bold">ANNA SOITTOLISTALLE NIMI</h2>
+        <h2 className="text-3xl font-bold text-center">ANNA SOITTOLISTALLE NIMI</h2>
           
           <form onSubmit={handleSubmit} className="w-full max-w-lg space-y-6">
             <input

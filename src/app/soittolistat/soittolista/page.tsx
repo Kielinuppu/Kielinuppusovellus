@@ -2,27 +2,33 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ArrowLeft, Plus, Minus } from 'lucide-react'
+import { ArrowLeft, Plus, Minus, LucideIcon } from 'lucide-react'
 import { doc, getDoc, updateDoc, collection, getDocs } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 import QuickImage from '@/components/QuickImage'
 import { getFullImageUrl } from '@/utils/imageUtils'
-import { parseImageData } from '@/types/image'
+import { ImageData, parseImageData } from '@/types/image'
 
 interface Laulu {
- id: string;
- Name: string;
- 'Laulun kuvake': string;
- parsedImage?: any;
+  id: string;
+  Name: string;
+  'Laulun kuvake': string;
+  parsedImage?: ImageData | null;
 }
 
 interface Playlist {
- ID: number;
- Name: string;
- Lauluts: string | string[];
- User: string;
- Created: string;
- Updated: string;
+  ID: number;
+  Name: string;
+  Lauluts: string | string[];
+  User: string;
+  Created: string;
+  Updated: string;
+}
+
+interface SongItemProps {
+  song: Laulu;
+  actionIcon: LucideIcon;
+  onAction: () => void;
 }
 
 function SoittolistaContent() {
@@ -97,7 +103,7 @@ function SoittolistaContent() {
    }
  }
 
- const SongItem = ({ song, actionIcon: ActionIcon, onAction }: any) => (
+ const SongItem = ({ song, actionIcon: ActionIcon, onAction }: SongItemProps) => (
    <div className="bg-white rounded-lg h-[65px] sm:h-[75px] flex justify-between items-center p-2 shadow-[rgba(0,0,0,0.2)_-4px_4px_4px]">
      <div className="flex items-center flex-1">
        <div className="w-[65px] h-[65px] sm:w-[75px] sm:h-[75px] relative rounded-lg overflow-hidden">
@@ -113,7 +119,7 @@ function SoittolistaContent() {
            <div className="w-full h-full bg-gray-200 animate-pulse" />
          )}
        </div>
-       <span className="ml-3 sm:ml-4 text-[14px] sm:text-lg truncate max-w-[calc(100%-90px)]">{song.Name}</span>
+       <span className="ml-3 sm:ml-4 text-[14px] lg:text-[20px] truncate max-w-[calc(100%-90px)]">{song.Name}</span>
      </div>
      <ActionIcon
        className="cursor-pointer"
@@ -132,6 +138,12 @@ function SoittolistaContent() {
          strokeWidth={3}
          onClick={() => router.push('/soittolistat')}
        />
+       <button
+         onClick={handleDone}
+         className="bg-[#F6F7E7] px-6 py-2 rounded-lg font-bold sm:block hidden"
+       >
+         VALMIS
+       </button>
      </div>
 
      {/* Desktop view */}
@@ -174,14 +186,8 @@ function SoittolistaContent() {
 
      {/* Mobile view */}
      <div className="sm:hidden">
-       <div className="flex justify-between items-center mb-4">
+       <div className="mb-4">
          <h2 className="text-[26px] font-bold">LISÄÄ LAULUJA</h2>
-         <button
-           onClick={handleDone}
-           className="bg-[#F6F7E7] px-6 py-2 rounded-lg font-bold"
-         >
-           VALMIS
-         </button>
        </div>
        
        <input
@@ -203,7 +209,16 @@ function SoittolistaContent() {
          ))}
        </div>
 
-       <h2 className="text-[26px] font-bold mb-4">LAULUT SOITTOLISTALLA</h2>
+       <div className="flex justify-between items-center mb-4">
+         <h2 className="text-[26px] font-bold">LAULUT SOITTOLISTALLA</h2>
+         <button
+           onClick={handleDone}
+           className="bg-[#F6F7E7] px-6 py-2 rounded-lg font-bold"
+         >
+           VALMIS
+         </button>
+       </div>
+
        <div className="space-y-2">
          {selectedSongs.map((song) => (
            <SongItem
