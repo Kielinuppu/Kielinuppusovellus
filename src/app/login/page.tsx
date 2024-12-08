@@ -62,8 +62,10 @@ export default function Login() {
         />
       </div>
       
-      <div className="flex flex-col items-center justify-center flex-1 -mt-20">
-        <h1 className="text-5xl font-semibold mb-12">KIRJAUDU SISÄÄN</h1>
+      <div className="flex flex-col items-center justify-center flex-1 -mt-20 w-full">
+        <h1 className="text-5xl font-semibold mb-12 text-center">
+          KIRJAUDU SISÄÄN
+        </h1>
         <form onSubmit={handleLogin} className="flex flex-col items-center w-full">
           <input
             type="text"
@@ -88,13 +90,13 @@ export default function Login() {
         <div>
           {uteliasUrl && (
             <QuickImage
-            src={uteliasUrl}
-            alt="Utelias nalle"
-            width={350}
-            height={350}
-            priority={true}  // Lisätään tämä
-            className="w-[350px] h-[350px] object-contain"
-          />
+              src={uteliasUrl}
+              alt="Utelias nalle"
+              width={350}
+              height={350}
+              priority={true}
+              className="w-[350px] h-[350px] object-contain"
+            />
           )}
         </div>
       </div>

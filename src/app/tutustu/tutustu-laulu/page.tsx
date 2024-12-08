@@ -54,23 +54,23 @@ export default function TutustuLauluPage() {
           strokeWidth={3}
           onClick={() => router.push('/tutustu/tutustu-aihe')}
         />
-        <h1 className="text-4xl font-semibold flex-1 text-center">
+        <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center">
           ARJEN TAIDOT
         </h1>
         <div className="w-[45px]"></div>
       </div>
   
-      <div className="w-full max-w-[580px] mt-8">
+      <div className="w-full max-w-[580px] mt-4 sm:mt-8">
         {laulut.map((laulu, index) => (
           <div 
             key={laulu.id} 
-            className="block mb-3"
+            className="block mb-2 sm:mb-3"
             onClick={() => laulu.Name === "PUETAAN" ? router.push(`/aiheet/10/laulut/48`) : null}
           >
-            <div className={`flex items-center bg-white rounded-lg p-2 h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] ${
+            <div className={`flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] ${
               laulu.Name !== "PUETAAN" ? "opacity-40" : "cursor-pointer hover:scale-[1.02] transition-transform"
             }`}>
-              <div className="w-[77px] h-[77px] relative rounded-lg overflow-hidden ml-2">
+              <div className="w-[65px] h-[65px] sm:w-[77px] sm:h-[77px] relative rounded-lg overflow-hidden ml-2">
                 {laulu.parsedImage ? (
                   <QuickImage
                     src={getFullImageUrl(laulu.parsedImage.filename, 'laulut')}
@@ -78,13 +78,15 @@ export default function TutustuLauluPage() {
                     fill
                     priority={index < 4}
                     className="object-cover"
-                    sizes="77px"
+                    sizes="(max-width: 640px) 65px, 77px"
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-200 animate-pulse" />
                 )}
               </div>
-              <span className="ml-4 text-xl">{laulu.Name}</span>
+              <span className="ml-3 sm:ml-4 text-[15px] sm:text-lg md:text-xl truncate max-w-[calc(100%-90px)]">
+                {laulu.Name}
+              </span>
             </div>
           </div>
         ))}

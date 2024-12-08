@@ -74,36 +74,36 @@ export default function TutustuPage() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-6xl mt-0">
-        {categories.map((category, index) => (
-          <div key={category.title}>
-            {category.active ? (
-              <Link href={category.path}>
-                <div className="w-[190px] sm:w-[170px] md:w-[190px] h-[190px] sm:h-[170px] md:h-[190px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
-                  <QuickImage
-                    src={category.imageUrl}
-                    alt={category.title}
-                    fill
-                    priority={index < 4}
-                    className="object-cover rounded-lg"
-                    sizes="(max-width: 768px) 170px, 190px"
-                  />
-                </div>
-              </Link>
-            ) : (
-              <div className="w-[190px] sm:w-[170px] md:w-[190px] h-[190px] sm:h-[170px] md:h-[190px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
-                <QuickImage
-                  src={category.imageUrl}
-                  alt={category.title}
-                  fill
-                  priority={index < 4}
-                  className="object-cover rounded-lg opacity-40"
-                  sizes="(max-width: 768px) 170px, 190px"
-                />
-              </div>
-            )}
+  {categories.map((category, index) => (
+    <div key={category.title}>
+      {category.active ? (
+        <Link href={category.path}>
+          <div className="w-[190px] sm:w-[170px] md:w-[190px] h-[190px] sm:h-[170px] md:h-[190px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
+            <QuickImage
+              src={category.imageUrl}
+              alt={category.title}
+              fill
+              priority={index < 4}
+              className="object-cover rounded-lg"
+              sizes="(max-width: 768px) 170px, 190px"
+            />
           </div>
-        ))}
-      </div>
+        </Link>
+      ) : (
+        <div className="w-[190px] sm:w-[170px] md:w-[190px] h-[190px] sm:h-[170px] md:h-[190px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
+          <QuickImage
+            src={category.imageUrl}
+            alt={category.title}
+            fill
+            priority={index < 4}
+            className="object-cover rounded-lg opacity-40"
+            sizes="(max-width: 768px) 170px, 190px"
+          />
+        </div>
+      )}
+    </div>
+  ))}
+</div>
     </div>
   )
 }

@@ -78,29 +78,29 @@ export default function HomePage() {
       </div>
 
       {logoUrl && (
-  <div className="max-w-[900px] w-full m-0">
-    <QuickImage
-      src={logoUrl}
-      alt="Kielinuppu logo"
-      width={900}
-      height={225}
-      priority={true}
-      className="w-full h-auto object-contain"
-    />
-  </div>
-)}
+        <div className="max-w-[900px] w-full m-0">
+          <QuickImage
+            src={logoUrl}
+            alt="Kielinuppu logo"
+            width={900}
+            height={225}
+            priority={true}
+            className="w-full h-auto object-contain"
+          />
+        </div>
+      )}
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-6xl mt-0">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mt-0">
         {categories.map((category, index) => (
-          <Link href={category.path} key={category.title}>
-            <div className="w-[190px] sm:w-[170px] md:w-[190px] h-[190px] sm:h-[170px] md:h-[190px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
+          <Link href={category.path} key={category.title} className="flex justify-center">
+            <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
               <QuickImage
                 src={category.imageUrl}
                 alt={category.title}
                 fill
                 priority={index < 4}
                 className="object-cover rounded-lg"
-                sizes="(max-width: 768px) 170px, 190px"
+                sizes="(max-width: 640px) 170px, 180px"
               />
             </div>
           </Link>

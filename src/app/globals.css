@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 :root {
   --background-color: #e9f1f3;
@@ -26,25 +26,53 @@ button, .button {
   box-shadow: var(--shadow);
 }
 
-/* Lisätään uudet mobiilioptimoidut tyylit */
-@layer components {
-  .mobile-title {
-    @apply text-[26px] sm:text-3xl md:text-4xl font-semibold text-center;
-  }
+/* Mobiilioptimoidut komponentit */
+.mobile-title {
+  font-size: 26px;
+  text-align: center;
+  font-weight: 600;
+}
 
-  .mobile-list-container {
-    @apply w-full max-w-[580px] mt-4 sm:mt-8;
-  }
+/* Grid gallery */
+.grid-gallery-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 580px;
+  margin-top: 1rem;
+}
 
-  .mobile-list-item {
-    @apply flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px];
-  }
+.grid-gallery-item {
+  display: flex;
+  justify-content: center;
+}
 
-  .mobile-list-image {
-    @apply w-[65px] h-[65px] sm:w-[77px] sm:h-[77px] relative rounded-lg overflow-hidden ml-2;
-  }
+.grid-gallery-image-container {
+  width: 140px;
+  height: 140px;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.2) -4px 4px 4px;
+  border-radius: 0.5rem;
+}
 
-  .mobile-list-text {
-    @apply ml-3 sm:ml-4 text-[15px] sm:text-lg md:text-xl truncate max-w-[calc(100%-90px)];
+@media (min-width: 640px) {
+  .grid-gallery-image-container {
+    width: 170px;
+    height: 170px;
+  }
+  .grid-gallery-container {
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .grid-gallery-container {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 72rem;
+  }
+  .grid-gallery-image-container {
+    width: 180px;
+    height: 180px;
   }
 }

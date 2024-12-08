@@ -48,23 +48,23 @@ export default function AiheListPage() {
           strokeWidth={3}
           onClick={() => router.push('/home')}
         />
-        <h1 className="text-4xl font-semibold flex-1 text-center">
+        <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center">
           KATEGORIAT
         </h1>
         <div className="w-[45px]"></div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mt-8">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mt-8">
         {aiheet.map((aihe) => (
-          <Link href={`/aiheet/${aihe.id}/laulut`} key={aihe.id}>
-            <div className="w-[180px] h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg hover:scale-105 transition-transform">
+          <Link href={`/aiheet/${aihe.id}/laulut`} key={aihe.id} className="flex justify-center">
+            <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg hover:scale-105 transition-transform">
               {aihe.parsedAiheKuva ? (
                 <QuickImage
-                src={getFullImageUrl(aihe.parsedAiheKuva.url, 'aiheet')}
-                alt={aihe.Name}
+                  src={getFullImageUrl(aihe.parsedAiheKuva.url, 'aiheet')}
+                  alt={aihe.Name}
                   fill
                   className="object-cover rounded-lg"
-                  sizes="(max-width: 768px) 180px, 180px"
+                  sizes="(max-width: 640px) 170px, 180px"
                 />
               ) : (
                 <div className="w-full h-full bg-gray-200 rounded-lg animate-pulse" />
