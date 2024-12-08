@@ -4,32 +4,25 @@ import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ArrowLeft, Plus, Minus } from 'lucide-react'
 import { doc, getDoc, updateDoc, collection, getDocs } from 'firebase/firestore'
-import { db, storage } from '@/lib/firebase'
-import { ref, getDownloadURL } from 'firebase/storage'
-import Image from 'next/image'
+import { db } from '@/lib/firebase'
+import QuickImage from '@/components/QuickImage'
+import { getFullImageUrl } from '@/utils/imageUtils'
+import { parseImageData } from '@/types/image'
 
 interface Laulu {
-id: string;
-Name: string;
-'Laulun kuvake': string;
+ id: string;
+ Name: string;
+ 'Laulun kuvake': string;
+ parsedImage?: any;
 }
 
 interface Playlist {
-ID: number;
-Name: string;
-Lauluts: string | string[];
-User: string;
-Created: string;
-Updated: string;
-}
-
-function parseImageData(jsonString: string) {
-try {
-  const fixedString = jsonString.replace(/'/g, '"')
-  return JSON.parse(fixedString)
-} catch {
-  return null
-}
+ ID: number;
+ Name: string;
+ Lauluts: string | string[];
+ User: string;
+ Created: string;
+ Updated: string;
 }
 
 function SoittolistaContent() {
@@ -39,7 +32,6 @@ function SoittolistaContent() {
  const [searchTerm, setSearchTerm] = useState('')
  const [availableSongs, setAvailableSongs] = useState<Laulu[]>([])
  const [selectedSongs, setSelectedSongs] = useState<Laulu[]>([])
- const [imageUrls, setImageUrls] = useState<{[key: string]: string}>({})
 
  useEffect(() => {
    const fetchLaulut = async () => {
@@ -48,25 +40,12 @@ function SoittolistaContent() {
        const fetchedLaulut = laulutSnapshot.docs.map(doc => ({
          id: doc.id,
          Name: doc.data().Name,
-         'Laulun kuvake': doc.data()['Laulun kuvake']
+         'Laulun kuvake': doc.data()['Laulun kuvake'],
+         parsedImage: parseImageData(doc.data()['Laulun kuvake'])
        }))
        setAvailableSongs(fetchedLaulut.sort((a, b) => 
          a.Name.localeCompare(b.Name, 'fi')
        ))
-
-       // Hae kuvat
-       for (const laulu of fetchedLaulut) {
-         try {
-           const imageData = parseImageData(laulu['Laulun kuvake'])
-           if (imageData?.filename) {
-             const imageRef = ref(storage, `images/laulut/${imageData.filename}`)
-             const url = await getDownloadURL(imageRef)
-             setImageUrls(prev => ({ ...prev, [laulu.id]: url }))
-           }
-         } catch (error) {
-           console.error('Image fetching error:', error)
-         }
-       }
      } catch (error) {
        console.error('Virhe laulujen haussa:', error)
      }
@@ -118,6 +97,32 @@ function SoittolistaContent() {
    }
  }
 
+ const SongItem = ({ song, actionIcon: ActionIcon, onAction }: any) => (
+   <div className="bg-white rounded-lg h-[65px] sm:h-[75px] flex justify-between items-center p-2 shadow-[rgba(0,0,0,0.2)_-4px_4px_4px]">
+     <div className="flex items-center flex-1">
+       <div className="w-[65px] h-[65px] sm:w-[75px] sm:h-[75px] relative rounded-lg overflow-hidden">
+         {song.parsedImage ? (
+           <QuickImage
+             src={getFullImageUrl(song.parsedImage.filename, 'laulut')}
+             alt={song.Name}
+             fill
+             className="object-cover"
+             sizes="(max-width: 640px) 65px, 75px"
+           />
+         ) : (
+           <div className="w-full h-full bg-gray-200 animate-pulse" />
+         )}
+       </div>
+       <span className="ml-3 sm:ml-4 text-[14px] sm:text-lg truncate max-w-[calc(100%-90px)]">{song.Name}</span>
+     </div>
+     <ActionIcon
+       className="cursor-pointer"
+       size={32}
+       onClick={onAction}
+     />
+   </div>
+ )
+
  return (
    <div className="min-h-screen bg-[#e9f1f3] p-4">
      <div className="sticky top-0 flex justify-between items-center mb-6">
@@ -127,15 +132,10 @@ function SoittolistaContent() {
          strokeWidth={3}
          onClick={() => router.push('/soittolistat')}
        />
-       <button
-         onClick={handleDone}
-         className="bg-[#F6F7E7] px-6 py-2 rounded-lg font-bold"
-       >
-         VALMIS
-       </button>
      </div>
 
-     <div className="flex space-x-4">
+     {/* Desktop view */}
+     <div className="hidden sm:flex space-x-4">
        <div className="w-1/2">
          <h2 className="text-xl font-bold mb-4">LISÄÄ LAULUJA SOITTOLISTALLE</h2>
          <input
@@ -143,36 +143,16 @@ function SoittolistaContent() {
            placeholder="ETSI LAULUA"
            value={searchTerm}
            onChange={(e) => setSearchTerm(e.target.value)}
-           className="w-full p-4 rounded-lg shadow-md mb-4"
+           className="w-full p-4 rounded-lg shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] mb-4"
          />
          <div className="space-y-2">
            {filteredSongs.map((song) => (
-             <div 
+             <SongItem
                key={song.id}
-               className="bg-white rounded-lg h-[75px] flex justify-between items-center p-2"
-             >
-               <div className="flex items-center flex-1">
-                 <div className="w-[75px] h-[75px] relative rounded-lg overflow-hidden">
-                   {imageUrls[song.id] ? (
-                     <Image
-                       src={imageUrls[song.id]}
-                       alt={song.Name}
-                       fill
-                       className="object-cover"
-                       sizes="75px"
-                     />
-                   ) : (
-                     <div className="w-full h-full bg-gray-200 animate-pulse" />
-                   )}
-                 </div>
-                 <span className="ml-4">{song.Name}</span>
-               </div>
-               <Plus
-                 className="cursor-pointer"
-                 size={32}
-                 onClick={() => setSelectedSongs([...selectedSongs, song])}
-               />
-             </div>
+               song={song}
+               actionIcon={Plus}
+               onAction={() => setSelectedSongs([...selectedSongs, song])}
+             />
            ))}
          </div>
        </div>
@@ -181,34 +161,58 @@ function SoittolistaContent() {
          <h2 className="text-xl font-bold mb-4">LAULUT SOITTOLISTALLA</h2>
          <div className="space-y-2">
            {selectedSongs.map((song) => (
-             <div 
+             <SongItem
                key={song.id}
-               className="bg-white rounded-lg h-[75px] flex justify-between items-center p-2"
-             >
-               <div className="flex items-center flex-1">
-                 <div className="w-[75px] h-[75px] relative rounded-lg overflow-hidden">
-                   {imageUrls[song.id] ? (
-                     <Image
-                       src={imageUrls[song.id]}
-                       alt={song.Name}
-                       fill
-                       className="object-cover"
-                       sizes="75px"
-                     />
-                   ) : (
-                     <div className="w-full h-full bg-gray-200 animate-pulse" />
-                   )}
-                 </div>
-                 <span className="ml-4">{song.Name}</span>
-               </div>
-               <Minus
-                 className="cursor-pointer"
-                 size={32}
-                 onClick={() => setSelectedSongs(selectedSongs.filter(s => s.id !== song.id))}
-               />
-             </div>
+               song={song}
+               actionIcon={Minus}
+               onAction={() => setSelectedSongs(selectedSongs.filter(s => s.id !== song.id))}
+             />
            ))}
          </div>
+       </div>
+     </div>
+
+     {/* Mobile view */}
+     <div className="sm:hidden">
+       <div className="flex justify-between items-center mb-4">
+         <h2 className="text-[26px] font-bold">LISÄÄ LAULUJA</h2>
+         <button
+           onClick={handleDone}
+           className="bg-[#F6F7E7] px-6 py-2 rounded-lg font-bold"
+         >
+           VALMIS
+         </button>
+       </div>
+       
+       <input
+         type="text"
+         placeholder="ETSI LAULUA"
+         value={searchTerm}
+         onChange={(e) => setSearchTerm(e.target.value)}
+         className="w-full p-4 rounded-lg shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] mb-4 text-[14px]"
+       />
+       
+       <div className="h-[350px] overflow-y-auto mb-6 space-y-2">
+         {filteredSongs.map((song) => (
+           <SongItem
+             key={song.id}
+             song={song}
+             actionIcon={Plus}
+             onAction={() => setSelectedSongs([...selectedSongs, song])}
+           />
+         ))}
+       </div>
+
+       <h2 className="text-[26px] font-bold mb-4">LAULUT SOITTOLISTALLA</h2>
+       <div className="space-y-2">
+         {selectedSongs.map((song) => (
+           <SongItem
+             key={song.id}
+             song={song}
+             actionIcon={Minus}
+             onAction={() => setSelectedSongs(selectedSongs.filter(s => s.id !== song.id))}
+           />
+         ))}
        </div>
      </div>
    </div>

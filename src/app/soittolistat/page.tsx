@@ -62,9 +62,9 @@ const PlaylistsPage = () => {
           className="cursor-pointer text-black" 
           size={45} 
           strokeWidth={3}
-          onClick={() => router.push('/home')}
+          onClick={() => router.push('/home')}  
         />
-        <h1 className="text-4xl font-bold">OMAT SOITTOLISTAT</h1>
+        <h1 className="text-[26px] sm:text-3xl md:text-4xl font-bold text-center">OMAT SOITTOLISTAT</h1>
         <div 
           className="w-12 h-12 rounded-full bg-[#F6F7E7] flex items-center justify-center cursor-pointer"
           onClick={() => setIsModalOpen(true)}
@@ -76,8 +76,8 @@ const PlaylistsPage = () => {
           />
         </div>
       </div>
-
-      <div className="space-y-4 max-w-[50%] mx-auto">
+ 
+      <div className="space-y-2 sm:space-y-4 w-full sm:max-w-[80%] md:max-w-[50%] mx-auto">
         {playlists.map((playlist) => (
           <div 
             key={playlist.id}
@@ -85,9 +85,9 @@ const PlaylistsPage = () => {
               setActivePlaylistId(playlist.id.toString())
               setIsPlayerOpen(true)
             }}
-            className="bg-white rounded-lg h-[75px] flex items-center justify-between px-4 shadow-md cursor-pointer hover:bg-gray-50"
+            className="bg-white rounded-lg h-[65px] sm:h-[75px] flex items-center justify-between px-4 shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] cursor-pointer hover:bg-gray-50"
           >
-            <span className="text-lg">{playlist.name}</span>
+            <span className="text-[14px] sm:text-lg truncate max-w-[calc(100%-90px)]">{playlist.name}</span>
             <div className="flex space-x-4">
               <Edit
                 className="cursor-pointer text-black"
@@ -109,12 +109,12 @@ const PlaylistsPage = () => {
           </div>
         ))}
       </div>
-
+ 
       <CreatePlaylistModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
-
+ 
       {isPlayerOpen && (
         <AudioPlayer
           playlistId={activePlaylistId}
@@ -122,7 +122,7 @@ const PlaylistsPage = () => {
         />
       )}
     </div>
-  )
+ )
 }
 
 export default PlaylistsPage

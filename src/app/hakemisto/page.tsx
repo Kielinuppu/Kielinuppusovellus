@@ -62,7 +62,7 @@ export default function HakemistoPage() {
           strokeWidth={3}
           onClick={() => router.push('/home')}
         />
-        <h1 className="text-4xl font-semibold flex-1 text-center">
+        <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center">
           HAKEMISTO
         </h1>
         <div className="w-[45px]"></div>
@@ -74,7 +74,7 @@ export default function HakemistoPage() {
           placeholder="ETSI LAULUA"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-4 rounded-lg shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] text-lg"
+          className="w-full p-4 rounded-lg shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] text-[14px] sm:text-lg"
         />
       </div>
 
@@ -83,10 +83,10 @@ export default function HakemistoPage() {
           <Link 
             href={`/aiheet/${aiheet[laulu.Aiheet]}/laulut/${laulu.id}`}
             key={laulu.id} 
-            className="block mb-3"
+            className="block mb-2 sm:mb-3"
           >
-            <div className="flex items-center bg-white rounded-lg p-2 h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
-              <div className="w-[77px] h-[77px] relative rounded-lg overflow-hidden ml-2">
+            <div className="flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
+              <div className="w-[65px] h-[65px] sm:w-[77px] sm:h-[77px] relative rounded-lg overflow-hidden ml-2">
                 {laulu.parsedImage ? (
                   <QuickImage
                     src={getFullImageUrl(laulu.parsedImage.filename, 'laulut')}
@@ -94,13 +94,15 @@ export default function HakemistoPage() {
                     fill
                     priority={index < 4}
                     className="object-cover"
-                    sizes="77px"
+                    sizes="(max-width: 640px) 65px, 77px"
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-200 animate-pulse" />
                 )}
               </div>
-              <span className="ml-4 text-xl">{laulu.Name}</span>
+              <span className="ml-3 sm:ml-4 text-[14px] sm:text-lg md:text-xl truncate max-w-[calc(100%-90px)]">
+                {laulu.Name}
+              </span>
             </div>
           </Link>
         ))}
