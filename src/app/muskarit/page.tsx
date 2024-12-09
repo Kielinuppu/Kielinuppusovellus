@@ -98,10 +98,10 @@ export default function MuskaritPage() {
   {/* Materiaalit-linkki */}
   {materiaalit.map((materiaali) => (
     <Link 
-      key={materiaali.ID}
-      href={`/muskarit/materiaalit/${materiaali.id}`}
-      className="block mb-4 sm:mb-5"  // Muutettu isommaksi (oli mb-2 sm:mb-3)
-    >
+    key={materiaali.ID}
+    href="/muskarit/muskaritulosteet"
+    className="block mb-4 sm:mb-5"
+  >
       <div className="flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
         <span className="text-[14px] lg:text-[20px] flex-1 text-center truncate">
           {materiaali.Name}
