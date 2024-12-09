@@ -120,24 +120,24 @@ export default function PeliKategoriaPage({
       className="bg-white rounded-lg w-full shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform cursor-pointer"
     >
       <div className="flex items-center h-[75px]">
-        <div className="ml-2 relative rounded-lg overflow-hidden" style={{ width: '75px', height: '75px' }}>
-          {peli.parsedImage ? (
-            <QuickImage
-              src={getFullImageUrl(peli.parsedImage.filename, 'laulut')}
-              alt={peli.Laulut}
-              fill
-              priority={index < 4}
-              className="object-cover"
-              sizes="75px"
-            />
-          ) : (
-            <div className="w-full h-full bg-gray-200 animate-pulse" />
-          )}
-        </div>
-        <span className="ml-4 text-[14px] lg:text-[20px] truncate max-w-[calc(100%-90px)]">
-          {peli.Laulut}
-        </span>
-      </div>
+  <div className="relative rounded-lg overflow-hidden ml-[10px]" style={{ width: '75px', height: '75px' }}>
+    {peli.parsedImage ? (
+      <QuickImage
+        src={getFullImageUrl(peli.parsedImage.filename, 'laulut')}
+        alt={peli.Laulut}
+        fill
+        priority={index < 4}
+        className="object-cover"
+        sizes="75px"
+      />
+    ) : (
+      <div className="w-full h-full bg-gray-200 animate-pulse" />
+    )}
+  </div>
+  <span className="ml-1 text-[14px] lg:text-[20px] truncate max-w-[calc(100%-95px)]">
+    {peli.Laulut}
+  </span>
+</div>
     </Link>
   ))}
 </div>

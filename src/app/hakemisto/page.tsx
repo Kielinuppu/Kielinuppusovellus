@@ -100,7 +100,7 @@ export default function HakemistoPage() {
                   <div className="w-full h-full bg-gray-200 animate-pulse" />
                 )}
               </div>
-              <span className="ml-3 sm:ml-4 text-[14px] sm:text-lg md:text-xl truncate max-w-[calc(100%-90px)]">
+              <span className="ml-1 sm:ml-4 text-[14px] sm:text-lg md:text-xl truncate max-w-[calc(100%-90px)]">
                 {laulu.Name}
               </span>
             </div>

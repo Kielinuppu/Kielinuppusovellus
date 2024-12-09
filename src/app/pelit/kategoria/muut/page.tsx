@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { db } from '@/lib/firebase'
 import { collection, getDocs } from 'firebase/firestore'
-import { getFullImageUrl } from '@/utils/imageUtils'
 import { BingoData, parseBingoImage } from '@/types/bingo'
 
 interface Bingo {
@@ -73,9 +72,7 @@ export default function MuutPage() {
              <div className="w-[65px] h-[65px] sm:w-[77px] sm:h-[77px] relative rounded-lg overflow-hidden ml-2">
                {bingo.kuva ? (
                  <QuickImage
-                   src={bingo.kuva.url 
-                     ? `https://firebasestorage.googleapis.com/v0/b/kielinuppu-sovellus.firebasestorage.app/o/images%2Fbingot%2F${bingo.kuva.url}?alt=media`
-                     : getFullImageUrl(bingo.kuva.filename, 'bingot')}
+                   src={`https://firebasestorage.googleapis.com/v0/b/kielinuppu-sovellus.firebasestorage.app/o/images%2Fbingot%2F${bingo.kuva.filename}?alt=media`}
                    alt={bingo.Name}
                    fill
                    priority={index < 4}
@@ -86,7 +83,7 @@ export default function MuutPage() {
                  <div className="w-full h-full bg-gray-200 animate-pulse rounded-lg" />
                )}
              </div>
-             <span className="ml-3 sm:ml-4 text-[14px] lg:text-[20px] truncate max-w-[calc(100%-90px)]">
+             <span className="ml-1 sm:ml-4 text-[14px] lg:text-[20px] truncate max-w-[calc(100%-90px)]">
                {bingo.Name}
              </span>
            </div>

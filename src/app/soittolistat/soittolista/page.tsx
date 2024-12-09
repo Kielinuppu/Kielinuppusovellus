@@ -119,7 +119,7 @@ function SoittolistaContent() {
            <div className="w-full h-full bg-gray-200 animate-pulse" />
          )}
        </div>
-       <span className="ml-3 sm:ml-4 text-[14px] lg:text-[20px] truncate max-w-[calc(100%-90px)]">{song.Name}</span>
+       <span className="ml-1 sm:ml-1 text-[14px] lg:text-[20px] truncate max-w-[calc(100%-90px)]">{song.Name}</span>
      </div>
      <ActionIcon
        className="cursor-pointer"
