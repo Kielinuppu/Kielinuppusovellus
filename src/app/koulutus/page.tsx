@@ -19,11 +19,8 @@ export default function KoulutusPage() {
   useEffect(() => {
     const fetchKoulutukset = async () => {
       try {
-        console.log('Fetching from collection:', 'kielinuppu-koulutusmateriaali')
         const collectionRef = collection(db, 'kielinuppu-koulutusmateriaali')
         const snapshot = await getDocs(collectionRef)
-        
-        console.log('Raw docs:', snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
         
         const koulutusList = snapshot.docs.map(doc => ({
           id: doc.id,
@@ -43,29 +40,31 @@ export default function KoulutusPage() {
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
       <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
-          className="cursor-pointer" 
+          className="cursor-pointer ml-3 sm:ml-4" 
           size={45} 
           strokeWidth={3}
           onClick={() => router.push('/home')}
         />
-        <h1 className="text-4xl font-semibold flex-1 text-center">
+        <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center truncate">
           KOULUTUKSET
         </h1>
         <div className="w-[45px]"></div>
       </div>
 
-      <div className="w-full max-w-[580px] mt-8">
+      <div className="w-full max-w-[580px] mt-4 sm:mt-8">
         {materiaalit.length === 0 ? (
-          <div className="text-center">Loading...</div>
+          <div className="text-center text-[14px] lg:text-[20px]">Loading...</div>
         ) : (
           materiaalit.map((materiaali) => (
             <Link 
               href={`/koulutus/${materiaali.id}`} 
               key={materiaali.id}
-              className="block mb-3"
+              className="block mb-2 sm:mb-3"
             >
-              <div className="flex items-center bg-white rounded-lg p-4 h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
-                <span className="text-xl flex-1 text-center">{materiaali.Name}</span>
+              <div className="flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
+                <span className="text-[14px] lg:text-[20px] flex-1 text-center truncate px-2">
+                  {materiaali.Name}
+                </span>
               </div>
             </Link>
           ))

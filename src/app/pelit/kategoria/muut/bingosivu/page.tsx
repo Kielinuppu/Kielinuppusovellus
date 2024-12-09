@@ -59,12 +59,12 @@ function BingoContent() {
       <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
         <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
           <ArrowLeft 
-            className="cursor-pointer" 
+            className="cursor-pointer ml-3 sm:ml-4" 
             size={45} 
             strokeWidth={3}
             onClick={() => router.back()}
           />
-          <h1 className="text-4xl font-semibold flex-1 text-center">
+          <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center truncate">
             Ladataan...
           </h1>
           <div className="w-[45px]"></div>
@@ -78,12 +78,12 @@ function BingoContent() {
       <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
         <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
           <ArrowLeft 
-            className="cursor-pointer" 
+            className="cursor-pointer ml-3 sm:ml-4" 
             size={45} 
             strokeWidth={3}
             onClick={() => router.back()}
           />
-          <h1 className="text-4xl font-semibold flex-1 text-center">
+          <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center truncate">
             Bingoa ei löytynyt
           </h1>
           <div className="w-[45px]"></div>
@@ -96,12 +96,12 @@ function BingoContent() {
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
       <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
-          className="cursor-pointer" 
+          className="cursor-pointer ml-3 sm:ml-4" 
           size={45} 
           strokeWidth={3}
           onClick={() => router.back()}
         />
-        <h1 className="text-4xl font-semibold flex-1 text-center">
+        <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center truncate">
           {bingo.Name}
         </h1>
         <div className="w-[45px]"></div>
@@ -111,9 +111,9 @@ function BingoContent() {
         {bingo['osoite vai ei'] === 1 && (
           <Link
             href={`/pelit/peli/${encodeURIComponent(bingo.peliosoite)}`}
-            className="bg-white rounded-lg w-full h-[75px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform cursor-pointer flex items-center justify-center"
+            className="mx-auto bg-white rounded-lg w-[400px] h-[75px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform cursor-pointer flex items-center justify-center"
           >
-            <span className="text-xl text-gray-600">ARVONTAKONE</span>
+            <span className="text-[14px] lg:text-[20px] text-gray-600">ARVONTAKONE</span>
           </Link>
         )}
         
@@ -122,7 +122,7 @@ function BingoContent() {
             href={`/viewer?type=pdf&url=${encodeURIComponent(`pdf/${bingo.pelialustat.filename}`)}&title=TULOSTETTAVAT PELIALUSTAT`}
             className="bg-white rounded-lg w-full h-[75px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform cursor-pointer flex items-center justify-center"
           >
-            <span className="text-xl text-gray-600">TULOSTETTAVAT PELIALUSTAT</span>
+            <span className="text-[14px] lg:text-[20px] text-gray-600">TULOSTETTAVAT PELIALUSTAT</span>
           </Link>
         )}
       </div>
