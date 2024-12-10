@@ -30,13 +30,15 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         setIsLoading(false)
         return
       }
-
+ 
       let userData: UserData | null = null
-
+      const savedUserCode = localStorage.getItem('userCode')
+      console.log('Tallennettu userCode:', savedUserCode)
+ 
       // Kokeillaan localStorage
       const localData = localStorage.getItem('userData')
       console.log('localStorage data:', localData)
-
+ 
       if (localData) {
         try {
           userData = JSON.parse(localData)
@@ -45,12 +47,12 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
           console.error('LocalStorage parse error:', error)
         }
       }
-
+ 
       // Jos ei löytynyt, kokeillaan cookies
       if (!userData) {
         const cookies = document.cookie.split(';')
         console.log('Cookies:', cookies)
-
+ 
         const userCookie = cookies.find(c => c.trim().startsWith('userData='))
         if (userCookie) {
           try {
@@ -63,16 +65,16 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
           }
         }
       }
-
-      // Tarkistetaan, onko "Koodi" oikea
-      if (!userData || !userData.Koodi || userData.Koodi !== '5XCFEI8') {  // Oikea koodi
-        console.log('Kirjautumistiedot virheelliset tai koodi väärin')
+ 
+      // Tarkistetaan, onko koodi oikea
+      if (!userData || !userData.Koodi || !savedUserCode || userData.Koodi !== savedUserCode) {
+        console.log('Kirjautumistiedot virheelliset tai koodi ei täsmää')
         localStorage.removeItem('userData')
         localStorage.removeItem('userCode')
         router.push('/login')
         return
       }
-
+ 
       // Tarkistetaan, että käyttäjällä on pääsy
       if (!userData.Access || userData.Access !== 'TRUE') {
         console.log('Käyttöoikeudet puuttuvat')
@@ -81,15 +83,14 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         router.push('/login')
         return
       }
-
+ 
       console.log('Kirjautuminen OK')
       setIsLoading(false)
     }
-
+ 
     checkAuth()
   }, [pathname, router])
-
-  // Näytetään latausruutu, kun tarkistetaan kirjautumista
+ 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#e9f1f3] flex items-center justify-center">
@@ -97,6 +98,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       </div>
     )
   }
-
+ 
   return <>{children}</>
 }
