@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
+import type { UserData } from '@/types/user'
 
 const DEMO_LAULU_ID = '48'
 const DEMO_AIHE_ID = '10'
@@ -27,38 +28,95 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         setIsLoading(false)
         return
       }
-  
-      // Tarkistetaan kirjautuminen sekä localStoragesta että cookiesta
-      let userData = null
-      try {
+
+      // Tarkistetaan kirjautuminen
+      let userData: UserData | null = null
+
+      // Kokeillaan ensin IndexedDB
+      if ('indexedDB' in window) {
+        try {
+          const dbRequest = window.indexedDB.open('KielinuppuDB', 1)
+          
+          dbRequest.onupgradeneeded = (event: IDBVersionChangeEvent) => {
+            const db = (event.target as IDBOpenDBRequest).result
+            if (!db.objectStoreNames.contains('auth')) {
+              db.createObjectStore('auth')
+            }
+          }
+
+          dbRequest.onsuccess = (event: Event) => {
+            const db = (event.target as IDBOpenDBRequest).result
+            const transaction = db.transaction(['auth'], 'readonly')
+            const store = transaction.objectStore('auth')
+            
+            const request = store.get('userData')
+            request.onsuccess = () => {
+              if (request.result) {
+                userData = request.result as UserData
+              }
+            }
+          }
+        } catch (error) {
+          console.error('IndexedDB error:', error)
+        }
+      }
+
+      // Jos ei löydy IndexedDB:stä, kokeillaan localStorage
+      if (!userData) {
         const localData = localStorage.getItem('userData')
         if (localData) {
-          userData = JSON.parse(localData)
-        } else {
-          // Tarkista cookie jos localStorage on tyhjä
-          const cookies = document.cookie.split(';')
-          const userCookie = cookies.find(c => c.trim().startsWith('userData='))
-          if (userCookie) {
-            userData = JSON.parse(userCookie.split('=')[1])
-            // Tallenna myös localStorageen
-            localStorage.setItem('userData', JSON.stringify(userData))
-            localStorage.setItem('userCode', userData.Koodi)
+          try {
+            userData = JSON.parse(localData) as UserData
+          } catch (error) {
+            console.error('LocalStorage parse error:', error)
           }
         }
-      } catch (error) {
-        console.error('Auth check error:', error)
       }
-  
+
+      // Jos ei löydy LocalStoragesta, kokeillaan cookieta
+      if (!userData) {
+        const cookies = document.cookie.split(';')
+        const userCookie = cookies.find(c => c.trim().startsWith('userData='))
+        if (userCookie) {
+          try {
+            userData = JSON.parse(userCookie.split('=')[1]) as UserData
+            // Tallenna myös muihin tallennuspaikkoihin
+            localStorage.setItem('userData', JSON.stringify(userData))
+            if ('indexedDB' in window) {
+              const dbRequest = window.indexedDB.open('KielinuppuDB', 1)
+              dbRequest.onsuccess = (event: Event) => {
+                const db = (event.target as IDBOpenDBRequest).result
+                const transaction = db.transaction(['auth'], 'readwrite')
+                const store = transaction.objectStore('auth')
+                store.put(userData, 'userData')
+              }
+            }
+          } catch (error) {
+            console.error('Cookie parse error:', error)
+          }
+        }
+      }
+
       if (!userData || !userData.Access || userData.Access !== 'TRUE') {
         localStorage.removeItem('userData')
         localStorage.removeItem('userCode')
+        if ('indexedDB' in window) {
+          const dbRequest = window.indexedDB.open('KielinuppuDB', 1)
+          dbRequest.onsuccess = (event: Event) => {
+            const db = (event.target as IDBOpenDBRequest).result
+            const transaction = db.transaction(['auth'], 'readwrite')
+            const store = transaction.objectStore('auth')
+            store.delete('userData')
+            store.delete('userCode')
+          }
+        }
         router.push('/login')
         return
       }
-  
+
       setIsLoading(false)
     }
-  
+
     checkAuth()
   }, [pathname, router])
 
