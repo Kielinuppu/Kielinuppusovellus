@@ -44,20 +44,22 @@ export default function Login() {
         return
       }
  
-      // Tallennetaan useaan paikkaan
       try {
         console.log('Yritetään tallentaa kirjautumistietoja...')
-    
-        localStorage.setItem('userCode', userCode)
-        console.log('userCode tallennettu:', localStorage.getItem('userCode'))
-        
-        localStorage.setItem('userData', JSON.stringify(userData))
-        console.log('userData tallennettu:', localStorage.getItem('userData'))
  
-        // Asetetaan cookie pitkällä expirella
-        const oneYear = 365 * 24 * 60 * 60 * 1000
-        const expires = new Date(Date.now() + oneYear)
-        document.cookie = `userData=${JSON.stringify(userData)}; path=/; expires=${expires.toUTCString()}; secure; SameSite=Strict`
+        // Yhdistetään kaikki auth tiedot
+        const authData = {
+          userCode,
+          userData,
+          expireDate: new Date().getTime() + (365 * 24 * 60 * 60 * 1000)
+        }
+ 
+        // Tallennetaan kaikki samaan paikkaan
+        localStorage.setItem('kielinuppuAuth', JSON.stringify(authData))
+        console.log('Auth data tallennettu:', localStorage.getItem('kielinuppuAuth'))
+ 
+        const expires = new Date(Date.now() + (365 * 24 * 60 * 60 * 1000))
+        document.cookie = `kielinuppuAuth=${JSON.stringify(authData)}; path=/; expires=${expires.toUTCString()}; secure; SameSite=Strict`
         console.log('Cookie tallennettu:', document.cookie)
  
       } catch (storageError) {

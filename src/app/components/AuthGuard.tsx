@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import type { UserData } from '@/types/user'
+
 
 const DEMO_LAULU_ID = '48'
 const DEMO_AIHE_ID = '10'
@@ -30,64 +30,58 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         setIsLoading(false)
         return
       }
- 
-      let userData: UserData | null = null
-      const savedUserCode = localStorage.getItem('userCode')
-      console.log('Tallennettu userCode:', savedUserCode)
- 
+  
+      let authData = null
+  
       // Kokeillaan localStorage
-      const localData = localStorage.getItem('userData')
-      console.log('localStorage data:', localData)
- 
+      const localData = localStorage.getItem('kielinuppuAuth')
+      console.log('localStorage auth data:', localData)
+  
       if (localData) {
         try {
-          userData = JSON.parse(localData)
-          console.log('userData parsittu localStoragesta:', userData)
+          authData = JSON.parse(localData)
+          console.log('Auth data parsittu localStoragesta:', authData)
         } catch (error) {
           console.error('LocalStorage parse error:', error)
         }
       }
- 
+  
       // Jos ei löytynyt, kokeillaan cookies
-      if (!userData) {
+      if (!authData) {
         const cookies = document.cookie.split(';')
         console.log('Cookies:', cookies)
- 
-        const userCookie = cookies.find(c => c.trim().startsWith('userData='))
-        if (userCookie) {
+  
+        const authCookie = cookies.find(c => c.trim().startsWith('kielinuppuAuth='))
+        if (authCookie) {
           try {
-            userData = JSON.parse(userCookie.split('=')[1])
-            console.log('userData parsittu cookiesta:', userData)
-            // Tallennetaan myös localStorageen, jos cookie löytyi
-            localStorage.setItem('userData', JSON.stringify(userData))
+            authData = JSON.parse(authCookie.split('=')[1])
+            console.log('Auth data parsittu cookiesta:', authData)
+            // Tallennetaan myös localStorageen
+            localStorage.setItem('kielinuppuAuth', JSON.stringify(authData))
           } catch (error) {
             console.error('Cookie parse error:', error)
           }
         }
       }
- 
-      // Tarkistetaan, onko koodi oikea
-      if (!userData || !userData.Koodi || !savedUserCode || userData.Koodi !== savedUserCode) {
-        console.log('Kirjautumistiedot virheelliset tai koodi ei täsmää')
-        localStorage.removeItem('userData')
-        localStorage.removeItem('userCode')
+  
+      // Tarkista voimassaolo ja tiedot
+      if (!authData || 
+          !authData.expireDate || 
+          authData.expireDate < new Date().getTime() ||
+          !authData.userData?.Access || 
+          authData.userData.Access !== 'TRUE' ||
+          !authData.userCode || 
+          authData.userCode !== authData.userData.Koodi) {
+        console.log('Auth tiedot virheelliset tai vanhentuneet')
+        localStorage.removeItem('kielinuppuAuth')
         router.push('/login')
         return
       }
- 
-      // Tarkistetaan, että käyttäjällä on pääsy
-      if (!userData.Access || userData.Access !== 'TRUE') {
-        console.log('Käyttöoikeudet puuttuvat')
-        localStorage.removeItem('userData')
-        localStorage.removeItem('userCode')
-        router.push('/login')
-        return
-      }
- 
+  
       console.log('Kirjautuminen OK')
       setIsLoading(false)
     }
- 
+  
     checkAuth()
   }, [pathname, router])
  
@@ -97,7 +91,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     )
+   }
+   
+   return <>{children}</>
   }
- 
-  return <>{children}</>
-}
