@@ -22,38 +22,51 @@ export default function Login() {
       setError('Anna koodi')
       return
     }
-
+  
     setIsLoading(true)
     try {
       const usersRef = collection(db, 'kayttajat')
       const q = query(usersRef, where('Koodi', '==', userCode))
       const querySnapshot = await getDocs(q)
-
+  
       if (querySnapshot.empty) {
         setError('Virheellinen koodi')
         return
       }
-
+  
       const userData = querySnapshot.docs[0].data()
-
+  
       if (userData.Access !== 'TRUE') {
         setError('Ei käyttöoikeutta')
         return
       }
-
+  
       // Lisätään aikaleima
       userData.lastLogin = new Date().toISOString()
-
-      localStorage.setItem('userCode', userCode)
-      localStorage.setItem('userData', JSON.stringify(userData))
-      
-      // Asetetaan cookie vanhenemaan 30 päivän päästä
-      const expires = new Date()
-      expires.setDate(expires.getDate() + 30)
-      document.cookie = `userData=${JSON.stringify(userData)}; path=/; expires=${expires.toUTCString()}`
-      
+  
+      // Tallennetaan tiedot
+      try {
+        localStorage.setItem('userCode', userCode)
+        localStorage.setItem('userData', JSON.stringify(userData))
+        
+        // Asetetaan cookie pitkäksi ajaksi
+        const oneYear = 365 * 24 * 60 * 60 * 1000
+        const expires = new Date(Date.now() + oneYear)
+        document.cookie = `userData=${JSON.stringify(userData)}; path=/; expires=${expires.toUTCString()}; secure; SameSite=Strict`
+        
+        // Varmistetaan että tallennus onnistui
+        const testData = localStorage.getItem('userData')
+        if (!testData) {
+          throw new Error('Storage failed')
+        }
+      } catch (storageError) {
+        console.error('Storage error:', storageError)
+        setError('Kirjautumistietojen tallennus epäonnistui')
+        return
+      }
+  
       router.push('/home')
-
+  
     } catch (error) {
       console.error('Login error:', error)
       setError('Kirjautumisvirhe')

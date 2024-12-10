@@ -27,35 +27,38 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         setIsLoading(false)
         return
       }
-
-      // Tarkistetaan kirjautuminen
-      const userData = localStorage.getItem('userData')
-      if (!userData) {
-        router.push('/login')
-        setIsLoading(false)
-        return
-      }
-
+  
+      // Tarkistetaan kirjautuminen sekä localStoragesta että cookiesta
+      let userData = null
       try {
-        // Tarkistetaan userData:n voimassaolo
-        const user = JSON.parse(userData)
-        if (!user || !user.Access || user.Access !== 'TRUE') {
-          localStorage.removeItem('userData')
-          localStorage.removeItem('userCode')
-          document.cookie = 'userData=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
-          router.push('/login')
+        const localData = localStorage.getItem('userData')
+        if (localData) {
+          userData = JSON.parse(localData)
+        } else {
+          // Tarkista cookie jos localStorage on tyhjä
+          const cookies = document.cookie.split(';')
+          const userCookie = cookies.find(c => c.trim().startsWith('userData='))
+          if (userCookie) {
+            userData = JSON.parse(userCookie.split('=')[1])
+            // Tallenna myös localStorageen
+            localStorage.setItem('userData', JSON.stringify(userData))
+            localStorage.setItem('userCode', userData.Koodi)
+          }
         }
       } catch (error) {
-        console.error('Error parsing userData:', error)
+        console.error('Auth check error:', error)
+      }
+  
+      if (!userData || !userData.Access || userData.Access !== 'TRUE') {
         localStorage.removeItem('userData')
         localStorage.removeItem('userCode')
-        document.cookie = 'userData=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
         router.push('/login')
+        return
       }
-
+  
       setIsLoading(false)
     }
-
+  
     checkAuth()
   }, [pathname, router])
 
