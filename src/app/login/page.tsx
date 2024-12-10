@@ -23,113 +23,105 @@ export default function Login() {
       setError('Anna koodi')
       return
     }
- 
+
     setIsLoading(true)
     try {
       const usersRef = collection(db, 'kayttajat')
       const q = query(usersRef, where('Koodi', '==', userCode))
       const querySnapshot = await getDocs(q)
- 
+
       if (querySnapshot.empty) {
         setError('Virheellinen koodi')
         setIsLoading(false)
         return
       }
- 
+
       const userData = querySnapshot.docs[0].data() as UserData
- 
+
       if (userData.Access !== 'TRUE') {
         setError('Ei käyttöoikeutta')
         setIsLoading(false)
         return
       }
- 
+
       try {
-        console.log('Yritetään tallentaa kirjautumistietoja...')
- 
-        // Yhdistetään kaikki auth tiedot
-        const authData = {
-          userCode,
-          userData,
-          expireDate: new Date().getTime() + (365 * 24 * 60 * 60 * 1000)
-        }
- 
-        // Tallennetaan kaikki samaan paikkaan
-        localStorage.setItem('kielinuppuAuth', JSON.stringify(authData))
-        console.log('Auth data tallennettu:', localStorage.getItem('kielinuppuAuth'))
- 
-        const expires = new Date(Date.now() + (365 * 24 * 60 * 60 * 1000))
-        document.cookie = `kielinuppuAuth=${JSON.stringify(authData)}; path=/; expires=${expires.toUTCString()}; secure; SameSite=Strict`
-        console.log('Cookie tallennettu:', document.cookie)
- 
+        // Tallennetaan kirjautumistiedot
+        localStorage.setItem('userCode', userCode)
+        localStorage.setItem('userData', JSON.stringify(userData))
+        
+        // Asetetaan cookie
+        const oneYear = 365 * 24 * 60 * 60 * 1000
+        const expires = new Date(Date.now() + oneYear)
+        document.cookie = `userData=${JSON.stringify(userData)}; path=/; expires=${expires.toUTCString()}; secure; SameSite=Strict`
+
       } catch (storageError) {
         console.error('Storage error:', storageError)
         setError('Kirjautumistietojen tallennus epäonnistui')
         return
       }
- 
+
       router.push('/home')
- 
+
     } catch (error) {
       console.error('Login error:', error)
       setError('Kirjautumisvirhe')
     } finally {
       setIsLoading(false)
     }
- }
+  }
 
- return (
-   <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center pt-2">
-     <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
-       <ArrowLeft 
-         className="cursor-pointer" 
-         size={45} 
-         strokeWidth={3}
-         onClick={() => router.push('/')}
-       />
-     </div>
-     
-     <div className="flex flex-col items-center justify-center flex-1 -mt-20 w-full">
-       <h1 className="text-5xl font-semibold mb-12 text-center">
-         KIRJAUDU SISÄÄN
-       </h1>
-       <form onSubmit={handleLogin} className="flex flex-col items-center w-full">
-         <input
-           type="text"
-           placeholder="ANNA KOODI"
-           value={userCode}
-           onChange={(e) => {
-             setUserCode(e.target.value.toUpperCase())
-             setError('')
-           }}
-           disabled={isLoading}
-           className="bg-white w-80 px-6 py-3 rounded-lg shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] mb-8 placeholder-gray-400"
-         />
-         {error && (
-           <p className="text-red-500 mb-4">{error}</p>
-         )}
-         <button 
-           type="submit"
-           disabled={isLoading}
-           className={`bg-[#f6f7e7] px-6 py-3 rounded-lg shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:shadow-md w-80 mb-8 
-             ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-         >
-           {isLoading ? 'KIRJAUDUTAAN...' : 'KIRJAUDU'}
-         </button>
-       </form>
-       <div>
-         {uteliasUrl && (
-           <QuickImage
-             src={uteliasUrl}
-             alt="Utelias nalle"
-             width={350}
-             height={350}
-             priority={true}
-             className="w-[350px] h-[350px] object-contain"
-           />
-         )}
-       </div>
-     </div>
-   </div>
- )
+  return (
+    <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center pt-2">
+      <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
+        <ArrowLeft 
+          className="cursor-pointer" 
+          size={45} 
+          strokeWidth={3}
+          onClick={() => router.push('/')}
+        />
+      </div>
+      
+      <div className="flex flex-col items-center justify-center flex-1 -mt-20 w-full">
+        <h1 className="text-5xl font-semibold mb-12 text-center">
+          KIRJAUDU SISÄÄN
+        </h1>
+        <form onSubmit={handleLogin} className="flex flex-col items-center w-full">
+          <input
+            type="text"
+            placeholder="ANNA KOODI"
+            value={userCode}
+            onChange={(e) => {
+              setUserCode(e.target.value.toUpperCase())
+              setError('')
+            }}
+            disabled={isLoading}
+            className="bg-white w-80 px-6 py-3 rounded-lg shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] mb-8 placeholder-gray-400"
+          />
+          {error && (
+            <p className="text-red-500 mb-4">{error}</p>
+          )}
+          <button 
+            type="submit"
+            disabled={isLoading}
+            className={`bg-[#f6f7e7] px-6 py-3 rounded-lg shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:shadow-md w-80 mb-8 
+              ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            {isLoading ? 'KIRJAUDUTAAN...' : 'KIRJAUDU'}
+          </button>
+        </form>
+        <div>
+          {uteliasUrl && (
+            <QuickImage
+              src={uteliasUrl}
+              alt="Utelias nalle"
+              width={350}
+              height={350}
+              priority={true}
+              className="w-[350px] h-[350px] object-contain"
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  )
 }

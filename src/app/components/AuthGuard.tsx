@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 
-
 const DEMO_LAULU_ID = '48'
 const DEMO_AIHE_ID = '10'
 
@@ -14,8 +13,15 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const checkAuth = async () => {
-      console.log('AuthGuard tarkistaa kirjautumisen:', pathname)
-      
+      // Jos ollaan juuressa ja käyttäjä on kirjautunut, ohjaa suoraan homeen
+      if (pathname === '/') {
+        const userData = localStorage.getItem('userData')
+        if (userData) {
+          router.push('/home')
+          return
+        }
+      }
+
       // Sallitut reitit ilman kirjautumista
       if (
         pathname === '/login' ||
@@ -30,68 +36,27 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         setIsLoading(false)
         return
       }
-  
-      let authData = null
-  
-      // Kokeillaan localStorage
-      const localData = localStorage.getItem('kielinuppuAuth')
-      console.log('localStorage auth data:', localData)
-  
-      if (localData) {
-        try {
-          authData = JSON.parse(localData)
-          console.log('Auth data parsittu localStoragesta:', authData)
-        } catch (error) {
-          console.error('LocalStorage parse error:', error)
-        }
-      }
-  
-      // Jos ei löytynyt, kokeillaan cookies
-      if (!authData) {
-        const cookies = document.cookie.split(';')
-        console.log('Cookies:', cookies)
-  
-        const authCookie = cookies.find(c => c.trim().startsWith('kielinuppuAuth='))
-        if (authCookie) {
-          try {
-            authData = JSON.parse(authCookie.split('=')[1])
-            console.log('Auth data parsittu cookiesta:', authData)
-            // Tallennetaan myös localStorageen
-            localStorage.setItem('kielinuppuAuth', JSON.stringify(authData))
-          } catch (error) {
-            console.error('Cookie parse error:', error)
-          }
-        }
-      }
-  
-      // Tarkista voimassaolo ja tiedot
-      if (!authData || 
-          !authData.expireDate || 
-          authData.expireDate < new Date().getTime() ||
-          !authData.userData?.Access || 
-          authData.userData.Access !== 'TRUE' ||
-          !authData.userCode || 
-          authData.userCode !== authData.userData.Koodi) {
-        console.log('Auth tiedot virheelliset tai vanhentuneet')
-        localStorage.removeItem('kielinuppuAuth')
+
+      // Tarkista kirjautuminen
+      const userData = localStorage.getItem('userData')
+      if (!userData) {
         router.push('/login')
         return
       }
-  
-      console.log('Kirjautuminen OK')
+
       setIsLoading(false)
     }
-  
+
     checkAuth()
   }, [pathname, router])
- 
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#e9f1f3] flex items-center justify-center">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     )
-   }
-   
-   return <>{children}</>
   }
+
+  return <>{children}</>
+}
