@@ -44,38 +44,21 @@ export default function Login() {
         return
       }
 
-      // Tallennetaan IndexedDB:hen
-      if ('indexedDB' in window) {
-        const dbRequest = window.indexedDB.open('KielinuppuDB', 1)
-        
-        dbRequest.onupgradeneeded = (event: IDBVersionChangeEvent) => {
-          const db = (event.target as IDBOpenDBRequest).result
-          if (!db.objectStoreNames.contains('auth')) {
-            db.createObjectStore('auth')
-          }
-        }
+      // Tallennetaan useaan paikkaan
+      try {
+        localStorage.setItem('userCode', userCode)
+        localStorage.setItem('userData', JSON.stringify(userData))
 
-        dbRequest.onsuccess = (event: Event) => {
-          const db = (event.target as IDBOpenDBRequest).result
-          const transaction = db.transaction(['auth'], 'readwrite')
-          const store = transaction.objectStore('auth')
+        // Asetetaan cookie pitkällä expirella
+        const oneYear = 365 * 24 * 60 * 60 * 1000
+        const expires = new Date(Date.now() + oneYear)
+        document.cookie = `userData=${JSON.stringify(userData)}; path=/; expires=${expires.toUTCString()}`
 
-          store.put(userData, 'userData')
-          store.put(userCode, 'userCode')
-        }
-
-        dbRequest.onerror = () => {
-          console.error("IndexedDB error")
-        }
+      } catch (storageError) {
+        console.error('Storage error:', storageError)
+        setError('Kirjautumistietojen tallennus epäonnistui')
+        return
       }
-
-      // Tallennetaan myös localStorage ja cookie
-      localStorage.setItem('userCode', userCode)
-      localStorage.setItem('userData', JSON.stringify(userData))
-      
-      const oneYear = 365 * 24 * 60 * 60 * 1000
-      const expires = new Date(Date.now() + oneYear)
-      document.cookie = `userData=${JSON.stringify(userData)}; path=/; expires=${expires.toUTCString()}; secure; SameSite=Strict`
 
       router.push('/home')
 
@@ -85,7 +68,7 @@ export default function Login() {
     } finally {
       setIsLoading(false)
     }
-  }
+}
 
  return (
    <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center pt-2">

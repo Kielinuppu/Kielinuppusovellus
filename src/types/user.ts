@@ -1,11 +1,11 @@
 export interface UserData {
     Access: string;
     Koodi: string;
-    ID?: number;
+    Admin?: string;
     Name?: string;
-    Password?: string;
+    Password?: string; 
     Username?: string;
     "Nyt soi"?: string;
     last_used?: string | null;
-    lastLogin?: string;
+    lastLogin?: Date;
   }

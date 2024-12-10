@@ -28,92 +28,42 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         setIsLoading(false)
         return
       }
-
+    
       // Tarkistetaan kirjautuminen
       let userData: UserData | null = null
-
-      // Kokeillaan ensin IndexedDB
-      if ('indexedDB' in window) {
+    
+      // Kokeillaan localStorage
+      const localData = localStorage.getItem('userData')
+      if (localData) {
         try {
-          const dbRequest = window.indexedDB.open('KielinuppuDB', 1)
-          
-          dbRequest.onupgradeneeded = (event: IDBVersionChangeEvent) => {
-            const db = (event.target as IDBOpenDBRequest).result
-            if (!db.objectStoreNames.contains('auth')) {
-              db.createObjectStore('auth')
-            }
-          }
-
-          dbRequest.onsuccess = (event: Event) => {
-            const db = (event.target as IDBOpenDBRequest).result
-            const transaction = db.transaction(['auth'], 'readonly')
-            const store = transaction.objectStore('auth')
-            
-            const request = store.get('userData')
-            request.onsuccess = () => {
-              if (request.result) {
-                userData = request.result as UserData
-              }
-            }
-          }
+          userData = JSON.parse(localData)
         } catch (error) {
-          console.error('IndexedDB error:', error)
+          console.error('LocalStorage parse error:', error)
         }
       }
-
-      // Jos ei löydy IndexedDB:stä, kokeillaan localStorage
-      if (!userData) {
-        const localData = localStorage.getItem('userData')
-        if (localData) {
-          try {
-            userData = JSON.parse(localData) as UserData
-          } catch (error) {
-            console.error('LocalStorage parse error:', error)
-          }
-        }
-      }
-
-      // Jos ei löydy LocalStoragesta, kokeillaan cookieta
+    
+      // Jos ei löydy, kokeillaan cookie
       if (!userData) {
         const cookies = document.cookie.split(';')
         const userCookie = cookies.find(c => c.trim().startsWith('userData='))
         if (userCookie) {
           try {
-            userData = JSON.parse(userCookie.split('=')[1]) as UserData
-            // Tallenna myös muihin tallennuspaikkoihin
+            userData = JSON.parse(userCookie.split('=')[1])
+            // Jos löytyi cookiesta, tallennetaan myös localStorageen
             localStorage.setItem('userData', JSON.stringify(userData))
-            if ('indexedDB' in window) {
-              const dbRequest = window.indexedDB.open('KielinuppuDB', 1)
-              dbRequest.onsuccess = (event: Event) => {
-                const db = (event.target as IDBOpenDBRequest).result
-                const transaction = db.transaction(['auth'], 'readwrite')
-                const store = transaction.objectStore('auth')
-                store.put(userData, 'userData')
-              }
-            }
           } catch (error) {
             console.error('Cookie parse error:', error)
           }
         }
       }
-
+    
       if (!userData || !userData.Access || userData.Access !== 'TRUE') {
         localStorage.removeItem('userData')
         localStorage.removeItem('userCode')
-        if ('indexedDB' in window) {
-          const dbRequest = window.indexedDB.open('KielinuppuDB', 1)
-          dbRequest.onsuccess = (event: Event) => {
-            const db = (event.target as IDBOpenDBRequest).result
-            const transaction = db.transaction(['auth'], 'readwrite')
-            const store = transaction.objectStore('auth')
-            store.delete('userData')
-            store.delete('userCode')
-          }
-        }
         router.push('/login')
         return
       }
-
+    
       setIsLoading(false)
     }
 
