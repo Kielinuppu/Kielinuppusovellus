@@ -1,7 +1,7 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
 
 const firebaseConfig = {
  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -17,5 +17,13 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
 const storage = getStorage(app);
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+// Asetetaan Firebase auth persistenssi
+if (typeof window !== 'undefined') {
+  setPersistence(auth, browserLocalPersistence)
+    .catch((error) => {
+      console.error("Auth persistence error:", error);
+    });
+}
 
 export { storage, db, auth };

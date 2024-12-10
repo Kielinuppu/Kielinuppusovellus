@@ -8,7 +8,7 @@ export async function GET() {
         name: "Kielinuppu",
         short_name: "Kielinuppu",
         description: "Varhaiskasvatuksen sovellus",
-        id: "/",
+        id: "/home",
         start_url: "/home",
         scope: "/",
         display: "standalone",
