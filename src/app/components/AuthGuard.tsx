@@ -64,9 +64,18 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         }
       }
 
-      // Tarkistetaan, onko userData validi
-      if (!userData || !userData.Access || userData.Access !== 'TRUE') {
-        console.log('Kirjautumistietoja ei löytynyt tai ne ovat virheelliset')
+      // Tarkistetaan, onko "Koodi" oikea
+      if (!userData || !userData.Koodi || userData.Koodi !== '5XCFEI8') {  // Oikea koodi
+        console.log('Kirjautumistiedot virheelliset tai koodi väärin')
+        localStorage.removeItem('userData')
+        localStorage.removeItem('userCode')
+        router.push('/login')
+        return
+      }
+
+      // Tarkistetaan, että käyttäjällä on pääsy
+      if (!userData.Access || userData.Access !== 'TRUE') {
+        console.log('Käyttöoikeudet puuttuvat')
         localStorage.removeItem('userData')
         localStorage.removeItem('userCode')
         router.push('/login')
