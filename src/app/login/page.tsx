@@ -12,6 +12,7 @@ export default function Login() {
   const router = useRouter()
   const [userCode, setUserCode] = useState('')
   const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const uteliasUrl = getFullImageUrl('utelias.PNG', 'common')
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -22,6 +23,7 @@ export default function Login() {
       return
     }
 
+    setIsLoading(true)
     try {
       const usersRef = collection(db, 'kayttajat')
       const q = query(usersRef, where('Koodi', '==', userCode))
@@ -39,15 +41,24 @@ export default function Login() {
         return
       }
 
+      // Lisätään aikaleima
+      userData.lastLogin = new Date().toISOString()
+
       localStorage.setItem('userCode', userCode)
       localStorage.setItem('userData', JSON.stringify(userData))
-      document.cookie = `userData=${JSON.stringify(userData)}; path=/`
+      
+      // Asetetaan cookie vanhenemaan 30 päivän päästä
+      const expires = new Date()
+      expires.setDate(expires.getDate() + 30)
+      document.cookie = `userData=${JSON.stringify(userData)}; path=/; expires=${expires.toUTCString()}`
       
       router.push('/home')
 
     } catch (error) {
       console.error('Login error:', error)
       setError('Kirjautumisvirhe')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -75,6 +86,7 @@ export default function Login() {
               setUserCode(e.target.value.toUpperCase())
               setError('')
             }}
+            disabled={isLoading}
             className="bg-white w-80 px-6 py-3 rounded-lg shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] mb-8 placeholder-gray-400"
           />
           {error && (
@@ -82,9 +94,11 @@ export default function Login() {
           )}
           <button 
             type="submit"
-            className="bg-[#f6f7e7] px-6 py-3 rounded-lg shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:shadow-md w-80 mb-8"
+            disabled={isLoading}
+            className={`bg-[#f6f7e7] px-6 py-3 rounded-lg shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:shadow-md w-80 mb-8 
+              ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            KIRJAUDU
+            {isLoading ? 'KIRJAUDUTAAN...' : 'KIRJAUDU'}
           </button>
         </form>
         <div>

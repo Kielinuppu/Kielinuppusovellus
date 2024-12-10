@@ -12,7 +12,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Tarkistetaan kirjautuminen vain kerran komponentin mountissa
     const checkAuth = async () => {
       // Sallitut reitit ilman kirjautumista
       if (
@@ -32,7 +31,8 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       // Tarkistetaan kirjautuminen
       const userData = localStorage.getItem('userData')
       if (!userData) {
-        router.push('/')
+        router.push('/login')
+        setIsLoading(false)
         return
       }
 
@@ -42,15 +42,15 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         if (!user || !user.Access || user.Access !== 'TRUE') {
           localStorage.removeItem('userData')
           localStorage.removeItem('userCode')
-          router.push('/')
-          return
+          document.cookie = 'userData=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+          router.push('/login')
         }
       } catch (error) {
         console.error('Error parsing userData:', error)
         localStorage.removeItem('userData')
         localStorage.removeItem('userCode')
-        router.push('/')
-        return
+        document.cookie = 'userData=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+        router.push('/login')
       }
 
       setIsLoading(false)
@@ -60,7 +60,11 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   }, [pathname, router])
 
   if (isLoading) {
-    return <div>Ladataan...</div> // tai joku loading-spinner
+    return (
+      <div className="min-h-screen bg-[#e9f1f3] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    )
   }
 
   return <>{children}</>
