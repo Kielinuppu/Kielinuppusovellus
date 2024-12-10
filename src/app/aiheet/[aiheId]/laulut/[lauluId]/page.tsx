@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect, useState, use } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { db } from '@/lib/firebase'
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore'
+import { use } from 'react'
 
 type PageProps = {
   params: Promise<{
@@ -33,65 +34,64 @@ export default function LauluPage({ params }: PageProps) {
   const router = useRouter()
   const [laulu, setLaulu] = useState<Laulu | null>(null)
   const [tekemiset, setTekemiset] = useState<Tekeminen[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function fetchLaulu() {
+    async function fetchData() {
+      setLoading(true)
       try {
-        const lauluDoc = await getDoc(doc(db, 'laulut', resolvedParams.lauluId))
+        const [lauluDoc, tekemisetCollection] = await Promise.all([
+          getDoc(doc(db, 'laulut', resolvedParams.lauluId)),
+          getDocs(collection(db, 'tekeminen'))
+        ])
+
         if (lauluDoc.exists()) {
-          setLaulu(lauluDoc.data() as Laulu)
+          const lauluData = lauluDoc.data() as Laulu
+          setLaulu(lauluData)
+
+          const laulunTekemiset = tekemisetCollection.docs
+            .map(doc => doc.data() as Tekeminen)
+            .filter(t => t.Lauluts?.includes(String(lauluData.ID)))
+            .sort((a, b) => a.tunnusluku - b.tunnusluku)
+
+          setTekemiset(laulunTekemiset)
         }
       } catch (error) {
-        console.error('Error fetching laulu:', error)
+        console.error('Error fetching data:', error)
+      } finally {
+        setLoading(false)
       }
     }
 
-    fetchLaulu()
+    fetchData()
   }, [resolvedParams.lauluId])
 
-  useEffect(() => {
-    async function fetchTekemiset() {
-      if (!laulu?.ID) return;
-      
-      try {
-        const tekemisetCollection = await getDocs(collection(db, 'tekeminen'));
-        
-        const laulunTekemiset = tekemisetCollection.docs
-          .map(doc => doc.data() as Tekeminen)
-          .filter(t => t.Lauluts?.includes(String(laulu.ID)))
-          .sort((a, b) => a.tunnusluku - b.tunnusluku);
-    
-        setTekemiset(laulunTekemiset);
-      } catch (error) {
-        console.error('Error fetching tekemiset:', error);
-      }
-    }
-  
-    fetchTekemiset();
-  }, [laulu]);
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#e9f1f3] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    )
+  }
 
   const handleAction = (tekeminen: Tekeminen) => {
     if (!laulu?.Name) return;
     
-    // Audio sivu: MP3 ja Karaoke
     if (tekeminen.tunnusluku === 1 || tekeminen.tunnusluku === 2) {
       router.push(`/audio/${resolvedParams.lauluId}?type=${tekeminen.tunnusluku === 1 ? 'mp3' : 'karaoke'}`);
       return;
     }
   
-    // PDF sivu: Tulosteet ja Nuotit
     if (tekeminen.tunnusluku === 3 || tekeminen.tunnusluku === 4) {
       router.push(`/pdf/${resolvedParams.lauluId}?type=${tekeminen.tunnusluku === 3 ? 'tulosteet' : 'nuotit'}`);
       return;
     }
   
-    // Pelit: tunnusluvut 5-8
     if (tekeminen.tunnusluku >= 5 && tekeminen.tunnusluku <= 8) {
       router.push(`/pelit/${resolvedParams.lauluId}?url=${encodeURIComponent(tekeminen['Pelin osoite'])}`);
       return;
     }
 
-    // Tunnusluku 9 ohjataan viewer-sivulle
     if (tekeminen.tunnusluku === 9) {
       router.push(`/viewer?type=video&url=${encodeURIComponent(tekeminen['Pelin osoite'])}`);
       return;
