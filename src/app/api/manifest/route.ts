@@ -9,7 +9,7 @@ export async function GET() {
         short_name: "Kielinuppu",
         description: "Varhaiskasvatuksen sovellus",
         id: "/",
-        start_url: "/",
+        start_url: "/home",
         scope: "/",
         display: "standalone",
         background_color: "#e9f1f3",
