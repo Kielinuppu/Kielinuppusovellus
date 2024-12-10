@@ -15,7 +15,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const checkAuth = async () => {
       console.log('AuthGuard tarkistaa kirjautumisen:', pathname)
- 
+      
       // Sallitut reitit ilman kirjautumista
       if (
         pathname === '/login' ||
@@ -30,14 +30,13 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         setIsLoading(false)
         return
       }
-    
-      // Tarkistetaan kirjautuminen
+
       let userData: UserData | null = null
-    
+
       // Kokeillaan localStorage
       const localData = localStorage.getItem('userData')
       console.log('localStorage data:', localData)
- 
+
       if (localData) {
         try {
           userData = JSON.parse(localData)
@@ -46,25 +45,26 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
           console.error('LocalStorage parse error:', error)
         }
       }
-    
-      // Jos ei löydy, kokeillaan cookie
+
+      // Jos ei löytynyt, kokeillaan cookies
       if (!userData) {
         const cookies = document.cookie.split(';')
-        console.log('cookies:', cookies)
-        
+        console.log('Cookies:', cookies)
+
         const userCookie = cookies.find(c => c.trim().startsWith('userData='))
         if (userCookie) {
           try {
             userData = JSON.parse(userCookie.split('=')[1])
             console.log('userData parsittu cookiesta:', userData)
-            // Jos löytyi cookiesta, tallennetaan myös localStorageen
+            // Tallennetaan myös localStorageen, jos cookie löytyi
             localStorage.setItem('userData', JSON.stringify(userData))
           } catch (error) {
             console.error('Cookie parse error:', error)
           }
         }
       }
-    
+
+      // Tarkistetaan, onko userData validi
       if (!userData || !userData.Access || userData.Access !== 'TRUE') {
         console.log('Kirjautumistietoja ei löytynyt tai ne ovat virheelliset')
         localStorage.removeItem('userData')
@@ -72,14 +72,15 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         router.push('/login')
         return
       }
-    
+
       console.log('Kirjautuminen OK')
       setIsLoading(false)
     }
- 
+
     checkAuth()
   }, [pathname, router])
 
+  // Näytetään latausruutu, kun tarkistetaan kirjautumista
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#e9f1f3] flex items-center justify-center">
