@@ -23,52 +23,58 @@ export default function Login() {
       setError('Anna koodi')
       return
     }
-
+ 
     setIsLoading(true)
     try {
       const usersRef = collection(db, 'kayttajat')
       const q = query(usersRef, where('Koodi', '==', userCode))
       const querySnapshot = await getDocs(q)
-
+ 
       if (querySnapshot.empty) {
         setError('Virheellinen koodi')
         setIsLoading(false)
         return
       }
-
+ 
       const userData = querySnapshot.docs[0].data() as UserData
-
+ 
       if (userData.Access !== 'TRUE') {
         setError('Ei käyttöoikeutta')
         setIsLoading(false)
         return
       }
-
+ 
       // Tallennetaan useaan paikkaan
       try {
+        console.log('Yritetään tallentaa kirjautumistietoja...')
+    
         localStorage.setItem('userCode', userCode)
+        console.log('userCode tallennettu:', localStorage.getItem('userCode'))
+        
         localStorage.setItem('userData', JSON.stringify(userData))
-
+        console.log('userData tallennettu:', localStorage.getItem('userData'))
+ 
         // Asetetaan cookie pitkällä expirella
         const oneYear = 365 * 24 * 60 * 60 * 1000
         const expires = new Date(Date.now() + oneYear)
-        document.cookie = `userData=${JSON.stringify(userData)}; path=/; expires=${expires.toUTCString()}`
-
+        document.cookie = `userData=${JSON.stringify(userData)}; path=/; expires=${expires.toUTCString()}; secure; SameSite=Strict`
+        console.log('Cookie tallennettu:', document.cookie)
+ 
       } catch (storageError) {
         console.error('Storage error:', storageError)
         setError('Kirjautumistietojen tallennus epäonnistui')
         return
       }
-
+ 
       router.push('/home')
-
+ 
     } catch (error) {
       console.error('Login error:', error)
       setError('Kirjautumisvirhe')
     } finally {
       setIsLoading(false)
     }
-}
+ }
 
  return (
    <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center pt-2">

@@ -14,6 +14,8 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const checkAuth = async () => {
+      console.log('AuthGuard tarkistaa kirjautumisen:', pathname)
+ 
       // Sallitut reitit ilman kirjautumista
       if (
         pathname === '/login' ||
@@ -34,9 +36,12 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     
       // Kokeillaan localStorage
       const localData = localStorage.getItem('userData')
+      console.log('localStorage data:', localData)
+ 
       if (localData) {
         try {
           userData = JSON.parse(localData)
+          console.log('userData parsittu localStoragesta:', userData)
         } catch (error) {
           console.error('LocalStorage parse error:', error)
         }
@@ -45,10 +50,13 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       // Jos ei löydy, kokeillaan cookie
       if (!userData) {
         const cookies = document.cookie.split(';')
+        console.log('cookies:', cookies)
+        
         const userCookie = cookies.find(c => c.trim().startsWith('userData='))
         if (userCookie) {
           try {
             userData = JSON.parse(userCookie.split('=')[1])
+            console.log('userData parsittu cookiesta:', userData)
             // Jos löytyi cookiesta, tallennetaan myös localStorageen
             localStorage.setItem('userData', JSON.stringify(userData))
           } catch (error) {
@@ -58,15 +66,17 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       }
     
       if (!userData || !userData.Access || userData.Access !== 'TRUE') {
+        console.log('Kirjautumistietoja ei löytynyt tai ne ovat virheelliset')
         localStorage.removeItem('userData')
         localStorage.removeItem('userCode')
         router.push('/login')
         return
       }
     
+      console.log('Kirjautuminen OK')
       setIsLoading(false)
     }
-
+ 
     checkAuth()
   }, [pathname, router])
 
