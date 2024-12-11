@@ -81,9 +81,9 @@ export default function MuskaritPage() {
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
-      <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
+      <div className="sticky top-0 w-full flex justify-between px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
-          className="cursor-pointer ml-3 sm:ml-4" 
+          className="cursor-pointer" 
           size={45} 
           strokeWidth={3}
           onClick={() => router.push('/home')}

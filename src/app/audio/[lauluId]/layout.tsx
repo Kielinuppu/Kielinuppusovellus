@@ -1,13 +1,13 @@
 'use client'
 
-import React, { use } from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { db } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { getStorage, ref, getDownloadURL } from 'firebase/storage'
-import { ArrowLeft, Volume2, Music } from 'lucide-react'
+import { ArrowLeft, Volume2, VolumeX, Music, Play, Pause, RotateCw, RotateCcw } from 'lucide-react'
 import Image from 'next/image'
+import { use } from 'react'
 
 interface AudioFileInfo {
   url: string;
@@ -37,94 +37,221 @@ interface Laulu {
   'Laulun kuvake': string;
 }
 
-export default function AudioLayout({
-    children,
-    params
-  }: {
-    children: React.ReactNode
-    params: Promise<{ lauluId: string }>
-  }) {
-
-  const resolvedParams = use(params)
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const type = searchParams.get('type')
-  const [laulu, setLaulu] = useState<Laulu | null>(null)
-  const [audioUrl, setAudioUrl] = useState<string | null>(null)
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
+const CustomAudioPlayer = ({ audioUrl }: { audioUrl: string }) => {
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const [volume, setVolume] = useState(1)
+  const audioRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
-    let mounted = true
+    if (audioRef.current) {
+      audioRef.current.volume = volume
+    }
+  }, [volume, audioUrl])
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60)
+    const seconds = Math.floor(time % 60)
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`
+  }
+
+  const handlePlayPause = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause()
+      } else {
+        audioRef.current.play()
+      }
+      setIsPlaying(!isPlaying)
+    }
+  }
+
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime)
+    }
+  }
+
+  const handleSkip = (direction: 'forward' | 'back') => {
+    if (audioRef.current) {
+      audioRef.current.currentTime += direction === 'forward' ? 20 : -20
+    }
+  }
+
+  const handleVolumeChange = () => {
+    if (audioRef.current) {
+      const newVolume = audioRef.current.volume > 0 ? 0 : 1
+      audioRef.current.volume = newVolume
+      setVolume(newVolume)
+    }
+  }
+
+  return (
+    <div className="w-full p-4">
+      <audio
+        ref={audioRef}
+        src={audioUrl}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={() => {
+          if (audioRef.current) {
+            setDuration(audioRef.current.duration)
+          }
+        }}
+        onEnded={() => setIsPlaying(false)}
+      />
+
+      <div className="mb-6">
+        <input
+          type="range"
+          min={0}
+          max={duration}
+          value={currentTime}
+          onChange={(e) => {
+            const time = parseFloat(e.target.value)
+            if (audioRef.current) {
+              audioRef.current.currentTime = time
+            }
+            setCurrentTime(time)
+          }}
+          className="w-full"
+        />
+        <div className="flex justify-between text-sm mt-2 text-gray-600">
+          <span>{formatTime(currentTime)}</span>
+          <span>{formatTime(duration)}</span>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div className="w-8" />
+        
+        <div className="flex items-center gap-12">
+          <div className="flex flex-col items-center cursor-pointer" onClick={() => handleSkip('back')}>
+            <div className="h-12 flex items-center">
+              <RotateCcw className="w-6 h-6 stroke-black" />
+            </div>
+            <span className="text-xs text-gray-600">20s</span>
+          </div>
+          
+          <div 
+            className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer"
+            onClick={handlePlayPause}
+          >
+            {isPlaying ? (
+              <Pause className="w-8 h-8 stroke-black" />
+            ) : (
+              <Play className="w-8 h-8 stroke-black ml-1" />
+            )}
+          </div>
+          
+          <div className="flex flex-col items-center cursor-pointer" onClick={() => handleSkip('forward')}>
+            <div className="h-12 flex items-center">
+              <RotateCw className="w-6 h-6 stroke-black" />
+            </div>
+            <span className="text-xs text-gray-600">20s</span>
+          </div>
+        </div>
+        
+        {volume === 0 ? (
+          <VolumeX 
+            className="w-6 h-6 stroke-black cursor-pointer"
+            onClick={handleVolumeChange}
+          />
+        ) : (
+          <Volume2 
+            className="w-6 h-6 stroke-black cursor-pointer"
+            onClick={handleVolumeChange}
+          />
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default function AudioLayout({
+  children,
+  params: paramsPromise
+}: {
+  children: React.ReactNode;
+  params: Promise<{ lauluId: string }>;
+}) {
+  const params = use(paramsPromise);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const type = searchParams.get('type');
+  const [laulu, setLaulu] = useState<Laulu | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
 
     const fetchLaulu = async () => {
-      if (!resolvedParams.lauluId) return
+      const lauluId = params.lauluId;
+      if (!lauluId) return;
 
       try {
-        const lauluDoc = await getDoc(doc(db, 'laulut', resolvedParams.lauluId))
+        const lauluDoc = await getDoc(doc(db, 'laulut', lauluId));
         
-        if (!mounted) return
+        if (!mounted) return;
         
         if (!lauluDoc.exists()) {
-          setError('Laulua ei löytynyt')
-          return
+          setError('Laulua ei löytynyt');
+          return;
         }
 
-        const lauluData = lauluDoc.data() as Laulu
-        setLaulu(lauluData)
+        const lauluData = lauluDoc.data() as Laulu;
+        setLaulu(lauluData);
 
-        // Haetaan kuvan URL oikeasta polusta
         if (lauluData['Laulun kuvake']) {
           try {
-            const imageInfo = JSON.parse(lauluData['Laulun kuvake'].replace(/'/g, '"')) as ImageFileInfo
-            const storage = getStorage()
-            // Korjattu polku: images/laulut/
-            const imagePath = `images/laulut/${imageInfo.filename}`
-            console.log('Haetaan kuvaa polusta:', imagePath)
-            const imageRef = ref(storage, imagePath)
-            const imageUrl = await getDownloadURL(imageRef)
-            if (mounted) setImageUrl(imageUrl)
+            const imageInfo = JSON.parse(lauluData['Laulun kuvake'].replace(/'/g, '"')) as ImageFileInfo;
+            const storage = getStorage();
+            const imagePath = `images/laulut/${imageInfo.filename}`;
+            const imageRef = ref(storage, imagePath);
+            const imageUrl = await getDownloadURL(imageRef);
+            if (mounted) setImageUrl(imageUrl);
           } catch (error) {
-            console.error('Virhe kuvan latauksessa:', error)
+            console.error('Virhe kuvan latauksessa:', error);
           }
         }
 
-        // Audio URL:n haku jatkuu samana...
-        const audioData = type === 'karaoke' ? lauluData['audio instrumental'] : lauluData.audio
+        const audioData = type === 'karaoke' ? lauluData['audio instrumental'] : lauluData.audio;
 
         if (!audioData) {
-          setError('Äänitiedostoa ei löytynyt')
-          return
+          setError('Äänitiedostoa ei löytynyt');
+          return;
         }
 
         try {
-          const audioInfo = JSON.parse(audioData.replace(/'/g, '"')) as AudioFileInfo
-          const storage = getStorage()
-          const fileName = audioInfo.filename
-          const folderPath = type === 'karaoke' ? 'instrumental' : 'audio'
-          const audioPath = `Laulut/${folderPath}/${fileName}`
+          const audioInfo = JSON.parse(audioData.replace(/'/g, '"')) as AudioFileInfo;
+          const storage = getStorage();
+          const fileName = audioInfo.filename;
+          const folderPath = type === 'karaoke' ? 'instrumental' : 'audio';
+          const audioPath = `Laulut/${folderPath}/${fileName}`;
           
-          const audioRef = ref(storage, audioPath)
-          const url = await getDownloadURL(audioRef)
+          const audioRef = ref(storage, audioPath);
+          const url = await getDownloadURL(audioRef);
           
-          if (!mounted) return
-          setAudioUrl(url)
+          if (!mounted) return;
+          setAudioUrl(url);
         } catch (error) {
-          console.error('Virhe audio URL:n haussa:', error)
-          if (mounted) setError('Äänitiedoston lataus epäonnistui')
+          console.error('Virhe audio URL:n haussa:', error);
+          if (mounted) setError('Äänitiedoston lataus epäonnistui');
         }
       } catch (error) {
-        console.error('Virhe:', error)
-        if (mounted) setError('Virhe tietojen latauksessa')
+        console.error('Virhe:', error);
+        if (mounted) setError('Virhe tietojen latauksessa');
       }
-    }
+    };
 
-    fetchLaulu()
+    fetchLaulu();
 
     return () => {
-      mounted = false
-    }
-  }, [resolvedParams.lauluId, type])
+      mounted = false;
+    };
+  }, [params.lauluId, type]);
 
   return (
     <div className="bg-[#e9f1f3] min-h-screen p-4">
@@ -139,14 +266,14 @@ export default function AudioLayout({
 
       <div className="max-w-md mx-auto">
         {error ? (
-          <div className="bg-white rounded-lg p-6 shadow-lg text-center">
+          <div className="rounded-lg p-6 text-center">
             <div className="text-red-500 mb-4">
               {type === 'karaoke' ? <Music size={48} /> : <Volume2 size={48} />}
             </div>
             <p className="text-red-600">{error}</p>
           </div>
         ) : (
-          <div className="bg-white rounded-lg p-4 shadow-lg">
+          <div className="rounded-lg p-4">
             {imageUrl && (
               <div className="mb-4 relative aspect-square rounded-lg overflow-hidden">
                 <Image 
@@ -164,20 +291,11 @@ export default function AudioLayout({
               {laulu?.Name || ''} {type === 'karaoke' ? '(Karaoke)' : ''}
             </h2>
             
-            {audioUrl && (
-              <audio 
-                controls 
-                src={audioUrl}
-                className="w-full"
-                controlsList="nodownload"
-              >
-                Selaimesi ei tue audio-elementtiä
-              </audio>
-            )}
+            {audioUrl && <CustomAudioPlayer audioUrl={audioUrl} />}
           </div>
         )}
       </div>
       {children}
     </div>
-  )
+  );
 }
