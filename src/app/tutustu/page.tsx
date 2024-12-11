@@ -77,30 +77,31 @@ export default function TutustuPage() {
         {categories.map((category, index) => (
           <div key={category.title} className="flex justify-center">
             {category.active ? (
-              <Link href={category.path}>
-                <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
-                  <QuickImage
-                    src={category.imageUrl}
-                    alt={category.title}
-                    fill
-                    priority={index < 4}
-                    className="object-cover rounded-lg"
-                    sizes="(max-width: 640px) 170px, 180px"
-                  />
-                </div>
-              </Link>
-            ) : (
-              <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
-                <QuickImage
-                  src={category.imageUrl}
-                  alt={category.title}
-                  fill
-                  priority={index < 4}
-                  className="object-cover rounded-lg opacity-40"
-                  sizes="(max-width: 640px) 170px, 180px"
-                />
-              </div>
-            )}
+  <Link href={category.path}>
+    <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
+      <QuickImage
+        src={category.imageUrl}
+        alt={category.title}
+        fill
+        priority={index < 4}
+        className="object-cover rounded-lg"
+        sizes="(max-width: 640px) 170px, 180px"
+      />
+    </div>
+  </Link>
+) : (
+  <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg overflow-hidden">
+    <QuickImage
+      src={category.imageUrl}
+      alt={category.title}
+      fill
+      priority={index < 4}
+      className="object-cover rounded-lg"  // Poistettu opacity-40
+      sizes="(max-width: 640px) 170px, 180px"
+    />
+    <div className="absolute inset-0 bg-white/60" />  {/* Lisätty tämä overlay */}
+  </div>
+)}
           </div>
         ))}
       </div>
