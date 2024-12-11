@@ -51,24 +51,24 @@ export default function PelitLayout({
 
       <div className="flex-1 px-4 pb-4 flex justify-center">
         <div className="w-full max-w-5xl">
-          <div className="bg-white rounded-[10px] overflow-hidden shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] h-[calc(100vh-70px)]">
-            {/* Loading-tila */}
-            {isLoading && (
-              <div className="absolute inset-0 bg-white z-10" />
-            )}
-            <iframe
-              src={peliUrl}
-              className="w-full h-full"
-              style={{ 
-                border: 'none',
-                backgroundColor: '#FFFFFF'
-              }}
-              title="Peli"
-              allow="fullscreen"
-              scrolling="no"
-              onLoad={() => setIsLoading(false)}
-            />
-          </div>
+        <div className="bg-white rounded-[10px] overflow-hidden h-[calc(100vh-70px)]">
+  {/* Loading-tila */}
+  {isLoading && (
+    <div className="absolute inset-0 bg-white z-10" />
+  )}
+  <iframe
+    src={peliUrl}
+    className="w-full h-full"
+    style={{
+      border: 'none',
+      backgroundColor: '#FFFFFF'
+    }}
+    title="Peli"
+    allow="fullscreen"
+    scrolling="no"
+    onLoad={() => setIsLoading(false)}
+  />
+</div>
         </div>
       </div>
       {children}
