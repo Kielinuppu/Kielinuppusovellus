@@ -57,12 +57,13 @@ export default function TutustuPage() {
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mt-8">
         {aiheet.map((aihe) => (
           <Link 
-            key={aihe.id}
-            href={aihe.Name === "ARJEN TAIDOT" ? '/tutustu/tutustu-laulu' : '#'}
-            className="cursor-pointer flex justify-center"
-          >
-            <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg hover:scale-105 transition-transform">
-              {aihe.parsedTutustuKuva ? (
+          key={aihe.id}
+          href={aihe.Name === "ARJEN TAIDOT" ? '/tutustu/tutustu-laulu' : '#'}
+          className="cursor-pointer flex justify-center relative group"
+        >
+          <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg hover:scale-105 transition-transform overflow-hidden">
+            {aihe.parsedTutustuKuva ? (
+              <>
                 <QuickImage
                   src={getFullImageUrl(aihe.parsedTutustuKuva.url, 'aiheet')}
                   alt={aihe.Name}
@@ -70,11 +71,15 @@ export default function TutustuPage() {
                   className="object-cover rounded-lg"
                   sizes="(max-width: 768px) 170px, 180px"
                 />
-              ) : (
-                <div className="w-full h-full bg-gray-200 rounded-lg animate-pulse" />
-              )}
-            </div>
-          </Link>
+                {aihe.Name !== "ARJEN TAIDOT" && (
+                  <div className="absolute inset-0 bg-white opacity-70" />
+                )}
+              </>
+            ) : (
+              <div className="w-full h-full bg-gray-200 rounded-lg animate-pulse" />
+            )}
+          </div>
+        </Link>
         ))}
       </div>
     </div>

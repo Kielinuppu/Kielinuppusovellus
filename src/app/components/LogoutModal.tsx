@@ -37,7 +37,7 @@ export default function LogoutModal({ isOpen, onClose }: LogoutModalProps) {
         </button>
 
         <div className="flex flex-col items-center space-y-8">
-          <h2 className="text-3xl font-bold">HALUATKO KIRJAUTUA ULOS?</h2>
+        <h2 className="text-3xl font-bold text-center max-w-lg mx-auto">HALUATKO KIRJAUTUA ULOS?</h2>
           
           <div className="flex flex-col gap-4">
             <button 

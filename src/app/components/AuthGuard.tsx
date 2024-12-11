@@ -13,7 +13,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const checkAuth = async () => {
-      // Jos ollaan juuressa ja käyttäjä on kirjautunut, ohjaa suoraan homeen
       if (pathname === '/') {
         const userData = localStorage.getItem('userData')
         if (userData) {
@@ -22,7 +21,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         }
       }
 
-      // Sallitut reitit ilman kirjautumista
       if (
         pathname === '/login' ||
         pathname === '/' ||
@@ -37,7 +35,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         return
       }
 
-      // Tarkista kirjautuminen
       const userData = localStorage.getItem('userData')
       if (!userData) {
         router.push('/login')
