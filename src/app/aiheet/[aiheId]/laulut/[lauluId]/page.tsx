@@ -115,6 +115,7 @@ export default function LauluPage({ params }: PageProps) {
         <div className="relative bg-[#f6f7e7] rounded-lg overflow-hidden aspect-video">
           {laulu?.['Video url'] && (
             <iframe
+              loading="lazy" 
               src={laulu['Video url']}
               className="absolute top-0 left-0 w-full h-full"
               allow="autoplay; fullscreen; picture-in-picture"

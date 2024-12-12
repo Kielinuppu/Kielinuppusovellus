@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { db } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { getStorage, ref, getDownloadURL } from 'firebase/storage'
-import { ArrowLeft, Volume2, VolumeX, Music, Play, Pause, RotateCw, RotateCcw } from 'lucide-react'
+import { ArrowLeft, Music, Play, Pause, RotateCw, RotateCcw } from 'lucide-react'
 import Image from 'next/image'
 import { use } from 'react'
 
@@ -38,17 +38,20 @@ interface Laulu {
 }
 
 const CustomAudioPlayer = ({ audioUrl }: { audioUrl: string }) => {
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(true) // Changed to true for autoplay
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
-  const [volume, setVolume] = useState(1)
   const audioRef = useRef<HTMLAudioElement>(null)
 
+  // Add autoplay effect
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = volume
+      audioRef.current.play().catch(error => {
+        console.log('Autoplay prevented:', error)
+        setIsPlaying(false)
+      })
     }
-  }, [volume, audioUrl])
+  }, [audioUrl])
 
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60)
@@ -76,14 +79,6 @@ const CustomAudioPlayer = ({ audioUrl }: { audioUrl: string }) => {
   const handleSkip = (direction: 'forward' | 'back') => {
     if (audioRef.current) {
       audioRef.current.currentTime += direction === 'forward' ? 20 : -20
-    }
-  }
-
-  const handleVolumeChange = () => {
-    if (audioRef.current) {
-      const newVolume = audioRef.current.volume > 0 ? 0 : 1
-      audioRef.current.volume = newVolume
-      setVolume(newVolume)
     }
   }
 
@@ -122,10 +117,8 @@ const CustomAudioPlayer = ({ audioUrl }: { audioUrl: string }) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="w-8" />
-        
-        <div className="flex items-center gap-12">
+      <div className="flex items-center justify-center">
+        <div className="flex items-center gap-20">
           <div className="flex flex-col items-center cursor-pointer" onClick={() => handleSkip('back')}>
             <div className="h-12 flex items-center">
               <RotateCcw className="w-6 h-6 stroke-black" />
@@ -151,18 +144,6 @@ const CustomAudioPlayer = ({ audioUrl }: { audioUrl: string }) => {
             <span className="text-xs text-gray-600">20s</span>
           </div>
         </div>
-        
-        {volume === 0 ? (
-          <VolumeX 
-            className="w-6 h-6 stroke-black cursor-pointer"
-            onClick={handleVolumeChange}
-          />
-        ) : (
-          <Volume2 
-            className="w-6 h-6 stroke-black cursor-pointer"
-            onClick={handleVolumeChange}
-          />
-        )}
       </div>
     </div>
   )
@@ -268,7 +249,7 @@ export default function AudioLayout({
         {error ? (
           <div className="rounded-lg p-6 text-center">
             <div className="text-red-500 mb-4">
-              {type === 'karaoke' ? <Music size={48} /> : <Volume2 size={48} />}
+              <Music size={48} />
             </div>
             <p className="text-red-600">{error}</p>
           </div>
