@@ -49,7 +49,7 @@ export default function PeliPage({
 
   return (
     <div className="bg-[#e9f1f3] min-h-screen flex flex-col">
-      <div className="w-full px-4 py-2">
+      <div className="w-full px-4 pt-1">
         <ArrowLeft 
           className="cursor-pointer" 
           size={45} 
@@ -58,22 +58,26 @@ export default function PeliPage({
         />
       </div>
 
-      <div className="flex-1 flex justify-center items-center relative">
-        {isLoading && (
-          <div className="absolute inset-0 bg-[#e9f1f3] z-10" />
-        )}
-        <iframe
-          src={peliUrl}
-          className="w-full max-w-5xl h-[calc(100vh-100px)]"
-          style={{ 
-            border: 'none',
-            backgroundColor: '#e9f1f3'
-          }}
-          title="Peli"
-          allow="fullscreen"
-          scrolling="no"
-          onLoad={() => setIsLoading(false)}
-        />
+      <div className="flex-1 px-4 pb-4 flex justify-center">
+        <div className="w-full max-w-5xl">
+          <div className="bg-white rounded-[10px] overflow-hidden h-[calc(100vh-70px)]">
+            {isLoading && (
+              <div className="absolute inset-0 bg-white z-10" />
+            )}
+            <iframe
+              src={peliUrl}
+              className="w-full h-full"
+              style={{
+                border: 'none',
+                backgroundColor: '#FFFFFF'
+              }}
+              title="Peli"
+              allow="fullscreen"
+              scrolling="no"
+              onLoad={() => setIsLoading(false)}
+            />
+          </div>
+        </div>
       </div>
     </div>
   )
