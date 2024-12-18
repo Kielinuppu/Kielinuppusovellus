@@ -7,6 +7,7 @@ import { ArrowLeft } from 'lucide-react'
 import { db } from '../../../lib/firebase'
 import { collection, query, getDocs, addDoc, orderBy, limit } from 'firebase/firestore'
 
+
 interface Game {
   ID: number
   Laulut: string
@@ -24,6 +25,21 @@ interface Activity {
   Määrittäjä?: number | string
   tunnusluku?: number
   Lauluts?: string[] | string
+}
+
+interface Song {
+  ID: number
+  Aiheet: string
+  Created: string
+  "Laulun kuvake": string
+  Name: string
+  Nuotit: string
+  Tulosteet: string
+  Updated: string
+  "Video url": string
+  audio: string
+  "audio instrumental": string
+  järjestysnumero: number
 }
 
 export default function DatabasePage() {
@@ -48,6 +64,17 @@ export default function DatabasePage() {
   const [singleLaulut, setSingleLaulut] = useState<string>('')
   const [multipleLaulut, setMultipleLaulut] = useState<string[]>([])
   const [recentActivities, setRecentActivities] = useState<Activity[]>([])
+
+  const [songTitle, setSongTitle] = useState('')
+const [songTheme, setSongTheme] = useState('')
+const [songNumber, setSongNumber] = useState<number>(1)
+const [videoUrl, setVideoUrl] = useState('')
+const [audioUrl, setAudioUrl] = useState('')
+const [instrumentalUrl, setInstrumentalUrl] = useState('')
+const [sheetMusic, setSheetMusic] = useState('')
+const [songImage, setSongImage] = useState('')
+const [printouts, setPrintouts] = useState('')
+const [recentSongs, setRecentSongs] = useState<Song[]>([])
 
   // Admin-tarkistus
   useEffect(() => {
@@ -126,6 +153,29 @@ export default function DatabasePage() {
     setRecentActivities(activities)
   }
 
+  const fetchSongs = async () => {
+    const songsRef = collection(db, 'laulut')
+    const q = query(songsRef, orderBy('ID', 'desc'), limit(10))
+    const snapshot = await getDocs(q)
+    
+    const songs = snapshot.docs.map(doc => ({
+      ID: doc.data().ID,
+      Name: doc.data().Name,
+      Aiheet: doc.data().Aiheet,
+      "Video url": doc.data()["Video url"],
+      audio: doc.data().audio,
+      "audio instrumental": doc.data()["audio instrumental"],
+      Nuotit: doc.data().Nuotit,
+      "Laulun kuvake": doc.data()["Laulun kuvake"],
+      Tulosteet: doc.data().Tulosteet,
+      järjestysnumero: doc.data().järjestysnumero,
+      Created: doc.data().Created,
+      Updated: doc.data().Updated
+    }))
+  
+    setRecentSongs(songs)
+  }
+
   // Pelien lisäys
   const handleGameSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -171,7 +221,7 @@ export default function DatabasePage() {
         Updated: new Date().toISOString(),
         Kuva: ""
       })
-
+  
       setActivityName('')
       setActivityStyle('')
       setActivityUrl('')
@@ -186,6 +236,57 @@ export default function DatabasePage() {
       console.error('Error adding activity:', error)
       alert('Virhe tekemisen lisäämisessä!')
     }
+  }
+  
+
+  
+  const handleSongSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    try {
+      const nextId = await getNextSongId()
+      await addDoc(collection(db, 'laulut'), {
+        ID: nextId,
+        Name: songTitle,
+        Aiheet: songTheme,
+        "Video url": videoUrl,
+        audio: audioUrl,
+        "audio instrumental": instrumentalUrl,
+        Nuotit: sheetMusic,
+        "Laulun kuvake": songImage,
+        Tulosteet: printouts,
+        järjestysnumero: songNumber,
+        Created: new Date().toISOString(),
+        Updated: new Date().toISOString()
+      })
+  
+      setSongTitle('')
+      setSongTheme('')
+      setSongNumber(1)
+      setVideoUrl('')
+      setAudioUrl('')
+      setInstrumentalUrl('')
+      setSheetMusic('')
+      setSongImage('')
+      setPrintouts('')
+      fetchSongs()
+      
+      alert('Laulu lisätty onnistuneesti!')
+    } catch (error) {
+      console.error('Error adding song:', error)
+      alert('Virhe laulun lisäämisessä!')
+    }
+  }
+  
+  const getNextSongId = async () => {
+    const songsRef = collection(db, 'laulut')
+    const q = query(songsRef, orderBy('ID', 'desc'), limit(1))
+    const snapshot = await getDocs(q)
+    if (!snapshot.empty) {
+      const lastId = snapshot.docs[0].data().ID
+      return lastId + 1
+    }
+    return 1
   }
 
   if (loading) {
@@ -212,25 +313,34 @@ export default function DatabasePage() {
       <div className="max-w-2xl mx-auto space-y-8">
         {/* Kategoriavalinta */}
         <div className="bg-white rounded-lg p-6 shadow-md">
-          <div className="grid grid-cols-2 gap-4">
-            <button
-              onClick={() => setActiveForm('pelit')}
-              className={`py-3 rounded-lg font-bold shadow-md ${
-                activeForm === 'pelit' ? 'bg-blue-500 text-white' : 'bg-[#F6F7E7]'
-              }`}
-            >
-              PELIT
-            </button>
-            <button
-              onClick={() => setActiveForm('tekeminen')}
-              className={`py-3 rounded-lg font-bold shadow-md ${
-                activeForm === 'tekeminen' ? 'bg-blue-500 text-white' : 'bg-[#F6F7E7]'
-              }`}
-            >
-              TEKEMINEN
-            </button>
-          </div>
-        </div>
+  <div className="grid grid-cols-2 gap-4">
+    <button
+      onClick={() => setActiveForm('pelit')}
+      className={`py-3 rounded-lg font-bold shadow-md ${
+        activeForm === 'pelit' ? 'bg-blue-500 text-white' : 'bg-[#F6F7E7]'
+      }`}
+    >
+      PELIT
+    </button>
+    <button
+      onClick={() => setActiveForm('tekeminen')}
+      className={`py-3 rounded-lg font-bold shadow-md ${
+        activeForm === 'tekeminen' ? 'bg-blue-500 text-white' : 'bg-[#F6F7E7]'
+      }`}
+    >
+      TEKEMINEN
+    </button>
+    {/* Tähän väliin uusi laulut-painike */}
+    <button
+      onClick={() => setActiveForm('laulut')}
+      className={`py-3 rounded-lg font-bold shadow-md ${
+        activeForm === 'laulut' ? 'bg-blue-500 text-white' : 'bg-[#F6F7E7]'
+      }`}
+    >
+      LAULUT
+    </button>
+  </div>
+</div>
 
         {/* Pelien lisäyslomake */}
         {activeForm === 'pelit' && (
@@ -478,6 +588,133 @@ export default function DatabasePage() {
             </div>
           </div>
         )}
+
+{activeForm === 'laulut' && (
+  <div className="bg-white rounded-lg p-6 shadow-md">
+    <h2 className="text-2xl font-bold mb-4">Lisää uusi laulu</h2>
+    <form onSubmit={handleSongSubmit} className="space-y-4">
+      <div>
+        <label className="block text-sm font-bold mb-2">Laulun nimi</label>
+        <input
+          type="text"
+          value={songTitle}
+          onChange={(e) => setSongTitle(e.target.value)}
+          className="w-full p-3 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-bold mb-2">Aihe</label>
+        <input
+          type="text"
+          value={songTheme}
+          onChange={(e) => setSongTheme(e.target.value)}
+          className="w-full p-3 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-bold mb-2">Järjestysnumero</label>
+        <input
+          type="number"
+          value={songNumber}
+          onChange={(e) => setSongNumber(Number(e.target.value))}
+          className="w-full p-3 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-bold mb-2">Video URL</label>
+        <input
+          type="url"
+          value={videoUrl}
+          onChange={(e) => setVideoUrl(e.target.value)}
+          className="w-full p-3 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-bold mb-2">Audio URL</label>
+        <input
+          type="text"
+          value={audioUrl}
+          onChange={(e) => setAudioUrl(e.target.value)}
+          className="w-full p-3 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-bold mb-2">Instrumentaali URL</label>
+        <input
+          type="text"
+          value={instrumentalUrl}
+          onChange={(e) => setInstrumentalUrl(e.target.value)}
+          className="w-full p-3 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-bold mb-2">Nuotit URL</label>
+        <input
+          type="text"
+          value={sheetMusic}
+          onChange={(e) => setSheetMusic(e.target.value)}
+          className="w-full p-3 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-bold mb-2">Kuvake URL</label>
+        <input
+          type="text"
+          value={songImage}
+          onChange={(e) => setSongImage(e.target.value)}
+          className="w-full p-3 border rounded-lg"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-bold mb-2">Tulosteet URL</label>
+        <input
+          type="text"
+          value={printouts}
+          onChange={(e) => setPrintouts(e.target.value)}
+          className="w-full p-3 border rounded-lg"
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="w-full py-3 bg-[#F6F7E7] rounded-lg font-bold shadow-md hover:bg-[#F0F1E1]"
+      >
+        LISÄÄ LAULU
+      </button>
+    </form>
+  </div>
+)}
+
+{activeForm === 'laulut' && (
+  <div className="bg-white rounded-lg p-6 shadow-md">
+    <h2 className="text-xl font-bold mb-4">Viimeksi lisätyt laulut</h2>
+    <div className="space-y-4">
+      {recentSongs.map((song) => (
+        <div key={song.ID} className="p-3 bg-gray-50 rounded-lg">
+          <div className="font-bold">{song.Name}</div>
+          <div>Aihe: {song.Aiheet}</div>
+          <div>Järjestysnumero: {song.järjestysnumero}</div>
+          {song["Video url"] && (
+            <div className="text-sm text-blue-600 truncate">
+              <a href={song["Video url"]} target="_blank" rel="noopener noreferrer">
+                {song["Video url"]}
+              </a>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
       </div>
     </div>
   )
