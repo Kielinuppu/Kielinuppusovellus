@@ -1,10 +1,12 @@
 'use client'
 
+import React from 'react'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
-import { db } from '@/lib/firebase'
+import { db } from '../../lib/firebase'
 import { collection, query, getDocs, addDoc, orderBy, limit } from 'firebase/firestore'
+
 
 interface Code {
  Koodi: string
@@ -150,7 +152,7 @@ export default function AdminPage() {
      formattedText += '\n'  
    })
    return formattedText
-  }
+ }
 
  const copyToClipboard = async () => {
    try {
@@ -188,11 +190,21 @@ export default function AdminPage() {
          strokeWidth={3}
          onClick={() => router.push('/home')}
        />
-       <h1 className="text-4xl font-bold">KÄYTTÄJIEN LUOMINEN</h1>
+       <h1 className="text-4xl font-bold">KÄYTTÄJIEN HALLINTA</h1>
        <div className="w-[45px]" />
      </div>
 
      <div className="max-w-2xl mx-auto space-y-8">
+       {/* Tietokannan hallinta -painike */}
+       <div className="bg-white rounded-lg p-6 shadow-md">
+         <button
+           onClick={() => router.push('/admin/tietokanta')}
+           className="w-full py-3 bg-[#F6F7E7] rounded-lg font-bold shadow-md hover:bg-[#F0F1E1]"
+         >
+           TIETOKANNAN HALLINTA
+         </button>
+       </div>
+
        <div className="bg-white rounded-lg p-6 shadow-md space-y-4">
          <input
            type="text"
