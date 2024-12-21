@@ -100,18 +100,27 @@ export default function LauluPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
-      <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
+      {/* Desktop: nuoli vasemmalla ylhäällä */}
+      <div className="hidden md:block absolute left-6 top-2 z-20">
         <ArrowLeft 
-          className="cursor-pointer" 
-          size={45} 
+          className="cursor-pointer"
+          size={45}
           strokeWidth={3}
           onClick={() => router.back()}
         />
-        <div className="flex-1"></div>
-        <div className="w-[45px]"></div>
       </div>
 
-      <div className="w-full max-w-[1050px] mx-auto px-4 mt-0">
+      {/* Mobiili: nuoli stickynä */}
+      <div className="sticky md:hidden top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
+        <ArrowLeft 
+          className="cursor-pointer"
+          size={45}
+          strokeWidth={3}
+          onClick={() => router.back()}
+        />
+      </div>
+
+      <div className="w-full max-w-[1050px] mx-auto px-4 md:mt-6">
         <div className="relative bg-[#f6f7e7] rounded-lg overflow-hidden aspect-video">
           {laulu?.['Video url'] && (
             <iframe

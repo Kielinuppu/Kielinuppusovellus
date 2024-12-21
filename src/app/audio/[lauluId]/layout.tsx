@@ -235,17 +235,28 @@ export default function AudioLayout({
   }, [params.lauluId, type]);
 
   return (
-    <div className="bg-[#e9f1f3] min-h-screen p-4">
-      <div className="mb-4">
+    <div className="bg-[#e9f1f3] min-h-screen p-4 pt-2">
+      {/* Desktop: nuoli vasemmalla ylhäällä */}
+      <div className="hidden md:block absolute left-6 top-2 z-20">
         <ArrowLeft 
-          className="cursor-pointer" 
-          size={45} 
+          className="cursor-pointer"
+          size={45}
           strokeWidth={3}
           onClick={() => router.back()}
         />
       </div>
 
-      <div className="max-w-md mx-auto">
+      {/* Mobiili: nuoli stickynä */}
+      <div className="sticky md:hidden top-0 w-full flex px-2 bg-[#e9f1f3] py-2 z-10">
+        <ArrowLeft 
+          className="cursor-pointer"
+          size={45}
+          strokeWidth={3}
+          onClick={() => router.back()}
+        />
+      </div>
+
+      <div className="max-w-md mx-auto md:mt-6">
         {error ? (
           <div className="rounded-lg p-6 text-center">
             <div className="text-red-500 mb-4">
