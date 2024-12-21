@@ -38,59 +38,66 @@ export default function PdfLayout({
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    let mounted = true
-
+    let mounted = true;
+  
     const fetchLaulu = async () => {
-      if (!resolvedParams.lauluId) return
-
+      if (!resolvedParams.lauluId) return;
+  
       try {
-        const lauluDoc = await getDoc(doc(db, 'laulut', resolvedParams.lauluId))
-        
-        if (!mounted) return
-        
+        const lauluDoc = await getDoc(doc(db, 'laulut', resolvedParams.lauluId));
+  
+        if (!mounted) return;
+  
         if (!lauluDoc.exists()) {
-          setError('Laulua ei löytynyt')
-          return
+          setError('Laulua ei löytynyt');
+          return;
         }
-
-        const lauluData = lauluDoc.data() as Laulu
-        setLaulu(lauluData)
-
-        const pdfData = type === 'nuotit' ? lauluData.Nuotit : lauluData.Tulosteet
-
+  
+        const lauluData = lauluDoc.data() as Laulu;
+        setLaulu(lauluData);
+  
+        const pdfData = type === 'nuotit' ? lauluData.Nuotit : lauluData.Tulosteet;
+  
         if (!pdfData) {
-          setError('PDF-tiedostoa ei löytynyt')
-          return
+          setError('PDF-tiedostoa ei löytynyt');
+          return;
         }
-
+  
+        let fileName = '';
         try {
-          const pdfInfo = JSON.parse(pdfData.replace(/'/g, '"')) as PdfFileInfo
-          const storage = getStorage()
-          const fileName = pdfInfo.filename
-          const folderPath = type === 'nuotit' ? 'nuotit' : 'tulosteet'
-          const pdfPath = `Laulut/${folderPath}/${fileName}`
-          
-          const pdfRef = ref(storage, pdfPath)
-          const url = await getDownloadURL(pdfRef)
-          
-          if (!mounted) return
-          setPdfUrl(url)
+          // Tarkistetaan, onko data JSON-muodossa vai pelkkä tiedostonimi
+          if (pdfData.startsWith('{')) {
+            const pdfInfo = JSON.parse(pdfData.replace(/'/g, '"')) as PdfFileInfo;
+            fileName = pdfInfo.filename;
+          } else {
+            fileName = pdfData; // Jos ei JSON, oletetaan että se on tiedostonimi
+          }
+  
+          const folderPath = type === 'nuotit' ? 'nuotit' : 'tulosteet';
+          const pdfPath = `Laulut/${folderPath}/${fileName}`;
+  
+          const storage = getStorage();
+          const pdfRef = ref(storage, pdfPath);
+          const url = await getDownloadURL(pdfRef);
+  
+          if (!mounted) return;
+          setPdfUrl(url);
         } catch (error) {
-          console.error('Virhe PDF URL:n haussa:', error)
-          if (mounted) setError('PDF-tiedoston lataus epäonnistui')
+          console.error('Virhe PDF URL:n haussa:', error);
+          if (mounted) setError('PDF-tiedoston lataus epäonnistui');
         }
       } catch (error) {
-        console.error('Virhe:', error)
-        if (mounted) setError('Virhe tietojen latauksessa')
+        console.error('Virhe:', error);
+        if (mounted) setError('Virhe tietojen latauksessa');
       }
-    }
-
-    fetchLaulu()
-
+    };
+  
+    fetchLaulu();
+  
     return () => {
-      mounted = false
-    }
-  }, [resolvedParams.lauluId, type])
+      mounted = false;
+    };
+  }, [resolvedParams.lauluId, type]);
 
   return (
     <div className="bg-[#e9f1f3] min-h-screen p-4 pt-2">

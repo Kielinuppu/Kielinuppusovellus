@@ -52,7 +52,18 @@ export default function TutustuPage() {
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
-      <div className="sticky top-0 w-full flex justify-between px-2 bg-[#e9f1f3] py-2 z-10">
+            {/* Desktop: nuoli logon vieressä */}
+      <div className="hidden md:block absolute left-6 top-6 z-20">
+        <ArrowLeft 
+          className="cursor-pointer"
+          size={45}
+          strokeWidth={3}
+          onClick={() => router.push('/')}
+        />
+      </div>
+
+      {/* Mobiili: nuoli ylhäällä */}
+      <div className="sticky md:hidden top-0 w-full flex justify-between px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
           className="cursor-pointer"
           size={45}
@@ -77,34 +88,34 @@ export default function TutustuPage() {
         {categories.map((category, index) => (
           <div key={category.title} className="flex justify-center">
             {category.active ? (
-  <Link href={category.path}>
-    <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
-      <QuickImage
-        src={category.imageUrl}
-        alt={category.title}
-        fill
-        priority={index < 4}
-        className="object-cover rounded-lg"
-        sizes="(max-width: 640px) 170px, 180px"
-      />
-    </div>
-  </Link>
-) : (
-  <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg overflow-hidden">
-    <QuickImage
-      src={category.imageUrl}
-      alt={category.title}
-      fill
-      priority={index < 4}
-      className="object-cover rounded-lg"  // Poistettu opacity-40
-      sizes="(max-width: 640px) 170px, 180px"
-    />
-    <div className="absolute inset-0 bg-white/60" />  {/* Lisätty tämä overlay */}
-  </div>
-)}
+              <Link href={category.path}>
+                <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
+                  <QuickImage
+                    src={category.imageUrl}
+                    alt={category.title}
+                    fill
+                    priority={index < 4}
+                    className="object-cover rounded-lg"
+                    sizes="(max-width: 640px) 170px, 180px"
+                  />
+                </div>
+              </Link>
+            ) : (
+              <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg overflow-hidden">
+                <QuickImage
+                  src={category.imageUrl}
+                  alt={category.title}
+                  fill
+                  priority={index < 4}
+                  className="object-cover rounded-lg"
+                  sizes="(max-width: 640px) 170px, 180px"
+                />
+                <div className="absolute inset-0 bg-white/60" />
+              </div>
+            )}
           </div>
         ))}
       </div>
     </div>
-)
+  )
 }
