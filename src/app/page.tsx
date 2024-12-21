@@ -10,7 +10,7 @@ export default function Home() {
 
  return (
    <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
-     <div className="max-w-[900px] w-full m-0 mb-20 mt-20">
+     <div className="max-w-[900px] w-full m-0 mb-20 mt-2">
        <QuickImage
          src={logoUrl}
          alt="Kielinuppu logo"

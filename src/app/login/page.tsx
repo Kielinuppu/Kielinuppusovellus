@@ -45,11 +45,9 @@ export default function Login() {
       }
 
       try {
-        // Tallennetaan kirjautumistiedot
         localStorage.setItem('userCode', userCode)
         localStorage.setItem('userData', JSON.stringify(userData))
         
-        // Asetetaan cookie
         const oneYear = 365 * 24 * 60 * 60 * 1000
         const expires = new Date(Date.now() + oneYear)
         document.cookie = `userData=${JSON.stringify(userData)}; path=/; expires=${expires.toUTCString()}; secure; SameSite=Strict`
@@ -71,17 +69,28 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center pt-2">
-      <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
+    <div className="min-h-screen bg-[#e9f1f3] flex flex-col">
+      {/* Desktop: nuoli ylhäällä vasemmalla */}
+      <div className="hidden md:block absolute left-6 top-2 z-20">
         <ArrowLeft 
-          className="cursor-pointer" 
-          size={45} 
+          className="cursor-pointer"
+          size={45}
+          strokeWidth={3}
+          onClick={() => router.push('/')}
+        />
+      </div>
+
+      {/* Mobiili: nuoli stickynä */}
+      <div className="sticky md:hidden top-0 w-full flex px-2 bg-[#e9f1f3] py-2 z-10">
+        <ArrowLeft 
+          className="cursor-pointer"
+          size={45}
           strokeWidth={3}
           onClick={() => router.push('/')}
         />
       </div>
       
-      <div className="flex flex-col items-center justify-center flex-1 -mt-20 w-full">
+      <div className="flex-1 flex flex-col items-center justify-center px-4">
         <h1 className="text-5xl font-semibold mb-12 text-center">
           KIRJAUDU SISÄÄN
         </h1>

@@ -3,7 +3,7 @@
 import QuickImage from '@/components/QuickImage'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, LogOut } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import { useEffect, useState, useMemo } from 'react'
 import LogoutModal from '../components/LogoutModal'
 import { getFullImageUrl } from '@/utils/imageUtils'
@@ -14,7 +14,6 @@ export default function HomePage() {
   const [isAdmin, setIsAdmin] = useState(false)
   const logoUrl = getFullImageUrl('logo.png', 'common')
 
-  // Määritellään kategoriat ja niiden kuvat
   const categories = useMemo(() => [
     { 
       title: 'LAULUT', 
@@ -48,7 +47,6 @@ export default function HomePage() {
     },
   ], [])
 
-  // Admin-tarkistus
   useEffect(() => {
     const checkAdminStatus = () => {
       const userData = localStorage.getItem('userData')
@@ -63,13 +61,17 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
-      <div className="sticky top-0 w-full flex justify-between px-2 bg-[#e9f1f3] py-2 z-10">
-        <ArrowLeft 
-          className="cursor-pointer" 
+      {/* Desktop: logout-nappi logon vieressä */}
+      <div className="hidden md:block absolute right-6 top-2 z-20">
+        <LogOut 
           size={45} 
-          strokeWidth={3}
-          onClick={() => router.push('/home')}
+          className="cursor-pointer"
+          onClick={() => setIsLogoutModalOpen(true)}
         />
+      </div>
+
+      {/* Mobiili: logout-nappi ylhäällä */}
+      <div className="sticky md:hidden top-0 w-full flex justify-end px-2 bg-[#e9f1f3] py-2 z-10">
         <LogOut 
           size={45} 
           className="cursor-pointer"
