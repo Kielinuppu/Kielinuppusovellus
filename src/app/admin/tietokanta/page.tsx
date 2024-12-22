@@ -389,6 +389,7 @@ const [recentSongs, setRecentSongs] = useState<Song[]>([])
                   <option value={1}>1 - Peruslaji</option>
                   <option value={2}>2 - Toinen laji</option>
                   <option value={3}>3 - Kolmas laji</option>
+                  <option value={4}>4 - Neljäs laji</option>
                 </select>
               </div>
 
