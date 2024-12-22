@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { db } from '@/lib/firebase'
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore'
+import { doc, getDoc, collection, getDocs, query, where } from 'firebase/firestore'
 import { use } from 'react'
+
 
 type PageProps = {
   params: Promise<{
@@ -40,18 +41,22 @@ export default function LauluPage({ params }: PageProps) {
     async function fetchData() {
       setLoading(true)
       try {
-        const [lauluDoc, tekemisetCollection] = await Promise.all([
-          getDoc(doc(db, 'laulut', resolvedParams.lauluId)),
-          getDocs(collection(db, 'tekeminen'))
-        ])
+        // 1. Haetaan ensin laulu
+        const lauluDoc = await getDoc(doc(db, 'laulut', resolvedParams.lauluId))
 
         if (lauluDoc.exists()) {
           const lauluData = lauluDoc.data() as Laulu
           setLaulu(lauluData)
 
-          const laulunTekemiset = tekemisetCollection.docs
+          // 2. Haetaan vain ne tekemiset joissa tämä laulu on mukana
+          const tekemisetQuery = query(
+            collection(db, 'tekeminen'),
+            where('Lauluts', 'array-contains', String(lauluData.ID))
+          )
+          const tekemisetSnap = await getDocs(tekemisetQuery)
+
+          const laulunTekemiset = tekemisetSnap.docs
             .map(doc => doc.data() as Tekeminen)
-            .filter(t => t.Lauluts?.includes(String(lauluData.ID)))
             .sort((a, b) => a.tunnusluku - b.tunnusluku)
 
           setTekemiset(laulunTekemiset)

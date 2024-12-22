@@ -7,16 +7,17 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { db } from '@/lib/firebase'  // storage voidaan poistaa
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, doc, getDoc, query, where } from 'firebase/firestore'
 import { getFullImageUrl } from '@/utils/imageUtils'  // Lisätään tämä
 import { parseImageData } from '@/types/image'  // Siirretään parseri yhteiseen paikkaan
+
 
 interface Laulu {
   id: string;
   Name: string;
   'Laulun kuvake': string;
   Aiheet: string;
-  parsedImage?: ImageData;  // Lisätään tämä parsattua kuvadataa varten
+  parsedImage?: ImageData;
 }
 
 export default function LaulutPage({
@@ -36,40 +37,44 @@ export default function LaulutPage({
         setCurrentAiheId(resolvedParams.aiheId)
       }
     }
-
     unwrapParams();
   }, [params]);
 
   useEffect(() => {
     async function fetchData() {
+      if (!currentAiheId) return;
+      
       try {
-        const aiheDoc = await getDocs(collection(db, 'aiheet'))
-        const aihe = aiheDoc.docs.find(doc => doc.id === currentAiheId)
-        if (aihe) {
-          const aiheData = aihe.data()
-          setAiheNimi(aiheData.Name)
-  
-          const laulutSnapshot = await getDocs(collection(db, 'laulut'))
-          const allLaulut = laulutSnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-            parsedImage: parseImageData(doc.data()['Laulun kuvake'])  // Parsitaan kuva data
-          })) as Laulu[]
-  
-          const aiheenLaulut = allLaulut
-            .filter(laulu => laulu.Aiheet === aiheData.Name)
-            .sort((a, b) => a.Name.localeCompare(b.Name))
-  
-          setLaulut(aiheenLaulut)
-        }
+        // 1. Haetaan vain tarvittava aihe ID:n perusteella
+        const aiheDoc = await getDoc(doc(db, 'aiheet', currentAiheId))
+        if (!aiheDoc.exists()) return;
+        
+        const aiheData = aiheDoc.data()
+        setAiheNimi(aiheData.Name)
+
+        // 2. Haetaan vain tämän aiheen laulut
+        const laulutQuery = query(
+          collection(db, 'laulut'),
+          where('Aiheet', '==', aiheData.Name)
+        )
+        const laulutSnapshot = await getDocs(laulutQuery)
+
+        // 3. Käsitellään vain tämän aiheen laulut
+        const aiheenLaulut = laulutSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          parsedImage: parseImageData(doc.data()['Laulun kuvake'])
+        })) as Laulu[]
+
+        // 4. Järjestetään aakkosjärjestykseen
+        setLaulut(aiheenLaulut.sort((a, b) => a.Name.localeCompare(b.Name)))
+
       } catch (error) {
         console.error('Fetching error:', error)
       }
     }
   
-    if (currentAiheId) {
-      fetchData()
-    }
+    fetchData()
   }, [currentAiheId])
 
   return (
