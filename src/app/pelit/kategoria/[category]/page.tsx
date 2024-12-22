@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
@@ -17,7 +16,7 @@ interface Peli {
   'mikä pelilaji': number;
   Laulut: string;
   'Pelin osoite': string;
-  parsedImage?: ImageData; // Muutettu any -> ImageData
+  parsedImage: ImageData | null;
 }
 
 const categoryTitles: { [key: string]: string } = {
@@ -62,38 +61,62 @@ export default function PeliKategoriaPage({
       if (!pelilajiNumber) return;
 
       try {
+        // 1. Haetaan kategorian pelit
         const pelitRef = collection(db, 'pelit')
-        const q = query(pelitRef, where('mikä pelilaji', '==', pelilajiNumber))
-        const querySnapshot = await getDocs(q)
+        const pelitQuery = query(pelitRef, where('mikä pelilaji', '==', pelilajiNumber))
+        const pelitSnapshot = await getDocs(pelitQuery)
+        const pelitData = pelitSnapshot.docs.map(doc => ({
+          ...doc.data(),
+          parsedImage: null
+        })) as Peli[]
+        console.log('🎮 Löydettiin pelejä:', pelitData.length)
         
-        const pelitPromises = querySnapshot.docs.map(async doc => {
-          const peliData = doc.data();
-          
-          const laulutRef = collection(db, 'laulut')
-          const lauluQuery = query(laulutRef, where('Name', '==', peliData.Laulut))
-          const lauluSnapshot = await getDocs(lauluQuery)
-          
-          if (!lauluSnapshot.empty) {
-            const laulu = lauluSnapshot.docs[0].data()
-            const imageData = parseImageData(laulu['Laulun kuvake'])
-            return {
-              ...peliData,
-              parsedImage: imageData
-            }
-          }
-          return peliData;
-        });
+        // 2. Kerätään laulujen nimet
+        const laulujenNimet = [...new Set(pelitData.map(peli => peli.Laulut))]
+        console.log('🎵 Tarvitaan lauluja:', laulujenNimet.length)
 
-        const pelitData = await Promise.all(pelitPromises)
-        const sortedPelit = pelitData.sort((a, b) => a.Laulut.localeCompare(b.Laulut))
-        setPelit(sortedPelit as Peli[])
+        // 3. Haetaan laulut batches
+        const laulutRef = collection(db, 'laulut')
+        const laulutMap = new Map<string, ImageData | null>()
+        
+        let haetutLaulut = 0
+        for (let i = 0; i < laulujenNimet.length; i += 30) {
+          const batch = laulujenNimet.slice(i, i + 30)
+          console.log(`⏳ Haetaan lauluja ${i + 1}-${i + batch.length}/${laulujenNimet.length}`)
+          const laulutQuery = query(laulutRef, where('Name', 'in', batch))
+          const laulutSnapshot = await getDocs(laulutQuery)
+          
+          laulutSnapshot.docs.forEach(doc => {
+            const data = doc.data()
+            const imageData = parseImageData(data['Laulun kuvake'])
+            laulutMap.set(data.Name, imageData)
+            haetutLaulut++
+          })
+        }
+
+        console.log('✅ Kaikki haettu:')
+        console.log('- Pelejä:', pelitData.length)
+        console.log('- Lauluja haettu:', haetutLaulut)
+        
+        // 4. Yhdistetään ja järjestetään
+        pelitData.forEach(peli => {
+          peli.parsedImage = laulutMap.get(peli.Laulut) || null
+        })
+
+        const sortedPelit = [...pelitData].sort((a, b) => 
+          a.Laulut.localeCompare(b.Laulut)
+        )
+
+        setPelit(sortedPelit)
+
       } catch (error) {
-        console.error('Error fetching games:', error)
+        console.error('❌ Error:', error)
       }
     }
 
     fetchPelit()
   }, [currentCategory])
+ 
 
   const categoryTitle = currentCategory ? categoryTitles[currentCategory] : 'PELIT'
 
@@ -113,34 +136,34 @@ export default function PeliKategoriaPage({
       </div>
 
       <div className="w-full max-w-[900px] grid grid-cols-1 md:grid-cols-2 gap-3 mt-8">
-  {pelit.map((peli, index) => (
-    <Link 
-      key={peli.ID}
-      href={`/pelit/peli/${encodeURIComponent(peli['Pelin osoite'])}`}
-      className="bg-white rounded-lg w-full shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform cursor-pointer"
-    >
-      <div className="flex items-center h-[75px]">
-  <div className="relative rounded-lg overflow-hidden ml-[10px]" style={{ width: '75px', height: '75px' }}>
-    {peli.parsedImage ? (
-      <QuickImage
-        src={getFullImageUrl(peli.parsedImage.filename, 'laulut')}
-        alt={peli.Laulut}
-        fill
-        priority={index < 4}
-        className="object-cover"
-        sizes="75px"
-      />
-    ) : (
-      <div className="w-full h-full bg-gray-200 animate-pulse" />
-    )}
-  </div>
-  <span className="ml-1 text-[14px] lg:text-[20px] truncate max-w-[calc(100%-95px)]">
-    {peli.Laulut}
-  </span>
-</div>
-    </Link>
-  ))}
-</div>
+        {pelit.map((peli, index) => (
+          <Link 
+            key={peli.ID}
+            href={`/pelit/peli/${encodeURIComponent(peli['Pelin osoite'])}`}
+            className="bg-white rounded-lg w-full shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform cursor-pointer"
+          >
+            <div className="flex items-center h-[75px]">
+              <div className="relative rounded-lg overflow-hidden ml-[10px]" style={{ width: '75px', height: '75px' }}>
+                {peli.parsedImage ? (
+                  <QuickImage
+                    src={getFullImageUrl(peli.parsedImage.filename, 'laulut')}
+                    alt={peli.Laulut}
+                    fill
+                    priority={index < 4}
+                    className="object-cover"
+                    sizes="75px"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 animate-pulse" />
+                )}
+              </div>
+              <span className="ml-1 text-[14px] lg:text-[20px] truncate max-w-[calc(100%-95px)]">
+                {peli.Laulut}
+              </span>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   )
 }
