@@ -61,7 +61,6 @@ export default function PeliKategoriaPage({
       if (!pelilajiNumber) return;
 
       try {
-        // 1. Haetaan kategorian pelit
         const pelitRef = collection(db, 'pelit')
         const pelitQuery = query(pelitRef, where('mikä pelilaji', '==', pelilajiNumber))
         const pelitSnapshot = await getDocs(pelitQuery)
@@ -69,20 +68,14 @@ export default function PeliKategoriaPage({
           ...doc.data(),
           parsedImage: null
         })) as Peli[]
-        console.log('🎮 Löydettiin pelejä:', pelitData.length)
         
-        // 2. Kerätään laulujen nimet
         const laulujenNimet = [...new Set(pelitData.map(peli => peli.Laulut))]
-        console.log('🎵 Tarvitaan lauluja:', laulujenNimet.length)
 
-        // 3. Haetaan laulut batches
         const laulutRef = collection(db, 'laulut')
         const laulutMap = new Map<string, ImageData | null>()
         
-        let haetutLaulut = 0
         for (let i = 0; i < laulujenNimet.length; i += 30) {
           const batch = laulujenNimet.slice(i, i + 30)
-          console.log(`⏳ Haetaan lauluja ${i + 1}-${i + batch.length}/${laulujenNimet.length}`)
           const laulutQuery = query(laulutRef, where('Name', 'in', batch))
           const laulutSnapshot = await getDocs(laulutQuery)
           
@@ -90,15 +83,9 @@ export default function PeliKategoriaPage({
             const data = doc.data()
             const imageData = parseImageData(data['Laulun kuvake'])
             laulutMap.set(data.Name, imageData)
-            haetutLaulut++
           })
         }
-
-        console.log('✅ Kaikki haettu:')
-        console.log('- Pelejä:', pelitData.length)
-        console.log('- Lauluja haettu:', haetutLaulut)
         
-        // 4. Yhdistetään ja järjestetään
         pelitData.forEach(peli => {
           peli.parsedImage = laulutMap.get(peli.Laulut) || null
         })
