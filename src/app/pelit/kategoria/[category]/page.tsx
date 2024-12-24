@@ -96,8 +96,8 @@ export default function PeliKategoriaPage({
 
         setPelit(sortedPelit)
 
-      } catch (error) {
-        console.error('❌ Error:', error)
+      } catch  {
+      
       }
     }
 
