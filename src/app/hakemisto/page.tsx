@@ -39,7 +39,6 @@ export default function HakemistoPage() {
     }
   )
 
-  console.log('Komponentin data:', { loading, error, laulujenMäärä: laulut?.length })
 
   useEffect(() => {
     async function fetchData() {
