@@ -1,53 +1,60 @@
 import { useState, useEffect } from 'react';
 
-interface CacheEntry<T> {
-  data: T;
-  timestamp: number;
-}
-
 export function useCache<T>(key: string, fetcher: () => Promise<T>) {
   const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const TTL = 10 * 60 * 60 * 1000; // 10 tuntia millisekunneissa
-
   useEffect(() => {
-    const fetchData = async () => {
+    let ignore = false; // Varmistetaan, ettei päivityksiä tapahdu unmountin jälkeen
+    const TTL = 10 * 60 * 60 * 1000; // Välimuistin aikaraja 10 tuntia
+
+    const cached = localStorage.getItem(key);
+    if (cached) {
       try {
-        // Tarkista välimuisti
-        const cached = localStorage.getItem(key);
-        if (cached) {
-          const entry: CacheEntry<T> = JSON.parse(cached);
-          const isExpired = Date.now() - entry.timestamp > TTL;
-          
-          if (!isExpired) {
-            setData(entry.data);
-            setLoading(false);
-            return;
-          }
+        const { data: cachedData, timestamp } = JSON.parse(cached);
+
+        // Tarkistetaan, onko välimuisti voimassa
+        if (Date.now() - timestamp < TTL) {
+          setData((prevData) => {
+            if (JSON.stringify(prevData) !== JSON.stringify(cachedData)) {
+              return cachedData; // Päivitetään vain, jos data on muuttunut
+            }
+            return prevData; // Ei päivitystä, jos data on sama
+          });
+          setLoading(false);
+          return;
         }
-
-        // Hae uusi data jos välimuisti on tyhjä tai vanhentunut
-        const freshData = await fetcher();
-        
-        // Päivitä välimuisti
-        const cacheEntry: CacheEntry<T> = {
-          data: freshData,
-          timestamp: Date.now()
-        };
-        localStorage.setItem(key, JSON.stringify(cacheEntry));
-        
-        setData(freshData);
-        setLoading(false);
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error('Unknown error'));
-        setLoading(false);
+      } catch  {
+        // Jos välimuistin lukeminen epäonnistuu, poistetaan se
+        localStorage.removeItem(key);
       }
-    };
+    }
 
-    fetchData();
-  }, [key, fetcher, TTL]);
+    // Haetaan uusi data, jos välimuisti ei kelpaa
+    fetcher()
+      .then((newData) => {
+        if (!ignore) {
+          setData(newData);
+          localStorage.setItem(
+            key,
+            JSON.stringify({
+              data: newData,
+              timestamp: Date.now(),
+            })
+          );
+        }
+      })
+      .catch((e) => setError(e))
+      .finally(() => {
+        if (!ignore) setLoading(false);
+      });
+
+    // Puhdistetaan efekti, kun komponentti unmountataan
+    return () => {
+      ignore = true;
+    };
+  }, [key, fetcher]); // key ja fetcher riippuvuuksina
 
   return { data, loading, error };
 }

@@ -111,15 +111,8 @@ export default function PeliKategoriaPage({
 
   const categoryTitle = currentCategory ? categoryTitles[currentCategory] : 'PELIT'
 
-  if (loading) {
-    console.log('⌛ Ladataan pelejä...')
-    return <div>Ladataan...</div>
-  }
-
-  if (error) {
-    console.error('❌ Virhe pelien latauksessa:', error)
-    return <div>Virhe ladattaessa pelejä</div>
-  }
+  if (loading) return <div>Ladataan...</div>
+  if (error) return <div>Virhe ladattaessa pelejä</div>
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
@@ -128,10 +121,7 @@ export default function PeliKategoriaPage({
           className="cursor-pointer" 
           size={45} 
           strokeWidth={3}
-          onClick={() => {
-            console.log('⬅️ Navigoidaan takaisin pelit-sivulle')
-            router.push('/pelit')
-          }}
+          onClick={() => router.push('/pelit')}
         />
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center truncate">
           {categoryTitle}
@@ -140,7 +130,7 @@ export default function PeliKategoriaPage({
       </div>
 
       <div className="w-full max-w-[900px] grid grid-cols-1 md:grid-cols-2 gap-3 mt-8">
-  {(pelit || []).map((peli, index) => (
+        {(pelit || []).map((peli, index) => (
           <Link 
             key={peli.ID}
             href={`/pelit/peli/${encodeURIComponent(peli['Pelin osoite'])}`}

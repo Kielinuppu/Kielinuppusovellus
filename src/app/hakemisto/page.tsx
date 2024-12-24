@@ -19,39 +19,30 @@ export default function HakemistoPage() {
   const { data: laulut = [], loading, error } = useCache<Laulu[]>(
     'hakemisto-laulut',
     async () => {
-      try {
-        console.log('🎵 Aloitetaan laulujen haku Firebasesta...')
+      console.log('🎵 Aloitetaan laulujen haku...')
+      const laulutSnapshot = await getDocs(collection(db, 'laulut'))
+      const fetchedLaulut = laulutSnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          parsedImage: parseImageData(data['Laulun kuvake'])
+        };
+      }) as Laulu[];
         
-        const laulutSnapshot = await getDocs(collection(db, 'laulut'))
-        console.log('📚 Firebasen vastaus saatu, lauluja löytyi:', laulutSnapshot.size)
-        
-        const fetchedLaulut = laulutSnapshot.docs.map(doc => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            ...data,
-            parsedImage: parseImageData(data['Laulun kuvake'])
-          };
-        }) as Laulu[];
-        
-        const sortedLaulut = fetchedLaulut.sort((a, b) => 
-          a.Name.localeCompare(b.Name, 'fi')
-        )
-        
-        console.log('✅ Data käsitelty, palautetaan laulut. Määrä:', sortedLaulut.length)
-        return sortedLaulut;
-        
-      } catch (error) {
-        console.error('❌ Virhe laulujen haussa:', error)
-        throw error
-      }
+      const sortedLaulut = fetchedLaulut.sort((a, b) => 
+        a.Name.localeCompare(b.Name, 'fi')
+      )
+      
+      console.log('✅ Laulut haettu ja järjestetty, yhteensä:', sortedLaulut.length)
+      return sortedLaulut;
     }
   )
 
   useEffect(() => {
-    async function fetchAiheet() {
+    async function fetchData() {
+      console.log('🎯 Haetaan aiheet...')
       try {
-        console.log('🎯 Haetaan aiheet...')
         const aiheetSnapshot = await getDocs(collection(db, 'aiheet'))
         const aiheetMap: {[key: string]: string} = {}
         aiheetSnapshot.docs.forEach(doc => {
@@ -64,22 +55,15 @@ export default function HakemistoPage() {
       }
     }
 
-    fetchAiheet()
+    fetchData()
   }, [])
 
   const filteredLaulut = (laulut || []).filter(laulu =>
     laulu.Name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  if (loading) {
-    console.log('⌛ Ladataan lauluja...')
-    return <div>Ladataan...</div>
-  }
-
-  if (error) {
-    console.error('❌ Virhe laulujen latauksessa:', error)
-    return <div>Virhe ladattaessa lauluja</div>
-  }
+  if (loading) return <div>Ladataan...</div>
+  if (error) return <div>Virhe ladattaessa lauluja</div>
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
@@ -88,10 +72,7 @@ export default function HakemistoPage() {
           className="cursor-pointer" 
           size={45} 
           strokeWidth={3}
-          onClick={() => {
-            console.log('⬅️ Navigoidaan takaisin')
-            router.push('/home')
-          }}
+          onClick={() => router.push('/home')}
         />
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center">
           HAKEMISTO
