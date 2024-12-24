@@ -1,4 +1,5 @@
 'use client'
+import { useCache } from '@/app/hooks/useCache'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
@@ -40,7 +41,6 @@ export default function PeliKategoriaPage({
   params: Promise<{ category: string }>
 }) {
   const router = useRouter()
-  const [pelit, setPelit] = useState<Peli[]>([])
   const [currentCategory, setCurrentCategory] = useState<string | null>(null)
   
   useEffect(() => {
@@ -53,23 +53,28 @@ export default function PeliKategoriaPage({
     unwrapParams();
   }, [params]);
 
-  useEffect(() => {
-    async function fetchPelit() {
-      if (!currentCategory) return;
+  const { data: pelit = [], loading, error } = useCache<Peli[]>(
+    `pelit-${currentCategory}`,
+    async () => {
+      if (!currentCategory) return [];
       
       const pelilajiNumber = pelilajiNumbers[currentCategory]
-      if (!pelilajiNumber) return;
+      if (!pelilajiNumber) return [];
 
+      console.log('🎮 Haetaan pelit kategorialle:', currentCategory)
       try {
         const pelitRef = collection(db, 'pelit')
         const pelitQuery = query(pelitRef, where('mikä pelilaji', '==', pelilajiNumber))
         const pelitSnapshot = await getDocs(pelitQuery)
+        console.log('📚 Pelit haettu, määrä:', pelitSnapshot.size)
+        
         const pelitData = pelitSnapshot.docs.map(doc => ({
           ...doc.data(),
           parsedImage: null
         })) as Peli[]
         
         const laulujenNimet = [...new Set(pelitData.map(peli => peli.Laulut))]
+        console.log('🎵 Haetaan kuvat lauluille, määrä:', laulujenNimet.length)
 
         const laulutRef = collection(db, 'laulut')
         const laulutMap = new Map<string, ImageData | null>()
@@ -94,18 +99,27 @@ export default function PeliKategoriaPage({
           a.Laulut.localeCompare(b.Laulut)
         )
 
-        setPelit(sortedPelit)
+        console.log('✅ Kaikki data haettu ja käsitelty, pelien määrä:', sortedPelit.length)
+        return sortedPelit
 
-      } catch  {
-      
+      } catch (error) {
+        console.error('❌ Virhe pelien haussa:', error)
+        throw error
       }
     }
-
-    fetchPelit()
-  }, [currentCategory])
- 
+  )
 
   const categoryTitle = currentCategory ? categoryTitles[currentCategory] : 'PELIT'
+
+  if (loading) {
+    console.log('⌛ Ladataan pelejä...')
+    return <div>Ladataan...</div>
+  }
+
+  if (error) {
+    console.error('❌ Virhe pelien latauksessa:', error)
+    return <div>Virhe ladattaessa pelejä</div>
+  }
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
@@ -114,7 +128,10 @@ export default function PeliKategoriaPage({
           className="cursor-pointer" 
           size={45} 
           strokeWidth={3}
-          onClick={() => router.push('/pelit')}
+          onClick={() => {
+            console.log('⬅️ Navigoidaan takaisin pelit-sivulle')
+            router.push('/pelit')
+          }}
         />
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center truncate">
           {categoryTitle}
@@ -123,7 +140,7 @@ export default function PeliKategoriaPage({
       </div>
 
       <div className="w-full max-w-[900px] grid grid-cols-1 md:grid-cols-2 gap-3 mt-8">
-        {pelit.map((peli, index) => (
+  {(pelit || []).map((peli, index) => (
           <Link 
             key={peli.ID}
             href={`/pelit/peli/${encodeURIComponent(peli['Pelin osoite'])}`}
