@@ -62,8 +62,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
-      {/* Desktop: logout-nappi logon vieressä */}
-      <div className="hidden md:block absolute right-6 top-2 z-20">
+      
+     <div className="hidden md:block absolute right-6 top-2 z-20">
         <LogOut 
           size={45} 
           strokeWidth={2}
@@ -72,7 +72,7 @@ export default function HomePage() {
         />
       </div>
 
-      {/* Desktop logo */}
+      
       <div className="hidden md:block max-w-[900px] w-full m-0">
         <QuickImage
           src={logoUrl}
@@ -97,7 +97,7 @@ export default function HomePage() {
     />
   </div>
   <LogOut 
-    className="cursor-pointer w-[35px] sm:w-[40px]"
+    className="cursor-pointer w-[40px] sm:w-[42px]"
     strokeWidth={2}
     onClick={() => setIsLogoutModalOpen(true)}
   />

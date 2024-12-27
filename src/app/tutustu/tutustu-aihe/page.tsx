@@ -43,7 +43,7 @@ export default function TutustuPage() {
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
       <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
-          className="cursor-pointer w-[35px] sm:w-[40px] md:w-[45px]" 
+          className="cursor-pointer w-[40px] sm:w-[42px] md:w-[45px]" 
           strokeWidth={2}
           onClick={() => router.push('/tutustu')}
         />

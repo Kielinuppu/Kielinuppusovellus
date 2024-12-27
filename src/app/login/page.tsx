@@ -82,7 +82,7 @@ export default function Login() {
       
       <div className="sticky md:hidden top-0 w-full flex px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
-          className="cursor-pointer w-[35px] sm:w-[40px]"  
+          className="cursor-pointer w-[40px] sm:w-[42px]"  
           strokeWidth={2}
           onClick={() => router.push('/')}
         />
