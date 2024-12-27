@@ -60,7 +60,7 @@ export default function TutustuLauluPage() {
         <div className="w-[45px]"></div>
       </div>
   
-      <div className="w-full max-w-[580px] mt-4 sm:mt-8">
+      <div className="w-full max-w-[580px] mt-4 sm:mt-2">
         {laulut.map((laulu, index) => (
           <div 
             key={laulu.id} 

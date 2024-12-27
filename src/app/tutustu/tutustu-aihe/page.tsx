@@ -54,7 +54,7 @@ export default function TutustuPage() {
         <div className="w-[45px]"></div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mt-8">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mt-1">
         {aiheet.map((aihe) => (
           <Link 
             key={aihe.id}
