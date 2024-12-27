@@ -58,7 +58,7 @@ export default function TutustuPage() {
         <ArrowLeft 
           className="cursor-pointer"
           size={45}
-          strokeWidth={3}
+          strokeWidth={2}
           onClick={() => router.push('/')}
         />
       </div>
@@ -77,10 +77,10 @@ export default function TutustuPage() {
 
       {/* Mobiili: nuoli ja logo samalla rivillä */}
       <div className="sticky md:hidden top-0 w-full flex items-center justify-between px-2 bg-[#e9f1f3] py-2 z-10">
-  <ArrowLeft 
-    className="cursor-pointer w-[40px] sm:w-[42px]"
-    strokeWidth={2}
-    onClick={() => router.push('/')}
+        <ArrowLeft 
+          className="cursor-pointer w-[45px] sm:w-[45px]"
+          strokeWidth={2}
+          onClick={() => router.push('/')}
         />
         <div className="flex-1 max-w-[250px] mx-4">
           <QuickImage
