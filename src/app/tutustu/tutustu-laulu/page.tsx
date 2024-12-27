@@ -49,17 +49,16 @@ export default function TutustuLauluPage() {
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
       <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
-          className="cursor-pointer" 
-          size={45} 
+          className="cursor-pointer w-[35px] sm:w-[40px] md:w-[45px]" 
           strokeWidth={2}
           onClick={() => router.push('/tutustu/tutustu-aihe')}
         />
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center">
           ARJEN TAIDOT
         </h1>
-        <div className="w-[45px]"></div>
+        <div className="w-[35px] sm:w-[40px] md:w-[45px]"></div>
       </div>
-  
+
       <div className="w-full max-w-[580px] mt-4 sm:mt-2">
         {laulut.map((laulu, index) => (
           <div 

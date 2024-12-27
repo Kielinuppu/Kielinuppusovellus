@@ -84,26 +84,24 @@ export default function HomePage() {
         />
       </div>
 
-      {/* Mobiili: logo ja logout samalla rivillä */}
       <div className="sticky md:hidden top-0 w-full flex items-center justify-between px-2 bg-[#e9f1f3] py-2 z-10">
-        <div className="w-[45px]" />
-        <div className="flex-1 max-w-[250px] mx-4">
-          <QuickImage
-            src={mobileLogoUrl}
-            alt="Kielinuppu logo"
-            width={400}
-            height={100}
-            priority={true}
-            className="w-full h-auto object-contain"
-          />
-        </div>
-        <LogOut 
-          size={45} 
-          strokeWidth={2}
-          className="cursor-pointer"
-          onClick={() => setIsLogoutModalOpen(true)}
-        />
-      </div>
+  <div className="w-[35px] sm:w-[40px]" />
+  <div className="flex-1 max-w-[250px] mx-4">
+    <QuickImage
+      src={mobileLogoUrl}
+      alt="Kielinuppu logo"
+      width={400}
+      height={100}
+      priority={true}
+      className="w-full h-auto object-contain"
+    />
+  </div>
+  <LogOut 
+    className="cursor-pointer w-[35px] sm:w-[40px]"
+    strokeWidth={2}
+    onClick={() => setIsLogoutModalOpen(true)}
+  />
+</div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mt-0">
         {categories.map((category, index) => (
