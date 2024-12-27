@@ -19,7 +19,6 @@ export default function HakemistoPage() {
   const { data: laulut = [], loading, error } = useCache<Laulu[]>(
     'hakemisto-laulut',
     async () => {
-      console.log('🎵 Aloitetaan laulujen haku...')
       const laulutSnapshot = await getDocs(collection(db, 'laulut'))
       const fetchedLaulut = laulutSnapshot.docs.map(doc => {
         const data = doc.data();
@@ -34,24 +33,21 @@ export default function HakemistoPage() {
         a.Name.localeCompare(b.Name, 'fi')
       )
       
-      console.log('✅ Laulut haettu ja järjestetty, yhteensä:', sortedLaulut.length)
       return sortedLaulut;
     }
   )
 
   useEffect(() => {
     async function fetchData() {
-      console.log('🎯 Haetaan aiheet...')
       try {
         const aiheetSnapshot = await getDocs(collection(db, 'aiheet'))
         const aiheetMap: {[key: string]: string} = {}
         aiheetSnapshot.docs.forEach(doc => {
           aiheetMap[doc.data().Name] = doc.id
         })
-        console.log('✅ Aiheet haettu, määrä:', Object.keys(aiheetMap).length)
         setAiheet(aiheetMap)
       } catch (error) {
-        console.error('❌ Virhe aiheiden haussa:', error)
+        throw error
       }
     }
 

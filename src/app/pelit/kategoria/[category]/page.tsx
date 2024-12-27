@@ -61,12 +61,10 @@ export default function PeliKategoriaPage({
       const pelilajiNumber = pelilajiNumbers[currentCategory]
       if (!pelilajiNumber) return [];
 
-      console.log('🎮 Haetaan pelit kategorialle:', currentCategory)
       try {
         const pelitRef = collection(db, 'pelit')
         const pelitQuery = query(pelitRef, where('mikä pelilaji', '==', pelilajiNumber))
         const pelitSnapshot = await getDocs(pelitQuery)
-        console.log('📚 Pelit haettu, määrä:', pelitSnapshot.size)
         
         const pelitData = pelitSnapshot.docs.map(doc => ({
           ...doc.data(),
@@ -74,7 +72,6 @@ export default function PeliKategoriaPage({
         })) as Peli[]
         
         const laulujenNimet = [...new Set(pelitData.map(peli => peli.Laulut))]
-        console.log('🎵 Haetaan kuvat lauluille, määrä:', laulujenNimet.length)
 
         const laulutRef = collection(db, 'laulut')
         const laulutMap = new Map<string, ImageData | null>()
@@ -99,11 +96,9 @@ export default function PeliKategoriaPage({
           a.Laulut.localeCompare(b.Laulut)
         )
 
-        console.log('✅ Kaikki data haettu ja käsitelty, pelien määrä:', sortedPelit.length)
         return sortedPelit
 
       } catch (error) {
-        console.error('❌ Virhe pelien haussa:', error)
         throw error
       }
     }

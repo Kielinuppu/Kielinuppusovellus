@@ -40,17 +40,12 @@ export default function LauluPage({ params }: PageProps) {
     async function fetchData() {
       setLoading(true)
       try {
-        // 1. Haetaan ensin laulu
-        console.log('🎵 Haetaan laulu:', resolvedParams.lauluId)
         const lauluDoc = await getDoc(doc(db, 'laulut', resolvedParams.lauluId))
 
         if (lauluDoc.exists()) {
           const lauluData = lauluDoc.data() as Laulu
           setLaulu(lauluData)
-          console.log('🎵 Löydettiin laulu:', lauluData.Name)
 
-          // 2. Haetaan vain tämän laulun tekemiset
-          console.log('🎯 Haetaan tekemiset laululle ID:', lauluData.ID)
           const tekemisetQuery = query(
             collection(db, 'tekeminen'),
             where('Lauluts', 'array-contains', String(lauluData.ID))
@@ -60,11 +55,10 @@ export default function LauluPage({ params }: PageProps) {
             .map(doc => doc.data() as Tekeminen)
             .sort((a, b) => a.tunnusluku - b.tunnusluku)
           
-          console.log('🎯 Löydettiin tekemisiä:', laulunTekemiset.length)
           setTekemiset(laulunTekemiset)
         }
       } catch (error) {
-        console.error('❌ Error:', error)
+        throw error
       } finally {
         setLoading(false)
       }
