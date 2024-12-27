@@ -10,6 +10,7 @@ import { getFullImageUrl } from '@/utils/imageUtils'
 export default function TutustuPage() {
   const router = useRouter()
   const logoUrl = getFullImageUrl('logo.png', 'common')
+  const mobileLogoUrl = getFullImageUrl('pienilogo.png', 'common')
 
   const categories = useMemo(() => [
     { 
@@ -52,7 +53,7 @@ export default function TutustuPage() {
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
-            {/* Desktop: nuoli logon vieressä */}
+      {/* Desktop: nuoli logon vieressä */}
       <div className="hidden md:block absolute left-6 top-6 z-20">
         <ArrowLeft 
           className="cursor-pointer"
@@ -62,18 +63,8 @@ export default function TutustuPage() {
         />
       </div>
 
-      {/* Mobiili: nuoli ylhäällä */}
-      <div className="sticky md:hidden top-0 w-full flex justify-between px-2 bg-[#e9f1f3] py-2 z-10">
-        <ArrowLeft 
-          className="cursor-pointer"
-          size={45}
-          strokeWidth={3}
-          onClick={() => router.push('/')}
-        />
-        <div className="w-[45px]" />
-      </div>
-
-      <div className="max-w-[900px] w-full m-0">
+      {/* Desktop logo */}
+      <div className="hidden md:block max-w-[900px] w-full m-0">
         <QuickImage
           src={logoUrl}
           alt="Kielinuppu logo"
@@ -82,6 +73,27 @@ export default function TutustuPage() {
           priority={true}
           className="w-full h-auto object-contain"
         />
+      </div>
+
+      {/* Mobiili: nuoli ja logo samalla rivillä */}
+      <div className="sticky md:hidden top-0 w-full flex items-center justify-between px-2 bg-[#e9f1f3] py-2 z-10">
+        <ArrowLeft 
+          className="cursor-pointer"
+          size={45}
+          strokeWidth={3}
+          onClick={() => router.push('/')}
+        />
+        <div className="flex-1 max-w-[250px] mx-4">
+          <QuickImage
+            src={mobileLogoUrl}
+            alt="Kielinuppu logo"
+            width={400}
+            height={100}
+            priority={true}
+            className="w-full h-auto object-contain"
+          />
+        </div>
+        <div className="w-[45px]" />
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mt-0">
