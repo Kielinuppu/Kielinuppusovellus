@@ -80,7 +80,7 @@ export default function TutustuPage() {
         <ArrowLeft 
           className="cursor-pointer"
           size={45}
-          strokeWidth={3}
+          strokeWidth={2}
           onClick={() => router.push('/')}
         />
         <div className="flex-1 max-w-[250px] mx-4">
@@ -96,7 +96,7 @@ export default function TutustuPage() {
         <div className="w-[45px]" />
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mt-0">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mt-1">
         {categories.map((category, index) => (
           <div key={category.title} className="flex justify-center">
             {category.active ? (

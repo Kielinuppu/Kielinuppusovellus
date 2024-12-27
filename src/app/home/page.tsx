@@ -13,6 +13,7 @@ export default function HomePage() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
   const logoUrl = getFullImageUrl('logo.png', 'common')
+  const mobileLogoUrl = getFullImageUrl('pienilogo.png', 'common')
 
   const categories = useMemo(() => [
     { 
@@ -65,32 +66,44 @@ export default function HomePage() {
       <div className="hidden md:block absolute right-6 top-2 z-20">
         <LogOut 
           size={45} 
+          strokeWidth={2}
           className="cursor-pointer"
           onClick={() => setIsLogoutModalOpen(true)}
         />
       </div>
 
-      {/* Mobiili: logout-nappi ylhäällä */}
-      <div className="sticky md:hidden top-0 w-full flex justify-end px-2 bg-[#e9f1f3] py-2 z-10">
-        <LogOut 
-          size={45} 
-          className="cursor-pointer"
-          onClick={() => setIsLogoutModalOpen(true)}
+      {/* Desktop logo */}
+      <div className="hidden md:block max-w-[900px] w-full m-0">
+        <QuickImage
+          src={logoUrl}
+          alt="Kielinuppu logo"
+          width={900}
+          height={225}
+          priority={true}
+          className="w-full h-auto object-contain"
         />
       </div>
 
-      {logoUrl && (
-        <div className="max-w-[900px] w-full m-0">
+      {/* Mobiili: logo ja logout samalla rivillä */}
+      <div className="sticky md:hidden top-0 w-full flex items-center justify-between px-2 bg-[#e9f1f3] py-2 z-10">
+        <div className="w-[45px]" />
+        <div className="flex-1 max-w-[250px] mx-4">
           <QuickImage
-            src={logoUrl}
+            src={mobileLogoUrl}
             alt="Kielinuppu logo"
-            width={900}
-            height={225}
+            width={400}
+            height={100}
             priority={true}
             className="w-full h-auto object-contain"
           />
         </div>
-      )}
+        <LogOut 
+          size={45} 
+          strokeWidth={2}
+          className="cursor-pointer"
+          onClick={() => setIsLogoutModalOpen(true)}
+        />
+      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mt-0">
         {categories.map((category, index) => (

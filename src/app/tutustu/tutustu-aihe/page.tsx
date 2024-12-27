@@ -45,7 +45,7 @@ export default function TutustuPage() {
         <ArrowLeft 
           className="cursor-pointer" 
           size={45} 
-          strokeWidth={3}
+          strokeWidth={2}
           onClick={() => router.push('/tutustu')}
         />
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center">
