@@ -110,7 +110,7 @@ export default function PdfLayout({
         />
         <div className="flex-1 text-center">
           <h1 className="text-2xl font-semibold">
-            {laulu?.Name || ''} {type === 'nuotit' ? '(Nuotit)' : '(Tulosteet)'}
+            {laulu?.Name || ''} {type === 'nuotit' ? 'NUOTIT' : 'TULOSTEET'}
           </h1>
           {pdfUrl && (
             <div className="flex items-center justify-center gap-2 mt-2 text-gray-600">

@@ -280,7 +280,7 @@ export default function AudioLayout({
             )}
 
             <h2 className="text-xl font-semibold mb-4 text-center">
-              {laulu?.Name || ''} {type === 'karaoke' ? '(Karaoke)' : ''}
+              {laulu?.Name || ''} {type === 'karaoke' ? 'KARAOKE' : ''}
             </h2>
             
             {audioUrl && <CustomAudioPlayer audioUrl={audioUrl} />}
