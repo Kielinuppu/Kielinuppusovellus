@@ -69,23 +69,16 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-[#e9f1f3] flex flex-col">
-      
-      <div className="hidden md:block absolute left-6 top-2 z-20">
+    <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
+      <div className="sticky top-0 w-full flex items-center justify-between px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
-          className="cursor-pointer w-[45px]"  
+          className="cursor-pointer"
+          size={42}
           strokeWidth={2}
           onClick={() => router.push('/')}
         />
-      </div>
-
-      
-      <div className="sticky md:hidden top-0 w-full flex px-2 bg-[#e9f1f3] py-2 z-10">
-        <ArrowLeft 
-          className="cursor-pointer w-[40px] sm:w-[42px]"  
-          strokeWidth={2}
-          onClick={() => router.push('/')}
-        />
+        <div className="flex-1" />
+        <div className="w-[42px]"></div>
       </div>
       
       <div className="flex-1 flex flex-col items-center justify-center px-4">

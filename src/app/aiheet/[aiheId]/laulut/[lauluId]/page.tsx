@@ -101,24 +101,23 @@ export default function LauluPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
-      {/* Desktop: nuoli vasemmalla ylhäällä */}
       <div className="hidden md:block absolute left-6 top-2 z-20">
         <ArrowLeft 
           className="cursor-pointer"
-          size={45}
-          strokeWidth={3}
+          size={42}
+          strokeWidth={2}
           onClick={() => router.back()}
         />
       </div>
 
-      {/* Mobiili: nuoli stickynä */}
-      <div className="sticky md:hidden top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
+      <div className="sticky md:hidden top-0 w-full flex items-center justify-between px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
           className="cursor-pointer"
-          size={45}
-          strokeWidth={3}
+          size={42}
+          strokeWidth={2}
           onClick={() => router.back()}
         />
+        <div className="w-[42px]" />
       </div>
 
       <div className="w-full max-w-[1050px] mx-auto px-4 md:mt-6">

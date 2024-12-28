@@ -79,20 +79,20 @@ export default function LaulutPage({
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
-      <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
+      <div className="sticky top-0 w-full flex items-center justify-between px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
-          className="cursor-pointer" 
-          size={45} 
-          strokeWidth={3}
+          className="cursor-pointer"
+          size={42} 
+          strokeWidth={2}
           onClick={() => router.push('/aiheet')}
         />
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center">
           {aiheNimi}
         </h1>
-        <div className="w-[45px]"></div>
+        <div className="w-[42px]"></div>
       </div>
-  
-      <div className="w-full max-w-[580px] mt-4 sm:mt-8">
+ 
+      <div className="w-full max-w-[580px] mt-4 sm:mt-2">
         {laulut.map((laulu, index) => (
           <Link href={`/aiheet/${currentAiheId}/laulut/${laulu.id}`} key={laulu.id} className="block mb-2 sm:mb-3">
             <div className="flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">

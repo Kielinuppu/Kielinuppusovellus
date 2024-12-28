@@ -41,20 +41,20 @@ export default function AiheListPage() {
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
-      <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
+      <div className="sticky top-0 w-full flex items-center justify-between px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
-          className="cursor-pointer" 
-          size={45} 
-          strokeWidth={3}
+          className="cursor-pointer"
+          size={42}
+          strokeWidth={2}
           onClick={() => router.push('/home')}
         />
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center">
           KATEGORIAT
         </h1>
-        <div className="w-[45px]"></div>
+        <div className="w-[42px]"></div>
       </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mt-8">
+ 
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mt-1">
         {aiheet.map((aihe) => (
           <Link href={`/aiheet/${aihe.id}/laulut`} key={aihe.id} className="flex justify-center">
             <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg hover:scale-105 transition-transform">

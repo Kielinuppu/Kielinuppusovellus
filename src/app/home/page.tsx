@@ -62,17 +62,17 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
-      
-     <div className="hidden md:block absolute right-6 top-2 z-20">
+      {/* Desktop: logout-nappi logon vieressä */}
+      <div className="hidden md:block absolute right-6 top-2 z-20">
         <LogOut 
-          size={45} 
-          strokeWidth={2}
           className="cursor-pointer"
+          size={42}
+          strokeWidth={2}
           onClick={() => setIsLogoutModalOpen(true)}
         />
       </div>
-
-      
+ 
+      {/* Desktop logo */}
       <div className="hidden md:block max-w-[900px] w-full m-0">
         <QuickImage
           src={logoUrl}
@@ -83,27 +83,29 @@ export default function HomePage() {
           className="w-full h-auto object-contain"
         />
       </div>
-
+ 
+      {/* Mobiili header */}
       <div className="sticky md:hidden top-0 w-full flex items-center justify-between px-2 bg-[#e9f1f3] py-2 z-10">
-  <div className="w-[35px] sm:w-[40px]" />
-  <div className="flex-1 max-w-[250px] mx-4">
-    <QuickImage
-      src={mobileLogoUrl}
-      alt="Kielinuppu logo"
-      width={400}
-      height={100}
-      priority={true}
-      className="w-full h-auto object-contain"
-    />
-  </div>
-  <LogOut 
-    className="cursor-pointer w-[40px] sm:w-[42px]"
-    strokeWidth={2}
-    onClick={() => setIsLogoutModalOpen(true)}
-  />
-</div>
-
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mt-0">
+        <div className="w-[42px]" />
+        <div className="absolute left-1/2 transform -translate-x-1/2 max-w-[250px]">
+          <QuickImage
+            src={mobileLogoUrl}
+            alt="Kielinuppu logo"
+            width={400}
+            height={100}
+            priority={true}
+            className="w-full h-auto object-contain"
+          />
+        </div>
+        <LogOut 
+          className="cursor-pointer"
+          size={42}
+          strokeWidth={2}
+          onClick={() => setIsLogoutModalOpen(true)}
+        />
+      </div>
+ 
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mt-1">
         {categories.map((category, index) => (
           <Link href={category.path} key={category.title} className="flex justify-center">
             <div className="w-[170px] h-[170px] sm:w-[180px] sm:h-[180px] relative shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] rounded-lg">
@@ -119,7 +121,7 @@ export default function HomePage() {
           </Link>
         ))}
       </div>
-
+ 
       {isAdmin && (
         <button 
           onClick={() => router.push('/admin')}
@@ -128,7 +130,7 @@ export default function HomePage() {
           ADMIN
         </button>
       )}
-
+ 
       <LogoutModal
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}
