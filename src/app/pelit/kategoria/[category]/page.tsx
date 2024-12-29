@@ -124,7 +124,7 @@ export default function PeliKategoriaPage({
         <div className="w-[45px]"></div>
       </div>
 
-      <div className="w-full max-w-[900px] grid grid-cols-1 md:grid-cols-2 gap-3 mt-8">
+      <div className="w-full max-w-[900px] grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
         {(pelit || []).map((peli, index) => (
           <Link 
             key={peli.ID}

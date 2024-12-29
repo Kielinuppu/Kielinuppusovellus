@@ -10,11 +10,11 @@ import { collection, getDocs } from 'firebase/firestore'
 import { BingoData, parseBingoImage } from '@/types/bingo'
 
 interface Bingo {
- id: string;
- ID: number;
- Name: string;
- kuva: BingoData;
- peliosoite: string;
+  id: string;
+  ID: number;
+  Name: string;
+  kuva: BingoData | null; 
+  peliosoite: string | null; 
 }
 
 export default function MuutPage() {
@@ -22,29 +22,33 @@ export default function MuutPage() {
  const [bingos, setBingos] = useState<Bingo[]>([])
 
  useEffect(() => {
-   async function fetchBingos() {
-     try {
-       const bingotRef = collection(db, 'bingot')
-       const querySnapshot = await getDocs(bingotRef)
+  async function fetchBingos() {
+    try {
+      const bingotRef = collection(db, 'bingot');
+      const querySnapshot = await getDocs(bingotRef);
 
-       const bingoData = querySnapshot.docs.map(doc => {
-         const data = doc.data()
-         return {
-           id: doc.id,
-           ...data,
-           kuva: parseBingoImage(data.kuva)
-         }
-       }) as Bingo[]
+      const bingoData = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        const kuvaData = data.kuva || data.Kuva || null;
 
-       const sortedBingos = bingoData.sort((a, b) => a.Name.localeCompare(b.Name))
-       setBingos(sortedBingos)
-     } catch (error) {
-       console.error('Virhe bingojen haussa:', error)
-     }
-   }
+        return {
+          id: doc.id,
+          ID: data.ID || null,
+          Name: data.Name || "Nimetön Bingo",
+          kuva: kuvaData ? parseBingoImage(kuvaData) : null,
+          peliosoite: data.pelialustat?.peliosoite || null,
+        };
+      });
 
-   fetchBingos()
- }, [])
+      const sortedBingos = bingoData.sort((a, b) => (a.Name || "").localeCompare(b.Name || ""));
+      setBingos(sortedBingos);
+    } catch (error) {
+      console.error('Virhe bingojen haussa:', error);
+    }
+  }
+
+  fetchBingos();
+}, []);
 
  return (
    <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
@@ -72,7 +76,7 @@ export default function MuutPage() {
              <div className="w-[65px] h-[65px] sm:w-[77px] sm:h-[77px] relative rounded-lg overflow-hidden ml-2">
                {bingo.kuva ? (
                  <QuickImage
-                   src={`https://firebasestorage.googleapis.com/v0/b/kielinuppu-sovellus.firebasestorage.app/o/images%2Fbingot%2F${bingo.kuva.filename}?alt=media`}
+                   src={`https://firebasestorage.googleapis.com/v0/b/kielinuppu-sovellus.firebasestorage.app/o/images%2Fbingot%2F${encodeURIComponent(bingo.kuva.filename)}?alt=media`}
                    alt={bingo.Name}
                    fill
                    priority={index < 4}

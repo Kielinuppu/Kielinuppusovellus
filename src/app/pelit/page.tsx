@@ -53,7 +53,7 @@ export default function PelitPage() {
         <div className="w-[45px]"></div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mt-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mt-3">
         {categories.map((category, index) => (
           <Link 
             href={`/pelit/kategoria/${category.category}`} 
