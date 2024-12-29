@@ -60,8 +60,8 @@ const PlaylistsPage = () => {
       <div className="sticky top-0 flex justify-between items-center mb-6">
         <ArrowLeft 
           className="cursor-pointer text-black" 
-          size={45} 
-          strokeWidth={3}
+          size={42} 
+          strokeWidth={2}
           onClick={() => router.push('/home')}  
         />
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-bold text-center">OMAT SOITTOLISTAT</h1>

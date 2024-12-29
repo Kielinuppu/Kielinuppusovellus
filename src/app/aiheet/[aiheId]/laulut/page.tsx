@@ -45,28 +45,28 @@ export default function LaulutPage({
       if (!currentAiheId) return;
       
       try {
-        // 1. Haetaan vain tarvittava aihe ID:n perusteella
+        
         const aiheDoc = await getDoc(doc(db, 'aiheet', currentAiheId))
         if (!aiheDoc.exists()) return;
         
         const aiheData = aiheDoc.data()
         setAiheNimi(aiheData.Name)
 
-        // 2. Haetaan vain tämän aiheen laulut
+        
         const laulutQuery = query(
           collection(db, 'laulut'),
           where('Aiheet', '==', aiheData.Name)
         )
         const laulutSnapshot = await getDocs(laulutQuery)
 
-        // 3. Käsitellään vain tämän aiheen laulut
+        
         const aiheenLaulut = laulutSnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
           parsedImage: parseImageData(doc.data()['Laulun kuvake'])
         })) as Laulu[]
 
-        // 4. Järjestetään aakkosjärjestykseen
+        
         setLaulut(aiheenLaulut.sort((a, b) => a.Name.localeCompare(b.Name)))
 
       } catch (error) {
@@ -92,7 +92,7 @@ export default function LaulutPage({
         <div className="w-[42px]"></div>
       </div>
  
-      <div className="w-full max-w-[580px] mt-4 sm:mt-2">
+      <div className="w-full max-w-[580px] mt-2 sm:mt-2">
         {laulut.map((laulu, index) => (
           <Link href={`/aiheet/${currentAiheId}/laulut/${laulu.id}`} key={laulu.id} className="block mb-2 sm:mb-3">
             <div className="flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">

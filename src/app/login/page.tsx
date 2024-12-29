@@ -82,9 +82,9 @@ export default function Login() {
       </div>
       
       <div className="flex-1 flex flex-col items-center justify-center px-4">
-        <h1 className="text-5xl font-semibold mb-12 text-center">
-          KIRJAUDU SISÄÄN
-        </h1>
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold mb-12 text-center">
+  KIRJAUDU SISÄÄN
+</h1>
         <form onSubmit={handleLogin} className="flex flex-col items-center w-full">
           <input
             type="text"

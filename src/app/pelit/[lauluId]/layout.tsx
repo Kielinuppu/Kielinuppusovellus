@@ -20,8 +20,8 @@ export default function PelitLayout({
         <div className="w-full px-4 py-2">
           <ArrowLeft 
             className="cursor-pointer" 
-            size={45} 
-            strokeWidth={3}
+            size={42} 
+            strokeWidth={2}
             onClick={() => router.back()}
           />
         </div>
@@ -44,8 +44,8 @@ export default function PelitLayout({
       <div className="hidden md:block absolute left-6 top-2 z-20">
         <ArrowLeft 
           className="cursor-pointer"
-          size={45}
-          strokeWidth={3}
+          size={42}
+          strokeWidth={2}
           onClick={() => router.back()}
         />
       </div>
@@ -54,8 +54,8 @@ export default function PelitLayout({
       <div className="sticky md:hidden top-0 w-full flex px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
           className="cursor-pointer"
-          size={45}
-          strokeWidth={3}
+          size={42}
+          strokeWidth={2}
           onClick={() => router.back()}
         />
       </div>

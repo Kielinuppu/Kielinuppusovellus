@@ -41,8 +41,8 @@ function ViewerContent() {
      <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
        <ArrowLeft 
          className="cursor-pointer" 
-         size={45} 
-         strokeWidth={3}
+         size={42} 
+         strokeWidth={2}
          onClick={() => router.back()}
        />
        <div className="flex-1 text-center">

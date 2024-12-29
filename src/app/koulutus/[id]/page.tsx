@@ -82,7 +82,7 @@ export default function KoulutusSisaltoPage({
     if (sisalto.Video) {
       router.push(`/viewer?url=${encodeURIComponent(sisalto.Video)}&type=video`)
     } else if (sisalto.PDF?.filename) {
-      // Käytetään suoraan filename-kenttää storagesta hakemiseen
+      
       router.push(`/viewer?title=${encodeURIComponent(sisalto.Name)}&url=${encodeURIComponent(`pdf/${sisalto.PDF.filename}`)}&type=pdf`)
     }
   }
@@ -92,8 +92,8 @@ export default function KoulutusSisaltoPage({
       <div className="sticky top-0 w-full flex justify-between px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
           className="cursor-pointer" 
-          size={45} 
-          strokeWidth={3}
+          size={42} 
+          strokeWidth={2}
           onClick={() => router.push('/koulutus')}
         />
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center truncate">

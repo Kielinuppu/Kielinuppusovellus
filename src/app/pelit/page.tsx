@@ -43,8 +43,8 @@ export default function PelitPage() {
       <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
           className="cursor-pointer" 
-          size={45} 
-          strokeWidth={3}
+          size={42} 
+          strokeWidth={2}
           onClick={() => router.push('/home')}
         />
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center">

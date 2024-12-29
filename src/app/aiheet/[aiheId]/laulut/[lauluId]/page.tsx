@@ -134,7 +134,7 @@ export default function LauluPage({ params }: PageProps) {
         </div>
       </div>
 
-      <div className="w-full max-w-[1050px] mx-auto p-6">
+      <div className="w-full max-w-[1050px] mx-auto p-4">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
           {tekemiset.map((tekeminen) => (
             <button

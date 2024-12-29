@@ -134,8 +134,8 @@ function SoittolistaContent() {
      <div className="sticky top-0 flex justify-between items-center mb-6">
        <ArrowLeft 
          className="cursor-pointer text-black" 
-         size={45} 
-         strokeWidth={3}
+         size={42} 
+         strokeWidth={2}
          onClick={() => router.push('/soittolistat')}
        />
        <button

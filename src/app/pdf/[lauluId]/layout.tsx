@@ -104,8 +104,8 @@ export default function PdfLayout({
       <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
         <ArrowLeft 
           className="cursor-pointer" 
-          size={45} 
-          strokeWidth={3}
+          size={42}
+          strokeWidth={2}
           onClick={() => router.back()}
         />
         <div className="flex-1 text-center">
@@ -113,15 +113,15 @@ export default function PdfLayout({
             {laulu?.Name || ''} {type === 'nuotit' ? 'NUOTIT' : 'TULOSTEET'}
           </h1>
           {pdfUrl && (
-            <div className="flex items-center justify-center gap-2 mt-2 text-gray-600">
+            <div className="hidden md:flex items-center justify-center gap-2 mt-2 text-gray-600">
               <MousePointer2 size={16} />
               <span className="text-sm">Paina hiiren oikeaa näppäintä tallentaaksesi tai tulostaaksesi</span>
             </div>
           )}
         </div>
-        <div className="w-[45px]"></div>
+        <div className="w-[42px]"></div>
       </div>
-
+ 
       <div className="max-w-[90%] mx-auto mt-4">
         {error ? (
           <div className="bg-white rounded-[10px] p-6 shadow-[rgba(0,0,0,0.4)_-4px_4px_4px] text-center">
@@ -148,4 +148,4 @@ export default function PdfLayout({
       {children}
     </div>
   )
-}
+  }

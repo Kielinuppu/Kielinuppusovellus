@@ -53,31 +53,16 @@ export default function TutustuPage() {
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
-      {/* Header rivi - nuoli ja mobiililogo samalla rivillä */}
-      <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
-        {/* Nuoli vasemmassa reunassa */}
+      <div className="hidden md:block absolute left-6 top-2 z-20">
         <ArrowLeft 
           className="cursor-pointer"
           size={42}
           strokeWidth={2}
           onClick={() => router.push('/')}
         />
-        {/* Mobiililogo keskitetty ja näkyy vain mobiilissa */}
-        <div className="md:hidden absolute left-1/2 transform -translate-x-1/2 max-w-[250px]">
-          <QuickImage
-            src={mobileLogoUrl}
-            alt="Kielinuppu logo"
-            width={400}
-            height={100}
-            priority={true}
-            className="w-full h-auto object-contain"
-          />
-        </div>
-        {/* Tyhjä tila oikealle tasapainon vuoksi */}
-        <div className="w-[42px]"></div>
       </div>
-  
-      {/* Desktop-logo näkyy vain suuremmilla näytöillä */}
+ 
+      
       <div className="hidden md:block max-w-[900px] w-full m-0">
         <QuickImage
           src={logoUrl}
@@ -88,7 +73,29 @@ export default function TutustuPage() {
           className="w-full h-auto object-contain"
         />
       </div>
-  
+ 
+      
+      <div className="sticky md:hidden top-0 w-full flex items-center justify-between px-2 bg-[#e9f1f3] py-2 z-10">
+        <ArrowLeft 
+          className="cursor-pointer"
+          size={42}
+          strokeWidth={2}
+          onClick={() => router.push('/')}
+        />
+        
+        <div className="absolute left-1/2 transform -translate-x-1/2 max-w-[250px]">
+          <QuickImage
+            src={mobileLogoUrl}
+            alt="Kielinuppu logo"
+            width={400}
+            height={100}
+            priority={true}
+            className="w-full h-auto object-contain"
+          />
+        </div>
+        <div className="w-[42px]" />
+      </div>
+ 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mt-1">
         {categories.map((category, index) => (
           <div key={category.title} className="flex justify-center">
@@ -122,5 +129,5 @@ export default function TutustuPage() {
         ))}
       </div>
     </div>
-  );
+  )
 }  
