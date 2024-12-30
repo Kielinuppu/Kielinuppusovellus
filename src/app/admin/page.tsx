@@ -7,7 +7,6 @@ import { ArrowLeft } from 'lucide-react'
 import { db } from '../../lib/firebase'
 import { collection, query, getDocs, addDoc, orderBy, limit } from 'firebase/firestore'
 
-
 interface Code {
  Koodi: string
  Päiväkoti: string
@@ -195,13 +194,19 @@ export default function AdminPage() {
      </div>
 
      <div className="max-w-2xl mx-auto space-y-8">
-       {/* Tietokannan hallinta -painike */}
-       <div className="bg-white rounded-lg p-6 shadow-md">
+       {/* Hallinta painikkeet */}
+       <div className="bg-white rounded-lg p-6 shadow-md space-y-4">
          <button
            onClick={() => router.push('/admin/tietokanta')}
            className="w-full py-3 bg-[#F6F7E7] rounded-lg font-bold shadow-md hover:bg-[#F0F1E1]"
          >
            TIETOKANNAN HALLINTA
+         </button>
+         <button
+           onClick={() => router.push('/admin/users')}
+           className="w-full py-3 bg-[#F6F7E7] rounded-lg font-bold shadow-md hover:bg-[#F0F1E1]"
+         >
+           KÄYTTÄJIEN HALLINTA
          </button>
        </div>
 
