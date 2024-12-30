@@ -2,6 +2,7 @@ import { initializeApp, getApps } from "firebase/app";
 import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
 import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
+import { getAnalytics, isSupported } from "firebase/analytics"; // Lisätään tämä
 
 const firebaseConfig = {
  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -18,6 +19,12 @@ const storage = getStorage(app);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+// Analytics alustetaan vain selaimessa
+let analytics = null;
+if (typeof window !== 'undefined') {
+  isSupported().then(yes => yes && (analytics = getAnalytics(app)));
+}
+
 // Asetetaan Firebase auth persistenssi
 if (typeof window !== 'undefined') {
   setPersistence(auth, browserLocalPersistence)
@@ -26,4 +33,4 @@ if (typeof window !== 'undefined') {
     });
 }
 
-export { storage, db, auth };
+export { storage, db, auth, analytics };
