@@ -52,7 +52,7 @@ export default function AdminPage() {
 
  const fetchCodes = async () => {
    const usersRef = collection(db, 'kayttajat')
-   const q = query(usersRef, orderBy('Created', 'desc'), limit(50))
+   const q = query(usersRef, orderBy('Created', 'desc'), limit(120))
    const snapshot = await getDocs(q)
    
    const codes = snapshot.docs.map(doc => ({
