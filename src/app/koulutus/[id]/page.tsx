@@ -103,24 +103,19 @@ export default function KoulutusSisaltoPage({
       </div>
 
       <div className="w-full max-w-[580px] mt-4 sm:mt-8">
-        {sisallot.length === 0 ? (
-          <div className="text-center text-[14px] lg:text-[20px]">Loading...</div>
-        ) : (
-          sisallot.map((sisalto) => (
-            <div
-              key={sisalto.id}
-              onClick={() => handleContentClick(sisalto)}
-              className="mb-2 sm:mb-3 cursor-pointer"
-            >
-              <div className="flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
-                <span className="text-[14px] lg:text-[20px] flex-1 text-center truncate px-2">
-                  {sisalto.Name}
-                </span>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-)
-}
+ {sisallot.map((sisalto) => (
+   <div
+     key={sisalto.id}
+     onClick={() => handleContentClick(sisalto)}
+     className="mb-2 sm:mb-3 cursor-pointer"
+   >
+     <div className="flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
+       <span className="text-[14px] lg:text-[20px] flex-1 text-center truncate px-2">
+         {sisalto.Name}
+       </span>
+     </div>
+   </div>
+ ))}
+</div>
+</div>
+)}

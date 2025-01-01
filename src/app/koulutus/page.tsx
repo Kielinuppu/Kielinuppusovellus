@@ -52,24 +52,20 @@ export default function KoulutusPage() {
       </div>
 
       <div className="w-full max-w-[580px] mt-4 sm:mt-8">
-        {materiaalit.length === 0 ? (
-          <div className="text-center text-[14px] lg:text-[20px]">Loading...</div>
-        ) : (
-          materiaalit.map((materiaali) => (
-            <Link 
-              href={`/koulutus/${materiaali.id}`} 
-              key={materiaali.id}
-              className="block mb-2 sm:mb-3"
-            >
-              <div className="flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
-                <span className="text-[14px] lg:text-[20px] flex-1 text-center truncate px-2">
-                  {materiaali.Name}
-                </span>
-              </div>
-            </Link>
-          ))
-        )}
+        {materiaalit.map((materiaali) => (
+          <Link 
+            href={`/koulutus/${materiaali.id}`} 
+            key={materiaali.id}
+            className="block mb-2 sm:mb-3"
+          >
+            <div className="flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
+              <span className="text-[14px] lg:text-[20px] flex-1 text-center truncate px-2">
+                {materiaali.Name}
+              </span>
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
-  )
+)
 }

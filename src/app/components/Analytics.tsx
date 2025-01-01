@@ -11,31 +11,20 @@ useEffect(() => {
   const userCode = localStorage.getItem('userCode');
   const userDataString = localStorage.getItem('userData');
   const userData = userDataString ? JSON.parse(userDataString) : null;
-
+ 
   if (pathname && analytics && userCode) {
-    logEvent(analytics, 'user_engagement', {
-      // Käyttäjätieto - nämä näkyvät Analyticsissa käyttäjätasolla 
-      user_id: userCode,
+    logEvent(analytics, 'user_activity', {
       user_name: userData?.Päiväkoti,
-      user_type: 'authenticated_user',
-      
-      // Sivutieto
-      screen_name: pathname,
       page_title: getPageTitle(pathname),
-      
-      // Aikaleima ja kesto
-      engagement_time_msec: 1000,
       timestamp: new Date().toISOString(),
-      
-      // Sessio 
       session_id: generateSessionId(userCode)
     });
   }
-}, [pathname]);
-
-const generateSessionId = (userCode: string) => {
+ }, [pathname]);
+ 
+ const generateSessionId = (userCode: string) => {
   return `${userCode}_${new Date().toISOString().split('T')[0]}`;
-};
+ };
 
 const getPageTitle = (path: string) => {
   const parts = path.split('/').filter(Boolean);
