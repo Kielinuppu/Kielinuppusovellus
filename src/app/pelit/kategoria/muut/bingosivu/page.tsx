@@ -105,23 +105,23 @@ function BingoContent() {
       </div>
 
       <div className="w-full max-w-[500px] mt-8 flex flex-col gap-4">
-        {bingo['osoite vai ei'] === 1 && (
-          <Link
-            href={`/pelit/peli/${encodeURIComponent(bingo.peliosoite)}`}
-            className="mx-auto bg-white rounded-lg w-full max-w-[400px] h-[75px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform cursor-pointer flex items-center justify-center"
-          >
-            <span className="text-[14px] lg:text-[20px] text-gray-600">ARVONTAKONE</span>
-          </Link>
-        )}
+      {bingo['osoite vai ei'] === 1 && (
+  <Link
+    href={`/pelit/peli/${encodeURIComponent(bingo.peliosoite)}`}
+    className="mx-auto bg-white rounded-lg w-full max-w-[300px] h-[75px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform cursor-pointer flex items-center justify-center"
+  >
+    <span className="text-[14px] lg:text-[20px] text-gray-600">ARVONTAKONE</span>
+  </Link>
+)}
 
-        {bingo.pelialustat?.filename && (
-          <Link
-            href={`/viewer?type=pdf&url=${encodeURIComponent(`pdf/${bingo.pelialustat.filename}`)}&title=TULOSTETTAVAT PELIALUSTAT`}
-            className="bg-white rounded-lg w-full max-w-[400px] h-[75px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform cursor-pointer flex items-center justify-center"
-          >
-            <span className="text-[14px] lg:text-[20px] text-gray-600">TULOSTETTAVAT PELIALUSTAT</span>
-          </Link>
-        )}
+{bingo.pelialustat?.filename && (
+  <Link
+    href={`/viewer?type=pdf&url=${encodeURIComponent(`pdf/${bingo.pelialustat.filename}`)}&title=TULOSTETTAVAT PELIALUSTAT`}
+    className="mx-auto bg-white rounded-lg w-full max-w-[400px] h-[75px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform cursor-pointer flex items-center justify-center"
+  >
+    <span className="text-[14px] lg:text-[20px] text-gray-600">TULOSTETTAVAT PELIALUSTAT</span>
+  </Link>
+)}
       </div>
     </div>
   )

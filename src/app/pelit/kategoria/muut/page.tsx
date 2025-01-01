@@ -24,32 +24,27 @@ export default function MuutPage() {
  useEffect(() => {
   async function fetchBingos() {
     try {
-      const bingotRef = collection(db, 'bingot');
-      const querySnapshot = await getDocs(bingotRef);
+      const bingotRef = collection(db, 'bingot')
+      const querySnapshot = await getDocs(bingotRef)
 
       const bingoData = querySnapshot.docs.map(doc => {
-        const data = doc.data();
-        const kuvaData = data.kuva || data.Kuva || null;
-        const kuvaFilename = kuvaData?.filename?.toLowerCase(); // Lisätty tämä rivi
-
+        const data = doc.data()
         return {
           id: doc.id,
-          ID: data.ID || null,
-          Name: data.Name || "Nimetön Bingo",
-          kuva: kuvaData ? {...parseBingoImage(kuvaData), filename: kuvaFilename} : null, // Muokattu tämä rivi
-          peliosoite: data.pelialustat?.peliosoite || null,
-        };
-      });
-
-      const sortedBingos = bingoData.sort((a, b) => (a.Name || "").localeCompare(b.Name || ""));
-      setBingos(sortedBingos);
+          ...data,
+          kuva: parseBingoImage(data.kuva)
+        }
+      }) as Bingo[]
+  
+      const sortedBingos = bingoData.sort((a, b) => a.Name.localeCompare(b.Name))
+      setBingos(sortedBingos)
     } catch (error) {
-      console.error('Virhe bingojen haussa:', error);
+      console.error('Virhe bingojen haussa:', error)
     }
   }
 
-  fetchBingos();
-}, []);
+  fetchBingos()
+}, [])
 
  return (
    <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
