@@ -1,7 +1,17 @@
-import mixpanel, { Dict } from 'mixpanel-browser';
+import mixpanel from 'mixpanel-browser';
 
-mixpanel.init('51d1e9242cd717e2b7702aa3ba5a50d4');    
+type UserData = {
+  Päiväkoti: string;
+};
 
-export const trackEvent = (name: string, props?: Dict) => {
-    mixpanel.track(name, props);
-  };
+export const initUser = (userCode: string, userData: UserData) => {
+  mixpanel.identify(userCode);
+  mixpanel.people.set({ $name: userData.Päiväkoti });
+};
+
+export const trackPage = (page: string, userData: UserData) => {
+  mixpanel.track('page_view', {
+    page,
+    organization: userData.Päiväkoti 
+  });
+};
