@@ -30,12 +30,13 @@ export default function MuutPage() {
       const bingoData = querySnapshot.docs.map(doc => {
         const data = doc.data();
         const kuvaData = data.kuva || data.Kuva || null;
+        const kuvaFilename = kuvaData?.filename?.toLowerCase(); // Lisätty tämä rivi
 
         return {
           id: doc.id,
           ID: data.ID || null,
           Name: data.Name || "Nimetön Bingo",
-          kuva: kuvaData ? parseBingoImage(kuvaData) : null,
+          kuva: kuvaData ? {...parseBingoImage(kuvaData), filename: kuvaFilename} : null, // Muokattu tämä rivi
           peliosoite: data.pelialustat?.peliosoite || null,
         };
       });
