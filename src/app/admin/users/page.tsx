@@ -3,9 +3,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Trash2, Search } from 'lucide-react'
+import { ArrowLeft, Trash2, Search, Lock, Unlock } from 'lucide-react'
 import { db } from '../../../lib/firebase'
-import { collection, query, getDocs, orderBy, deleteDoc, doc } from 'firebase/firestore'
+import { collection, query, getDocs, orderBy, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 
 interface User {
   id: string
@@ -59,6 +59,24 @@ export default function UsersManagementPage() {
     }
   }
 
+  const updateAccess = async (userId: string, currentAccess: string) => {
+    try {
+      const userRef = doc(db, 'kayttajat', userId)
+      // Jos Access on TRUE, asetetaan FALSE, muuten TRUE
+      const newAccess = currentAccess === 'TRUE' ? 'FALSE' : 'TRUE'
+      
+      await updateDoc(userRef, {
+        Access: newAccess
+      })
+      
+      await fetchUsers() // Päivitä lista
+      alert(`Käyttäjän pääsy ${newAccess === 'TRUE' ? 'aktivoitu' : 'estetty'} onnistuneesti!`)
+    } catch (error) {
+      console.error('Error updating access:', error)
+      alert('Virhe pääsyn päivittämisessä!')
+    }
+  }
+
   useEffect(() => {
     if (!loading) {
       fetchUsers()
@@ -69,7 +87,7 @@ export default function UsersManagementPage() {
     try {
       await deleteDoc(doc(db, 'kayttajat', userId))
       setShowDeleteConfirm(null)
-      fetchUsers() // Päivitä lista
+      fetchUsers()
       alert('Käyttäjä poistettu onnistuneesti!')
     } catch (error) {
       console.error('Error deleting user:', error)
@@ -131,8 +149,20 @@ export default function UsersManagementPage() {
                         Viimeksi käytetty: {user.last_used.toLocaleDateString()}
                       </div>
                     )}
-                    <div className="text-sm text-gray-500">
-                      Pääsy: {user.Access === 'TRUE' ? 'Aktiivinen' : 'Estetty'}
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className={`px-3 py-1 rounded-full text-sm ${
+                        user.Access === 'TRUE' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                      }`}>
+                        {user.Access === 'TRUE' ? 'Aktiivinen' : 'Estetty'}
+                      </div>
+                      <button
+                        onClick={() => updateAccess(user.id, user.Access)}
+                        className={`p-2 rounded-full hover:bg-gray-200 transition-colors ${
+                          user.Access === 'TRUE' ? 'text-green-600' : 'text-red-600'
+                        }`}
+                      >
+                        {user.Access === 'TRUE' ? <Lock size={20} /> : <Unlock size={20} />}
+                      </button>
                     </div>
                   </div>
                   
