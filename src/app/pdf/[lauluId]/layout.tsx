@@ -6,7 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { db } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { getStorage, ref, getDownloadURL } from 'firebase/storage'
-import { ArrowLeft, FileText, MousePointer2 } from 'lucide-react'
+import { ArrowLeft, FileText, MousePointer2, Share2 } from 'lucide-react'
 
 interface PdfFileInfo {
   url: string;
@@ -36,6 +36,25 @@ export default function PdfLayout({
   const [laulu, setLaulu] = useState<Laulu | null>(null)
   const [pdfUrl, setPdfUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  const handleShare = async () => {
+    if (!pdfUrl) return;
+    
+    try {
+      if (navigator.share) {
+        // Mobiililaitteilla käytetään nativia jakamista
+        await navigator.share({
+          title: `${laulu?.Name || ''} ${type === 'nuotit' ? 'NUOTIT' : 'TULOSTEET'}`,
+          url: pdfUrl
+        });
+      } else {
+        // Desktop-laitteilla avataan PDF uudessa välilehdessä
+        window.open(pdfUrl, '_blank');
+      }
+    } catch (error) {
+      console.error('Jakaminen epäonnistui:', error);
+    }
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -113,13 +132,24 @@ export default function PdfLayout({
             {laulu?.Name || ''} {type === 'nuotit' ? 'NUOTIT' : 'TULOSTEET'}
           </h1>
           {pdfUrl && (
-            <div className="hidden md:flex items-center justify-center gap-2 mt-2 text-gray-600">
-              <MousePointer2 size={16} />
-              <span className="text-sm">Paina hiiren oikeaa näppäintä tallentaaksesi tai tulostaaksesi</span>
-            </div>
-          )}
+  <div className="hidden md:flex items-center justify-center gap-2 mt-2 text-gray-600">
+    <MousePointer2 size={16} />
+    <span className="text-sm">
+      Paina hiiren oikeaa näppäintä tai oikeassa yläkulmassa olevasta painikkeesta tallentaaksesi tai tulostaaksesi
+    </span>
+  </div>
+)}
         </div>
-        <div className="w-[42px]"></div>
+        {pdfUrl && (
+  <button
+    onClick={handleShare}
+    className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#F6F7E7] text-black hover:bg-opacity-80 transition-colors"
+    aria-label="Lataa/Tulosta PDF"
+  >
+    <Share2 size={20} />
+    <span className="hidden md:inline">Lataa/Tulosta</span>
+  </button>
+)}
       </div>
  
       <div className="max-w-[90%] mx-auto mt-4">
@@ -148,4 +178,4 @@ export default function PdfLayout({
       {children}
     </div>
   )
-  }
+}
