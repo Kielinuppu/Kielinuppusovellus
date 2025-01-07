@@ -42,28 +42,24 @@ export default function PdfLayout({
   if (!pdfUrl) return;
 
   try {
+    // Haetaan ensin PDF-tiedosto
+    const response = await fetch(pdfUrl, {
+      mode: 'no-cors' // Lisätään tämä
+    });
+    const blob = await response.blob();
+    const file = new File([blob], `${laulu?.Name || 'dokumentti'}.pdf`, { type: 'application/pdf' });
+
     if (navigator.share) {
       await navigator.share({
-        title: `${laulu?.Name || ''} ${type === 'nuotit' ? 'NUOTIT' : 'TULOSTEET'}`,
-        url: pdfUrl,
+        files: [file],
+        title: `${laulu?.Name || ''} ${type === 'nuotit' ? 'NUOTIT' : 'TULOSTEET'}`
       });
     } else {
-      // Haetaan ensin tiedosto ja luodaan local blob URL
-      const response = await fetch(pdfUrl);
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.download = `${laulu?.Name || 'dokumentti'}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(blobUrl); // Siivotaan blob URL
+      // Desktop-käyttäjille avataan suoraan uudessa välilehdessä
+      window.open(pdfUrl, '_blank');
     }
   } catch (error) {
     console.error('Jakaminen epäonnistui:', error);
-    // Fallback: avataan uudessa ikkunassa jos lataus epäonnistuu
     window.open(pdfUrl, '_blank');
   }
 };
