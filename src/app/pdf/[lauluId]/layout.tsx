@@ -37,24 +37,36 @@ export default function PdfLayout({
  const [pdfUrl, setPdfUrl] = useState<string | null>(null)
  const [error, setError] = useState<string | null>(null)
 
+ 
  const handleShare = async () => {
-   if (!pdfUrl) return;
-   
-   // Mobiililaitteilla käytetään Web Share API:a
-   if (navigator.share) {
-     try {
-       await navigator.share({
-         title: `${laulu?.Name || ''} ${type === 'nuotit' ? 'NUOTIT' : 'TULOSTEET'}`,
-         url: pdfUrl
-       });
-     } catch (error) {
-       console.error('Jakaminen epäonnistui:', error);
-     }
-   } else {
-     // Desktop-laitteilla avataan PDF suoraan uudessa välilehdessä
-     window.open(pdfUrl, '_blank');
-   }
- };
+  if (!pdfUrl) return;
+
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: `${laulu?.Name || ''} ${type === 'nuotit' ? 'NUOTIT' : 'TULOSTEET'}`,
+        url: pdfUrl,
+      });
+    } else {
+      // Haetaan ensin tiedosto ja luodaan local blob URL
+      const response = await fetch(pdfUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `${laulu?.Name || 'dokumentti'}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl); // Siivotaan blob URL
+    }
+  } catch (error) {
+    console.error('Jakaminen epäonnistui:', error);
+    // Fallback: avataan uudessa ikkunassa jos lataus epäonnistuu
+    window.open(pdfUrl, '_blank');
+  }
+};
 
  useEffect(() => {
    let mounted = true;
