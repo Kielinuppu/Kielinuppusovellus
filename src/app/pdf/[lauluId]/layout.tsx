@@ -42,17 +42,11 @@ export default function PdfLayout({
   if (!pdfUrl) return;
 
   try {
-    // Haetaan ensin PDF-tiedosto
-    const response = await fetch(pdfUrl, {
-      mode: 'no-cors' // Lisätään tämä
-    });
-    const blob = await response.blob();
-    const file = new File([blob], `${laulu?.Name || 'dokumentti'}.pdf`, { type: 'application/pdf' });
-
     if (navigator.share) {
+      // Yksinkertainen URL-jako iOS-laitteilla
       await navigator.share({
-        files: [file],
-        title: `${laulu?.Name || ''} ${type === 'nuotit' ? 'NUOTIT' : 'TULOSTEET'}`
+        title: `${laulu?.Name || ''} ${type === 'nuotit' ? 'NUOTIT' : 'TULOSTEET'}`,
+        url: pdfUrl  // Käytetään suoraan Firebase URL:ia
       });
     } else {
       // Desktop-käyttäjille avataan suoraan uudessa välilehdessä
