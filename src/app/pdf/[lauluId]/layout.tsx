@@ -6,29 +6,28 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { db } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { getStorage, ref, getDownloadURL } from 'firebase/storage'
-import { ArrowLeft, FileText, MousePointer2, Share2 } from 'lucide-react'
+import { ArrowLeft, FileText, MousePointer2, Download, Printer } from 'lucide-react'
 
 interface PdfFileInfo {
- url: string;
- size: number;
- filename: string;
+ url: string
+ size: number
+ filename: string
 }
 
 interface Laulu {
- ID: number;
- Name: string;
- Nuotit: string;
- Tulosteet: string;
+ ID: number
+ Name: string
+ Nuotit: string
+ Tulosteet: string
 }
 
 export default function PdfLayout({
-   children,
-   params
- }: {
-   children: React.ReactNode
-   params: Promise<{ lauluId: string }>
- }) {
-
+ children,
+ params,
+}: {
+ children: React.ReactNode
+ params: Promise<{ lauluId: string }>
+}) {
  const resolvedParams = use(params)
  const router = useRouter()
  const searchParams = useSearchParams()
@@ -37,94 +36,94 @@ export default function PdfLayout({
  const [pdfUrl, setPdfUrl] = useState<string | null>(null)
  const [error, setError] = useState<string | null>(null)
 
- 
- const handleShare = async () => {
-  if (!pdfUrl) return;
+ const handleDownload = async () => {
+   if (!pdfUrl) return
 
-  try {
-    if (navigator.share) {
-      // Yksinkertainen URL-jako iOS-laitteilla
-      await navigator.share({
-        title: `${laulu?.Name || ''} ${type === 'nuotit' ? 'NUOTIT' : 'TULOSTEET'}`,
-        url: pdfUrl  // Käytetään suoraan Firebase URL:ia
-      });
-    } else {
-      // Desktop-käyttäjille avataan suoraan uudessa välilehdessä
-      window.open(pdfUrl, '_blank');
-    }
-  } catch (error) {
-    console.error('Jakaminen epäonnistui:', error);
-    window.open(pdfUrl, '_blank');
-  }
-};
+   if (navigator.share) {
+     try {
+       await navigator.share({
+         title: `${laulu?.Name || ''} ${type === 'nuotit' ? 'NUOTIT' : 'TULOSTEET'}`,
+         url: pdfUrl,
+       })
+     } catch {
+       window.open(pdfUrl, '_blank')
+     }
+   } else {
+     window.open(pdfUrl, '_blank')
+   }
+ }
+
+ const handlePrint = () => {
+   if (!pdfUrl) return
+   window.open(pdfUrl, '_blank')
+ }
 
  useEffect(() => {
-   let mounted = true;
- 
+   let mounted = true
+
    const fetchLaulu = async () => {
-     if (!resolvedParams.lauluId) return;
- 
+     if (!resolvedParams.lauluId) return
+
      try {
-       const lauluDoc = await getDoc(doc(db, 'laulut', resolvedParams.lauluId));
- 
-       if (!mounted) return;
- 
+       const lauluDoc = await getDoc(doc(db, 'laulut', resolvedParams.lauluId))
+
+       if (!mounted) return
+
        if (!lauluDoc.exists()) {
-         setError('Laulua ei löytynyt');
-         return;
+         setError('Laulua ei löytynyt')
+         return
        }
- 
-       const lauluData = lauluDoc.data() as Laulu;
-       setLaulu(lauluData);
- 
-       const pdfData = type === 'nuotit' ? lauluData.Nuotit : lauluData.Tulosteet;
- 
+
+       const lauluData = lauluDoc.data() as Laulu
+       setLaulu(lauluData)
+
+       const pdfData = type === 'nuotit' ? lauluData.Nuotit : lauluData.Tulosteet
+
        if (!pdfData) {
-         setError('PDF-tiedostoa ei löytynyt');
-         return;
+         setError('PDF-tiedostoa ei löytynyt')
+         return
        }
- 
-       let fileName = '';
+
+       let fileName = ''
        try {
-         // Tarkistetaan, onko data JSON-muodossa vai pelkkä tiedostonimi
          if (pdfData.startsWith('{')) {
-           const pdfInfo = JSON.parse(pdfData.replace(/'/g, '"')) as PdfFileInfo;
-           fileName = pdfInfo.filename;
+           const pdfInfo = JSON.parse(pdfData.replace(/'/g, '"')) as PdfFileInfo
+           fileName = pdfInfo.filename
          } else {
-           fileName = pdfData; // Jos ei JSON, oletetaan että se on tiedostonimi
+           fileName = pdfData
          }
- 
-         const folderPath = type === 'nuotit' ? 'nuotit' : 'tulosteet';
-         const pdfPath = `Laulut/${folderPath}/${fileName}`;
- 
-         const storage = getStorage();
-         const pdfRef = ref(storage, pdfPath);
-         const url = await getDownloadURL(pdfRef);
- 
-         if (!mounted) return;
-         setPdfUrl(url);
-       } catch (error) {
-         console.error('Virhe PDF URL:n haussa:', error);
-         if (mounted) setError('PDF-tiedoston lataus epäonnistui');
+
+         const folderPath = type === 'nuotit' ? 'nuotit' : 'tulosteet'
+         const pdfPath = `Laulut/${folderPath}/${fileName}`
+
+         const storage = getStorage()
+         const pdfRef = ref(storage, pdfPath)
+         const url = await getDownloadURL(pdfRef)
+
+         if (!mounted) return
+         setPdfUrl(url)
+       } catch (err) {
+         console.error('Virhe PDF URL:n haussa:', err)
+         if (mounted) setError('PDF-tiedoston lataus epäonnistui')
        }
-     } catch (error) {
-       console.error('Virhe:', error);
-       if (mounted) setError('Virhe tietojen latauksessa');
+     } catch (err) {
+       console.error('Virhe:', err)
+       if (mounted) setError('Virhe tietojen latauksessa')
      }
-   };
- 
-   fetchLaulu();
- 
+   }
+
+   fetchLaulu()
+
    return () => {
-     mounted = false;
-   };
- }, [resolvedParams.lauluId, type]);
+     mounted = false
+   }
+ }, [resolvedParams.lauluId, type])
 
  return (
    <div className="bg-[#e9f1f3] min-h-screen p-4 pt-2">
      <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
-       <ArrowLeft 
-         className="cursor-pointer" 
+       <ArrowLeft
+         className="cursor-pointer"
          size={42}
          strokeWidth={2}
          onClick={() => router.back()}
@@ -137,20 +136,30 @@ export default function PdfLayout({
            <div className="hidden md:flex items-center justify-center gap-2 mt-2 text-gray-600">
              <MousePointer2 size={16} />
              <span className="text-sm">
-               Paina hiiren oikeaa näppäintä tai oikeassa yläkulmassa olevasta painikkeesta tallentaaksesi tai tulostaaksesi
+               Paina hiiren oikeaa näppäintä tai käytä yläkulman painikkeita tallentaaksesi tai tulostaaksesi
              </span>
            </div>
          )}
        </div>
        {pdfUrl && (
-         <button
-           onClick={handleShare}
-           className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#F6F7E7] text-black hover:bg-opacity-80 transition-colors"
-           aria-label="Lataa/Tulosta PDF"
-         >
-           <Share2 size={20} />
-           <span className="hidden md:inline">Lataa/Tulosta</span>
-         </button>
+         <div className="flex gap-2">
+           <button
+             onClick={handleDownload}
+             className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#F6F7E7] text-black hover:bg-opacity-80 transition-colors"
+             aria-label="Lataa PDF"
+           >
+             <Download size={20} />
+             <span className="hidden md:inline">Lataa</span>
+           </button>
+           <button
+             onClick={handlePrint}
+             className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#F6F7E7] text-black hover:bg-opacity-80 transition-colors"
+             aria-label="Tulosta PDF"
+           >
+             <Printer size={20} />
+             <span className="hidden md:inline">Tulosta</span>
+           </button>
+         </div>
        )}
      </div>
 
