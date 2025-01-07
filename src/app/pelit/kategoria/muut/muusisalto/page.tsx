@@ -16,6 +16,9 @@ interface Peli {
   Name: string
   kuva: BingoData | null
   laji: number
+  pelialustat?: {
+    filename: string
+  }
 }
 
 const categoryNames = {
@@ -57,6 +60,21 @@ export default function MuusisaltoPage() {
     fetchPelit()
   }, [categoryNumber])
 
+  const getItemLink = (peli: Peli) => {
+    // Jos kyseessä on bingo (laji 1), ohjataan bingosivulle
+    if (peli.laji === 1) {
+      return `/pelit/kategoria/muut/muusisalto/bingosivu?id=${peli.id}`
+    } 
+    
+    // Muille kategorioille (nopat ja lautapelit) suora ohjaus viewer-sivulle
+    if (peli.pelialustat?.filename) {
+      return `/viewer?type=pdf&url=${encodeURIComponent(`pdf/${peli.pelialustat.filename}`)}&title=${encodeURIComponent(peli.Name)}`
+    }
+    
+    // Fallback jos tiedostoa ei löydy
+    return '#'
+  }
+
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
       <div className="sticky top-0 w-full flex items-center px-2 bg-[#e9f1f3] py-2 z-10">
@@ -76,7 +94,7 @@ export default function MuusisaltoPage() {
         {pelit.map((peli, index) => (
           <Link 
             key={peli.id}
-            href={`/pelit/kategoria/muut/muusisalto/bingosivu?id=${peli.id}`} 
+            href={getItemLink(peli)} 
             className="block mb-2 sm:mb-3"
           >
             <div className="flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
