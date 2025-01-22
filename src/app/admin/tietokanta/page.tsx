@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { db } from '../../../lib/firebase'
-import { collection, query, getDocs, addDoc, orderBy, limit } from 'firebase/firestore'
+import { collection, query, getDocs, addDoc, setDoc, doc, orderBy, limit } from 'firebase/firestore'
 
 
 interface Game {
@@ -209,14 +209,14 @@ const [recentSongs, setRecentSongs] = useState<Song[]>([])
     
     try {
       const nextId = await getNextActivityId()
-      await addDoc(collection(db, 'tekeminen'), {
+      await setDoc(doc(db, 'tekeminen', activityName), {
         ID: nextId,
         Name: activityName,
         TYYLI: activityStyle,
         "Pelin osoite": activityUrl,
         Määrittäjä: activityIdentifier,
         tunnusluku: activityCode,
-        Lauluts: laulutsType === 'single' ? singleLaulut : multipleLaulut,
+        Lauluts: laulutsType === 'single' ? [singleLaulut] : multipleLaulut,
         Created: new Date().toISOString(),
         Updated: new Date().toISOString(),
         Kuva: ""
