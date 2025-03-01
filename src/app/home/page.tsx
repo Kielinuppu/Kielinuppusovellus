@@ -7,6 +7,7 @@ import { LogOut } from 'lucide-react'
 import { useEffect, useState, useMemo } from 'react'
 import LogoutModal from '../components/LogoutModal'
 import { getFullImageUrl } from '@/utils/imageUtils'
+import CodeVerification from '../components/CodeVerification'
 
 export default function HomePage() {
   const router = useRouter()
@@ -62,6 +63,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#e9f1f3] flex flex-col items-center p-4 pt-2">
+      <CodeVerification />
+      
       {/* Desktop: logout-nappi logon vieressä */}
       <div className="hidden md:block absolute right-6 top-2 z-20">
         <LogOut 
