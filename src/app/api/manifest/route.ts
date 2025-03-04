@@ -14,7 +14,7 @@ export async function GET() {
         display: "standalone",
         background_color: "#e9f1f3",
         theme_color: "#e9f1f3",
-        orientation: "portrait-primary",
+        orientation: "any",
         lang: "fi",
         form_factor: "wide",
         form_factors: [
