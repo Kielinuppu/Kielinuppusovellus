@@ -35,7 +35,13 @@ export default function PelitPage() {
       title: 'MUUT', 
       imageUrl: getFullImageUrl('Kuvake_muut.jpg', 'common'),
       category: 'muut' 
-    }
+    },
+    { 
+      title: 'LAULUTAULUTESTI', 
+      imageUrl: getFullImageUrl('Kuvake_laulutaulut.jpg', 'common'),
+      route: '/pelit/laulutaulut',
+      category: 'laulutaulut'
+    },
   ], [])
 
   return (
@@ -56,7 +62,7 @@ export default function PelitPage() {
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mt-3">
         {categories.map((category, index) => (
           <Link 
-            href={`/pelit/kategoria/${category.category}`} 
+            href={category.route || `/pelit/kategoria/${category.category}`}
             key={category.title}
             className="flex justify-center"
           >
