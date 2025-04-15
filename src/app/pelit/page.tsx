@@ -33,7 +33,7 @@ export default function PelitPage() {
     },
     { 
       title: 'MUUT', 
-      imageUrl: getFullImageUrl('Kuvake_muut.jpg', 'common'),
+      imageUrl: getFullImageUrl('Kuvake_muut_pelit.jpg', 'common'),
       category: 'muut' 
     },
     { 
