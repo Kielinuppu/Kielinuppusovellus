@@ -35,22 +35,24 @@ export default function InfoModal({ isOpen, onClose, imageFiles, title }: InfoMo
       onClick={handleClose}
     >
       <div 
-        className={`bg-white rounded-lg max-w-2xl w-full max-h-[85vh] overflow-hidden transition-all duration-300 ${
+        className={`bg-white rounded-lg max-w-2xl w-full max-h-[85vh] overflow-hidden transition-all duration-300 relative ${
           isAnimating ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
         style={{ boxShadow: 'rgba(0, 0, 0, 0.2) -4px 4px 4px' }} 
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center border-b p-4">
+        {/* Sulkunappi */}
+        <div className="absolute top-2 right-2 z-10">
           <button 
             onClick={handleClose}
-            className="p-1 hover:bg-gray-100 rounded-full ml-auto"
+            className="p-1 hover:bg-gray-100 rounded-full bg-white"
           >
             <X size={24} />
           </button>
         </div>
         
-        <div className="p-4 overflow-y-auto max-h-[calc(85vh-70px)]">
+        {/* Sisältö ilman otsikkoaluetta */}
+        <div className="overflow-y-auto max-h-[85vh]">
           {imageFiles && imageFiles.length > 0 ? (
             <ImageCarousel 
               imageFiles={imageFiles}
