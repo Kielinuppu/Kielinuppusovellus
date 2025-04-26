@@ -103,7 +103,6 @@ export default function ImageCarousel({
           }`}
         >
           <QuickImage
-            // Käytetään 'infokuvat' kansiota
             src={getFullImageUrl(imageFiles[currentIndex], 'infokuvat')}
             alt={`${title} - kuva ${currentIndex + 1}/${imageFiles.length}`}
             fill
@@ -113,47 +112,48 @@ export default function ImageCarousel({
         </div>
       </div>
 
-      {/* Navigointinuolet */}
+      {/* Indikaattorit ja nuolet alhaalla */}
       {showControls && (
-        <>
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center space-x-2">
+          {/* Vasen nuoli */}
           <button 
             onClick={goToPrevious}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 rounded-full p-1 shadow-md hover:bg-white"
+            className="bg-white rounded-full p-1 shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:bg-gray-100 mx-2"
             aria-label="Edellinen kuva"
           >
-            <ChevronLeft size={30} />
+            <ChevronLeft size={24} />
           </button>
+          
+          {/* Indikaattoripisteet */}
+          <div className="flex space-x-2">
+            {imageFiles.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  if (!isTransitioning) {
+                    setIsTransitioning(true)
+                    setCurrentIndex(index)
+                    setTimeout(() => {
+                      setIsTransitioning(false)
+                    }, 300)
+                  }
+                }}
+                className={`w-3 h-3 rounded-full ${
+                  index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
+                }`}
+                aria-label={`Siirry kuvaan ${index + 1}`}
+              />
+            ))}
+          </div>
+          
+          {/* Oikea nuoli */}
           <button 
             onClick={goToNext}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 rounded-full p-1 shadow-md hover:bg-white"
+            className="bg-white rounded-full p-1 shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:bg-gray-100 mx-2"
             aria-label="Seuraava kuva"
           >
-            <ChevronRight size={30} />
+            <ChevronRight size={24} />
           </button>
-        </>
-      )}
-
-      {/* Indikaattorit */}
-      {showControls && (
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          {imageFiles.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                if (!isTransitioning) {
-                  setIsTransitioning(true)
-                  setCurrentIndex(index)
-                  setTimeout(() => {
-                    setIsTransitioning(false)
-                  }, 300)
-                }
-              }}
-              className={`w-3 h-3 rounded-full ${
-                index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
-              }`}
-              aria-label={`Siirry kuvaan ${index + 1}`}
-            />
-          ))}
         </div>
       )}
     </div>
