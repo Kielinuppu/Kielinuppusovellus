@@ -41,13 +41,13 @@ export default function InfoModal({ isOpen, onClose, imageFiles, title }: InfoMo
         style={{ boxShadow: 'rgba(0, 0, 0, 0.2) -4px 4px 4px' }} 
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Sulkunappi */}
+        {/* Sulkunappi selkeämmällä taustalla */}
         <div className="absolute top-2 right-2 z-10">
           <button 
             onClick={handleClose}
-            className="p-1 hover:bg-gray-100 rounded-full bg-white"
+            className="p-1.5 rounded-full bg-white shadow-[rgba(0,0,0,0.2)_-2px_2px_2px] hover:bg-gray-100"
           >
-            <X size={24} />
+            <X size={22} />
           </button>
         </div>
         

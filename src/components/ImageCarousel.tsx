@@ -88,44 +88,47 @@ export default function ImageCarousel({
   }
 
   return (
-    <div 
-      className="relative w-full" 
-      style={{ height: '60vh' }}
-      ref={carouselRef}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      <div className="relative w-full h-full overflow-hidden">
-        <div 
-          className={`relative w-full h-full transition-transform duration-300 ${
-            isTransitioning ? 'opacity-50' : 'opacity-100'
-          }`}
-        >
-          <QuickImage
-            src={getFullImageUrl(imageFiles[currentIndex], 'infokuvat')}
-            alt={`${title} - kuva ${currentIndex + 1}/${imageFiles.length}`}
-            fill
-            className="object-contain"
-            sizes="(max-width: 768px) 100vw, 768px"
-          />
+    <div className="flex flex-col">
+      {/* Kuva-alue, jossa kuva on */}
+      <div 
+        className="relative w-full" 
+        style={{ height: '65vh' }}
+        ref={carouselRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="relative w-full h-full overflow-hidden">
+          <div 
+            className={`relative w-full h-full transition-transform duration-300 ${
+              isTransitioning ? 'opacity-50' : 'opacity-100'
+            }`}
+          >
+            <QuickImage
+              src={getFullImageUrl(imageFiles[currentIndex], 'infokuvat')}
+              alt={`${title} - kuva ${currentIndex + 1}/${imageFiles.length}`}
+              fill
+              className="object-contain"
+              sizes="(max-width: 768px) 100vw, 768px"
+            />
+          </div>
         </div>
       </div>
 
-      {/* Indikaattorit ja nuolet alhaalla */}
+      {/* Erillinen alue navigointinapeille ja indikaattoreille */}
       {showControls && (
-        <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center space-x-2">
+        <div className="py-4 bg-white flex justify-center items-center space-x-4">
           {/* Vasen nuoli */}
           <button 
             onClick={goToPrevious}
-            className="bg-white rounded-full p-1 shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:bg-gray-100 mx-2"
+            className="bg-white rounded-full p-1 shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:bg-gray-100"
             aria-label="Edellinen kuva"
           >
             <ChevronLeft size={24} />
           </button>
           
           {/* Indikaattoripisteet */}
-          <div className="flex space-x-2">
+          <div className="flex space-x-3">
             {imageFiles.map((_, index) => (
               <button
                 key={index}
@@ -149,7 +152,7 @@ export default function ImageCarousel({
           {/* Oikea nuoli */}
           <button 
             onClick={goToNext}
-            className="bg-white rounded-full p-1 shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:bg-gray-100 mx-2"
+            className="bg-white rounded-full p-1 shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:bg-gray-100"
             aria-label="Seuraava kuva"
           >
             <ChevronRight size={24} />
