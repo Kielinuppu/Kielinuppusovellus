@@ -8,6 +8,7 @@ import { collection, getDocs } from 'firebase/firestore'
 import QuickImage from '@/components/QuickImage'
 import Link from 'next/link'
 import { getFullImageUrl } from '@/utils/imageUtils'
+import InfoButton from '@/components/InfoButton' // Lisätty import
 
 interface LauluTaulu {
   id: string;
@@ -72,7 +73,10 @@ export default function LaulutaulutPage() {
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center">
           LAULUTAULUT
         </h1>
-        <div className="w-[45px]"></div>
+        <InfoButton 
+          category="laulutaulut" 
+          page="laulutaulut"
+        />
       </div>
 
       {loading ? (

@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import InfoButton from '@/components/InfoButton' // Lisää tämä import
 
 export default function MuutPage() {
   const router = useRouter()
@@ -25,7 +26,13 @@ export default function MuutPage() {
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center truncate">
           MUUT
         </h1>
-        <div className="w-[45px]"></div>
+        {/* Korvaa tämä info-napilla */}
+        <InfoButton 
+          category="muut" 
+          page="kategoria"
+          autoOpen={false}
+          delay={3000}
+        />
       </div>
 
       <div className="w-full max-w-[580px] mt-4 sm:mt-8">

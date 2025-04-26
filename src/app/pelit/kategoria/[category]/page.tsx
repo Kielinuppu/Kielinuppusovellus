@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { getFullImageUrl } from '@/utils/imageUtils'
 import { parseImageData } from '@/types/image'
 import { ImageData } from '@/types/image'
+import InfoButton from '@/components/InfoButton'
 
 interface Peli {
   ID: number;
@@ -121,7 +122,21 @@ export default function PeliKategoriaPage({
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center truncate">
           {categoryTitle}
         </h1>
-        <div className="w-[45px]"></div>
+        {currentCategory && currentCategory !== 'muut' ? (
+          <InfoButton 
+            category={currentCategory} 
+            page="kategoria"
+          />
+        ) : currentCategory === 'muut' ? (
+          <InfoButton 
+            category="muut" 
+            page="kategoria"
+            autoOpen={true}
+            delay={3000}
+          />
+        ) : (
+          <div className="w-[45px]"></div>
+        )}
       </div>
 
       <div className="w-full max-w-[900px] grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">

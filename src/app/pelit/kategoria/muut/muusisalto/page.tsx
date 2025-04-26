@@ -9,6 +9,7 @@ import Link from 'next/link'
 import QuickImage from '@/components/QuickImage'
 import { getFullImageUrl } from '@/utils/imageUtils'
 import { BingoData, parseBingoImage } from '@/types/bingo'
+import InfoButton from '@/components/InfoButton' // Lisätty import
 
 interface Peli {
   id: string
@@ -87,7 +88,12 @@ export default function MuusisaltoPage() {
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-semibold flex-1 text-center">
           {categoryNames[category as keyof typeof categoryNames]}
         </h1>
-        <div className="w-[45px]"></div>
+        
+        {/* Lisätty InfoButton */}
+        <InfoButton 
+          category={category} 
+          page="muusisalto"
+        />
       </div>
 
       <div className="w-full max-w-[580px] mt-4 sm:mt-8">
