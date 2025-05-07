@@ -68,20 +68,25 @@ export default function MuskaritPage() {
             imageUrl: getImageUrl(data['New Property'])
           }
         }) as Muskari[]
-
+  
         // Erottele materiaalit ja muskarit
         const materiaalitData = muskaritList.filter(m => m['järj num'] === 1)
+        
+        // Järjestä muskarit nimen mukaan aakkosjärjestykseen
         const muskaritData = muskaritList
           .filter(m => m['järj num'] !== 1)
-          .sort((a, b) => a['järj num'] - b['järj num'])
-
+          .sort((a, b) => {
+            // Vertaile nimien välillä merkkijonoina
+            return a.Name.localeCompare(b.Name, 'fi')
+          })
+  
         setMateriaalit(materiaalitData)
         setMuskarit(muskaritData)
       } catch (error) {
         console.error('Virhe muskareiden haussa:', error)
       }
     }
-
+  
     fetchMuskarit()
   }, [])
 
