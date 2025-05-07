@@ -16,16 +16,38 @@ interface Muskari {
   'järj num': number
   'New Property': string
   id: string
-  parsedImage?: { filename: string } | null
+  imageUrl: string | null
 }
 
-function parseImageData(jsonString: string) {
-  try {
-    const fixedString = jsonString.replace(/'/g, '"')
-    return JSON.parse(fixedString)
-  } catch {
-    return null
+// Tämä funktio käsittelee sekä JSON-objektit että pelkät tiedostonimet
+function getImageUrl(newProperty: string | undefined): string | null {
+  if (!newProperty) return null;
+  
+  // JSON-objektin käsittely
+  if (newProperty.startsWith('{') && newProperty.includes('filename')) {
+    try {
+      const fixedJson = newProperty.replace(/'/g, '"');
+      const parsed = JSON.parse(fixedJson);
+      
+      if (parsed.filename) {
+        return getFullImageUrl(parsed.filename, 'muskarit');
+      }
+      else if (parsed.url) {
+        return parsed.url;
+      }
+    } catch (e) {
+      console.error("JSON-jäsennysvirhe:", e);
+    }
   }
+  
+  // Suoran tiedostonimen käsittely
+  else if (newProperty.endsWith('.png') || 
+           newProperty.endsWith('.jpg') || 
+           newProperty.endsWith('.jpeg')) {
+    return getFullImageUrl(newProperty, 'muskarit');
+  }
+  
+  return null;
 }
 
 export default function MuskaritPage() {
@@ -38,11 +60,14 @@ export default function MuskaritPage() {
       try {
         const muskaritCol = collection(db, 'muskarit')
         const muskaritSnapshot = await getDocs(muskaritCol)
-        const muskaritList = muskaritSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => ({
-          ...doc.data(),
-          id: doc.id,
-          parsedImage: parseImageData(doc.data()['New Property'])
-        })) as Muskari[]
+        const muskaritList = muskaritSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
+          const data = doc.data()
+          return {
+            ...data,
+            id: doc.id,
+            imageUrl: getImageUrl(data['New Property'])
+          }
+        }) as Muskari[]
 
         // Erottele materiaalit ja muskarit
         const materiaalitData = muskaritList.filter(m => m['järj num'] === 1)
@@ -53,7 +78,7 @@ export default function MuskaritPage() {
         setMateriaalit(materiaalitData)
         setMuskarit(muskaritData)
       } catch (error) {
-        console.error('Error fetching muskarit:', error)
+        console.error('Virhe muskareiden haussa:', error)
       }
     }
 
@@ -108,9 +133,9 @@ export default function MuskaritPage() {
           >
             <div className="flex items-center bg-white rounded-lg p-2 h-[65px] sm:h-[77px] shadow-[rgba(0,0,0,0.2)_-4px_4px_4px] hover:scale-[1.02] transition-transform">
               <div className="ml-[10px] w-[65px] h-[65px] sm:w-[77px] sm:h-[77px] relative rounded-lg overflow-hidden">
-                {muskari.parsedImage ? (
+                {muskari.imageUrl ? (
                   <QuickImage
-                    src={getFullImageUrl(muskari.parsedImage.filename, 'muskarit')}
+                    src={muskari.imageUrl}
                     alt={muskari.Name}
                     fill
                     priority={index < 4}
